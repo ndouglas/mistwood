@@ -23,12 +23,13 @@ derive_builder = "0.20.0"
 derive_more = "0.99.17"
 futures = "0.3.30"
 log = "0.4.21"
-mlua = { version = "0.9.1", features = ["lua54", "vendored"] }
+mlua = { version = "0.9.6", features = ["lua54", "vendored"] }
 mockall = "0.12.1"
 pretty_env_logger = "0.5.0"
 regex = "1.10.3"
-serde = { version = "1.0.197", features = ["derive"] }
+serde = { version = "1.0.197", features = ["alloc", "derive", "std"] }
 serde_json = "1.0.114"
+serde_unit_struct = "0.1.3"
 serde_yaml = "0.9.32"
 shrev = "1.1.3"
 simplelog = "0.12.2"

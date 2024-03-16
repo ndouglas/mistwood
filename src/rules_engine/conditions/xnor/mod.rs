@@ -160,6 +160,4 @@ mod tests {
     let condition = Xnor { conditions };
     assert_eq!(condition.is_met().unwrap(), true);
   }
-
 }
-

@@ -2,8 +2,8 @@ use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Never {}
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Never;
 
 #[typetag::serde]
 impl Condition for Never {
@@ -22,5 +22,15 @@ mod tests {
     test_init();
     let condition = Never {};
     assert_eq!(condition.is_met().unwrap(), false);
+  }
+
+  #[test]
+  fn test_serde() {
+    test_init();
+    let condition = &Never as &dyn Condition;
+    let serialized = serde_json::to_string(condition).unwrap();
+    assert_eq!(serialized, r#"{"type":"Never"}"#);
+    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    assert_eq!(deserialized.is_met().unwrap(), false);
   }
 }

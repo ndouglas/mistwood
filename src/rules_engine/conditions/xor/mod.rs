@@ -25,7 +25,6 @@ impl Condition for Xor {
   }
 }
 
-
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -161,6 +160,4 @@ mod tests {
     let condition = Xor { conditions };
     assert_eq!(condition.is_met().unwrap(), false);
   }
-
 }
-
