@@ -1,5 +1,5 @@
-use crate::rules_engine::traits::float_argument::FloatArgument;
 use crate::rules_engine::traits::condition::Condition;
+use crate::rules_engine::traits::float_argument::FloatArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
