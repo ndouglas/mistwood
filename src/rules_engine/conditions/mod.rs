@@ -1,14 +1,9 @@
-pub mod always;
-pub mod and;
-pub mod buffer;
-pub mod error;
-pub mod nand;
-pub mod never;
-pub mod nor;
-pub mod not;
-pub mod or;
-pub mod xnor;
-pub mod xor;
+pub mod bool;
+pub mod constants;
+// pub mod int;
+// pub mod float;
+pub mod logic;
+// pub mod string;
 
 // and Creates a Rule where all child Rules must be Met
 // at_least Creates a Rule where n child Rules must be Met

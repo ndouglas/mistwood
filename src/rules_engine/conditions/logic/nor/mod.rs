@@ -4,36 +4,36 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Derivative, Serialize, Deserialize)]
 #[derivative(Debug)]
-pub struct Nand {
+pub struct Nor {
   #[derivative(Debug = "ignore")]
   pub conditions: Vec<Box<dyn Condition>>,
 }
 
 #[typetag::serde]
-impl Condition for Nand {
+impl Condition for Nor {
   fn is_met(&self) -> Result<bool, AnyError> {
     for condition in &self.conditions {
-      if !condition.is_met()? {
-        return Ok(true);
+      if condition.is_met()? {
+        return Ok(false);
       }
     }
-    Ok(false)
+    Ok(true)
   }
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::rules_engine::conditions::always::Always;
-  use crate::rules_engine::conditions::error::Error;
-  use crate::rules_engine::conditions::never::Never;
+  use crate::rules_engine::conditions::constants::always::Always;
+  use crate::rules_engine::conditions::constants::error::Error;
+  use crate::rules_engine::conditions::constants::never::Never;
   use crate::test::init as test_init;
 
   #[test]
   fn test_is_met() {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
     assert_eq!(condition.is_met().unwrap(), false);
   }
 
@@ -41,7 +41,7 @@ mod tests {
   fn test_is_not_met() {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
     assert_eq!(condition.is_met().unwrap(), true);
   }
 
@@ -49,7 +49,7 @@ mod tests {
   fn test_is_error() {
     test_init();
     let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
     assert!(condition.is_met().is_err());
   }
 
@@ -60,7 +60,7 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Always {}) as Box<dyn Condition>,
     ];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
     assert_eq!(condition.is_met().unwrap(), false);
   }
 
@@ -71,7 +71,18 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Never {}) as Box<dyn Condition>,
     ];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
+    assert_eq!(condition.is_met().unwrap(), false);
+  }
+
+  #[test]
+  fn test_is_not_met_with_multiple_conditions2() {
+    test_init();
+    let conditions = vec![
+      Box::new(Never {}) as Box<dyn Condition>,
+      Box::new(Never {}) as Box<dyn Condition>,
+    ];
+    let condition = Nor { conditions };
     assert_eq!(condition.is_met().unwrap(), true);
   }
 
@@ -82,19 +93,30 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Error {}) as Box<dyn Condition>,
     ];
-    let condition = Nand { conditions };
+    let condition = Nor { conditions };
+    assert_eq!(condition.is_met().unwrap(), false);
+  }
+
+  #[test]
+  fn test_is_not_met_with_multiple_conditions_and_error() {
+    test_init();
+    let conditions = vec![
+      Box::new(Never {}) as Box<dyn Condition>,
+      Box::new(Error {}) as Box<dyn Condition>,
+    ];
+    let condition = Nor { conditions };
     assert!(condition.is_met().is_err());
   }
 
   #[test]
   fn test_serde() {
     test_init();
-    let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
-    let condition = &Nand { conditions } as &dyn Condition;
+    let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
+    let condition = &Nor { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nand","conditions":[{"type":"Never"}]}"#);
+    assert_eq!(serialized, r#"{"type":"Nor","conditions":[{"type":"Always"}]}"#);
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert_eq!(deserialized.is_met().unwrap(), false);
   }
 
   #[test]
@@ -102,26 +124,12 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Never {}) as Box<dyn Condition>,
-    ];
-    let condition = &Nand { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Never"}]}"#);
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
-  }
-
-  #[test]
-  fn test_serde_with_multiple_conditions_and_error() {
-    test_init();
-    let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
     ];
-    let condition = &Nand { conditions } as &dyn Condition;
+    let condition = &Nor { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Error"}]}"#);
+    assert_eq!(serialized, r#"{"type":"Nor","conditions":[{"type":"Always"},{"type":"Always"}]}"#);
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().is_err());
+    assert_eq!(deserialized.is_met().unwrap(), false);
   }
 }

@@ -19,9 +19,9 @@ impl Condition for Not {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::rules_engine::conditions::always::Always;
-  use crate::rules_engine::conditions::error::Error;
-  use crate::rules_engine::conditions::never::Never;
+  use crate::rules_engine::conditions::constants::always::Always;
+  use crate::rules_engine::conditions::constants::error::Error;
+  use crate::rules_engine::conditions::constants::never::Never;
   use crate::test::init as test_init;
 
   #[test]
