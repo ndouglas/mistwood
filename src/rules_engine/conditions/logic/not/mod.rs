@@ -53,9 +53,9 @@ mod tests {
     test_init();
     let inner = Always {};
     let condition = &Not { inner: Box::new(inner) } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Not","inner":{"type":"Always"}}"#);
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.is_met().unwrap(), false);
   }
 
@@ -64,9 +64,9 @@ mod tests {
     test_init();
     let inner = Error {};
     let condition = &Not { inner: Box::new(inner) } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Not","inner":{"type":"Error"}}"#);
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
     assert!(deserialized.is_met().is_err());
   }
 }

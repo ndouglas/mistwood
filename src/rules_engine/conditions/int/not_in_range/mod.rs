@@ -27,6 +27,7 @@ mod tests {
   use super::*;
   use crate::test::init as test_init;
   use core::ops::Range;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -65,12 +66,23 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 1, end: 2 }),
     } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
     assert_eq!(
-      serialized,
-      r#"{"type":"IntNotInRange","value":{"type":"Int","value":1},"range":{"type":"IntRange","start":1,"end":2}}"#
+      serialized.trim(),
+      r#"
+type: IntNotInRange
+value:
+  type: Int
+  value: 1
+range:
+  type: IntRange
+  start: 1
+  end: 2
+          "#
+      .trim()
     );
-    let deserialized: IntNotInRange = serde_json::from_str(&serialized).unwrap();
+    let deserialized: IntNotInRange = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1);
     assert_eq!(deserialized.range.value().unwrap(), &Range { start: 1, end: 2 });
     assert!(!deserialized.is_met().unwrap());

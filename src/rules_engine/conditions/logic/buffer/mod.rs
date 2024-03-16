@@ -53,9 +53,9 @@ mod tests {
     test_init();
     let inner = Always;
     let condition = Buffer { inner: Box::new(inner) };
-    let serialized = serde_json::to_string(&condition).unwrap();
+    let serialized = serde_yaml::to_string(&condition).unwrap();
     println!("{}", serialized);
-    let deserialized: Buffer = serde_json::from_str(&serialized).unwrap();
+    let deserialized: Buffer = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(condition.is_met().unwrap(), deserialized.is_met().unwrap());
   }
 
@@ -64,9 +64,9 @@ mod tests {
     test_init();
     let inner = Error {};
     let condition = Buffer { inner: Box::new(inner) };
-    let serialized = serde_json::to_string(&condition).unwrap();
+    let serialized = serde_yaml::to_string(&condition).unwrap();
     println!("{}", serialized);
-    let deserialized: Result<Buffer, _> = serde_json::from_str(&serialized);
+    let deserialized: Result<Buffer, _> = serde_yaml::from_str(&serialized);
     assert!(deserialized.unwrap().is_met().is_err());
   }
 }

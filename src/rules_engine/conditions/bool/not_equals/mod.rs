@@ -23,6 +23,7 @@ impl Condition for BoolNotEquals {
 mod tests {
   use super::*;
   use crate::test::init as test_init;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -51,12 +52,22 @@ mod tests {
       left: Box::new(true),
       right: Box::new(true),
     } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
     assert_eq!(
-      serialized,
-      r#"{"type":"BoolNotEquals","left":{"type":"Bool","value":true},"right":{"type":"Bool","value":true}}"#
+      serialized.trim(),
+      r#"
+type: BoolNotEquals
+left:
+  type: Bool
+  value: true
+right:
+  type: Bool
+  value: true
+          "#
+      .trim()
     );
-    let deserialized: BoolNotEquals = serde_json::from_str(&serialized).unwrap();
+    let deserialized: BoolNotEquals = serde_yaml::from_str(&serialized).unwrap();
     assert!(!deserialized.is_met().unwrap());
   }
 }

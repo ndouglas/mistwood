@@ -28,6 +28,7 @@ mod tests {
   use crate::rules_engine::conditions::constants::error::Error;
   use crate::rules_engine::conditions::constants::never::Never;
   use crate::test::init as test_init;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -113,9 +114,17 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = &Nor { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nor","conditions":[{"type":"Always"}]}"#);
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    assert_eq!(
+      serialized.trim(),
+      r#"
+type: Nor
+conditions:
+- type: Always
+          "#
+      .trim()
+    );
+    let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
     assert!(!deserialized.is_met().unwrap());
   }
 
@@ -127,12 +136,18 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = &Nor { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
     assert_eq!(
-      serialized,
-      r#"{"type":"Nor","conditions":[{"type":"Always"},{"type":"Always"}]}"#
+      serialized.trim(),
+      r#"
+type: Nor
+conditions:
+- type: Always
+- type: Always
+          "#
+      .trim()
     );
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
     assert!(!deserialized.is_met().unwrap());
   }
 }

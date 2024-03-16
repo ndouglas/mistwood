@@ -28,6 +28,7 @@ mod tests {
   use crate::rules_engine::conditions::constants::error::Error;
   use crate::rules_engine::conditions::constants::never::Never;
   use crate::test::init as test_init;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -91,9 +92,18 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = &And { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"And","conditions":[{"type":"Always"}]}"#);
-    let deserialized: And = serde_json::from_str(&serialized).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
+    assert_eq!(
+      serialized.trim(),
+      r#"
+type: And
+conditions:
+- type: Always
+          "#
+      .trim()
+    );
+    let deserialized: And = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 1);
     assert!(deserialized.conditions[0].is_met().unwrap());
     assert!(deserialized.is_met().unwrap());
@@ -107,12 +117,19 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = &And { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
     assert_eq!(
-      serialized,
-      r#"{"type":"And","conditions":[{"type":"Always"},{"type":"Never"}]}"#
+      serialized.trim(),
+      r#"
+type: And
+conditions:
+- type: Always
+- type: Never
+          "#
+      .trim()
     );
-    let deserialized: And = serde_json::from_str(&serialized).unwrap();
+    let deserialized: And = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 2);
     assert!(deserialized.conditions[0].is_met().unwrap());
     assert!(!deserialized.conditions[1].is_met().unwrap());
@@ -124,9 +141,18 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
     let condition = &And { conditions } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"And","conditions":[{"type":"Error"}]}"#);
-    let deserialized: And = serde_json::from_str(&serialized).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
+    assert_eq!(
+      serialized.trim(),
+      r#"
+type: And
+conditions:
+- type: Error
+          "#
+      .trim()
+    );
+    let deserialized: And = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 1);
     assert!(deserialized.is_met().is_err());
   }

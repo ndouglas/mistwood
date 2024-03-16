@@ -27,6 +27,7 @@ mod tests {
   use super::*;
   use crate::test::init as test_init;
   use core::ops::Range;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -65,12 +66,23 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 0.0, end: 1.0 }),
     } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
     assert_eq!(
-      serialized,
-      r#"{"type":"FloatInRange","value":{"type":"Float","value":1.0},"range":{"type":"FloatRange","start":0.0,"end":1.0}}"#
+      serialized.trim(),
+      r#"
+type: FloatInRange
+value:
+  type: Float
+  value: 1.0
+range:
+  type: FloatRange
+  start: 0.0
+  end: 1.0
+          "#
+      .trim()
     );
-    let deserialized: FloatInRange = serde_json::from_str(&serialized).unwrap();
+    let deserialized: FloatInRange = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1.0);
     assert_eq!(deserialized.range.value().unwrap(), &Range { start: 0.0, end: 1.0 });
   }

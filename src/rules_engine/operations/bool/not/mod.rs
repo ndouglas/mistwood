@@ -34,6 +34,7 @@ impl BoolArgument for Not {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_execute() {
@@ -44,9 +45,19 @@ mod tests {
   #[test]
   fn test_serde() {
     let operation = &Not { value: Box::new(true) } as &dyn BoolOperation;
-    let serialized = serde_json::to_string(operation).unwrap();
-    assert_eq!(serialized, r#"{"type":"Not","value":{"type":"Bool","value":true}}"#);
-    let deserialized: Box<dyn BoolOperation> = serde_json::from_str(&serialized).unwrap();
+    let serialized = serde_yaml::to_string(operation).unwrap();
+    println!("{}", serialized);
+    assert_eq!(
+      serialized.trim(),
+      r#"
+type: Not
+value:
+  type: Bool
+  value: true
+    "#
+      .trim()
+    );
+    let deserialized: Box<dyn BoolOperation> = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(
       operation.execute().unwrap().value().unwrap(),
       deserialized.execute().unwrap().value().unwrap()

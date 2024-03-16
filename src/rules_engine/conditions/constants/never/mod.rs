@@ -16,6 +16,7 @@ impl Condition for Never {
 mod tests {
   use super::*;
   use crate::test::init as test_init;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -28,9 +29,16 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &Never as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Never"}"#);
-    let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
+    assert_eq!(
+      serialized.trim(),
+      r#"
+type: Never
+          "#
+      .trim()
+    );
+    let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
     assert!(!deserialized.is_met().unwrap());
   }
 }

@@ -23,6 +23,7 @@ impl Condition for IntEquals {
 mod tests {
   use super::*;
   use crate::test::init as test_init;
+  use pretty_assertions::assert_eq;
 
   #[test]
   fn test_is_met() {
@@ -48,15 +49,25 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &IntEquals {
-      left: Box::new(1),
-      right: Box::new(1),
+      left: Box::new(1_i64) as Box<dyn IntArgument>,
+      right: Box::new(1_i64) as Box<dyn IntArgument>,
     } as &dyn Condition;
-    let serialized = serde_json::to_string(condition).unwrap();
+    let serialized = serde_yaml::to_string(condition).unwrap();
+    println!("{}", serialized);
     assert_eq!(
-      serialized,
-      r#"{"type":"IntEquals","left":{"type":"Int","value":1},"right":{"type":"Int","value":1}}"#
+      serialized.trim(),
+      r#"
+type: IntEquals
+left:
+  type: Int
+  value: 1
+right:
+  type: Int
+  value: 1
+          "#
+      .trim()
     );
-    let deserialized: IntEquals = serde_json::from_str(&serialized).unwrap();
+    let deserialized: IntEquals = serde_yaml::from_str(&serialized).unwrap();
     assert!(deserialized.is_met().unwrap());
   }
 }
