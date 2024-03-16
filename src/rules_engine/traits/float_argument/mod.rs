@@ -6,7 +6,7 @@ pub trait FloatArgument: Argument {
   fn value(&self) -> Result<f64, AnyError>;
 }
 
-#[typetag::serde]
+#[typetag::serde(name = "Float")]
 impl Argument for f64 {}
 
 #[typetag::serde(name = "Float")]

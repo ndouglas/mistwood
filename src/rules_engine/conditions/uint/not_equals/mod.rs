@@ -1,5 +1,5 @@
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::int_argument::IntArgument;
+use crate::rules_engine::traits::uint_argument::UintArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct UintNotEquals {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn IntArgument>,
+  pub left: Box<dyn UintArgument>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn IntArgument>,
+  pub right: Box<dyn UintArgument>,
 }
 
 #[typetag::serde]
@@ -54,7 +54,7 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(
       serialized,
-      r#"{"type":"UintNotEquals","left":{"type":"Int","value":1},"right":{"type":"Int","value":1}}"#
+      r#"{"type":"UintNotEquals","left":{"type":"Uint","value":1},"right":{"type":"Uint","value":1}}"#
     );
     let deserialized: UintNotEquals = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.is_met().unwrap(), false);

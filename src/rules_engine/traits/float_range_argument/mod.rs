@@ -7,10 +7,10 @@ pub trait FloatRangeArgument: Argument {
   fn value(&self) -> Result<&Range<f64>, AnyError>;
 }
 
-#[typetag::serde]
+#[typetag::serde(name = "FloatRange")]
 impl Argument for Range<f64> {}
 
-#[typetag::serde]
+#[typetag::serde(name = "FloatRange")]
 impl FloatRangeArgument for Range<f64> {
   fn value(&self) -> Result<&Range<f64>, AnyError> {
     Ok(self)

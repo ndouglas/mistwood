@@ -68,7 +68,7 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(
       serialized,
-      r#"{"type":"FloatInRange","value":{"type":"Float","value":1.0},"range":{"type":"Range","start":0.0,"end":1.0}}"#
+      r#"{"type":"FloatInRange","value":{"type":"Float","value":1.0},"range":{"type":"FloatRange","start":0.0,"end":1.0}}"#
     );
     let deserialized: FloatInRange = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1.0);

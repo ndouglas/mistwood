@@ -1,6 +1,6 @@
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::int_argument::IntArgument;
-use crate::rules_engine::traits::int_range_argument::IntRangeArgument;
+use crate::rules_engine::traits::uint_argument::UintArgument;
+use crate::rules_engine::traits::uint_range_argument::UintRangeArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
@@ -8,9 +8,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct UintNotInRange {
   #[derivative(Debug = "ignore")]
-  pub value: Box<dyn IntArgument>,
+  pub value: Box<dyn UintArgument>,
   #[derivative(Debug = "ignore")]
-  pub range: Box<dyn IntRangeArgument>,
+  pub range: Box<dyn UintRangeArgument>,
 }
 
 #[typetag::serde]
@@ -68,7 +68,7 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(
       serialized,
-      r#"{"type":"UintNotInRange","value":{"type":"Int","value":1},"range":{"type":"Range","start":1,"end":2}}"#
+      r#"{"type":"UintNotInRange","value":{"type":"Uint","value":1},"range":{"type":"UintRange","start":1,"end":2}}"#
     );
     let deserialized: UintNotInRange = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1);

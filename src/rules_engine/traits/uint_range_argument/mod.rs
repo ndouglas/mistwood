@@ -7,10 +7,10 @@ pub trait UintRangeArgument: Argument {
   fn value(&self) -> Result<&Range<u64>, AnyError>;
 }
 
-#[typetag::serde]
+#[typetag::serde(name = "UintRange")]
 impl Argument for Range<u64> {}
 
-#[typetag::serde]
+#[typetag::serde(name = "UintRange")]
 impl UintRangeArgument for Range<u64> {
   fn value(&self) -> Result<&Range<u64>, AnyError> {
     Ok(self)

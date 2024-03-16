@@ -68,7 +68,7 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(
       serialized,
-      r#"{"type":"IntInRange","value":{"type":"Int","value":1},"range":{"type":"Range","start":1,"end":2}}"#
+      r#"{"type":"IntInRange","value":{"type":"Int","value":1},"range":{"type":"IntRange","start":1,"end":2}}"#
     );
     let deserialized: IntInRange = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1);

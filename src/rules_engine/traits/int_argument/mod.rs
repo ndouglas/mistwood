@@ -6,7 +6,7 @@ pub trait IntArgument: Argument {
   fn value(&self) -> Result<i64, AnyError>;
 }
 
-#[typetag::serde]
+#[typetag::serde(name = "Int")]
 impl Argument for i64 {}
 
 #[typetag::serde(name = "Int")]
