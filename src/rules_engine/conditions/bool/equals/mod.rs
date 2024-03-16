@@ -1,3 +1,4 @@
+use crate::rules_engine::traits::bool_argument::BoolArgument;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -6,31 +7,29 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct BoolEquals {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn Condition>,
+  pub left: Box<dyn BoolArgument>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn Condition>,
+  pub right: Box<dyn BoolArgument>,
 }
 
 #[typetag::serde]
 impl Condition for BoolEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(self.left.is_met()? == self.right.is_met()?)
+    Ok(self.left.value()? == self.right.value()?)
   }
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::rules_engine::conditions::constants::always::Always;
-  use crate::rules_engine::conditions::constants::never::Never;
   use crate::test::init as test_init;
 
   #[test]
   fn test_is_met() {
     test_init();
     let condition = BoolEquals {
-      left: Box::new(Always {}),
-      right: Box::new(Always {}),
+      left: Box::new(true),
+      right: Box::new(true),
     };
     assert_eq!(condition.is_met().unwrap(), true);
   }
@@ -39,8 +38,8 @@ mod tests {
   fn test_is_not_met() {
     test_init();
     let condition = BoolEquals {
-      left: Box::new(Always {}),
-      right: Box::new(Never {}),
+      left: Box::new(true),
+      right: Box::new(false),
     };
     assert_eq!(condition.is_met().unwrap(), false);
   }
@@ -49,12 +48,15 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &BoolEquals {
-      left: Box::new(Always {}),
-      right: Box::new(Never {}),
+      left: Box::new(true),
+      right: Box::new(true),
     } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"BoolEquals","left":{"type":"Always"},"right":{"type":"Never"}}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"BoolEquals","left":{"type":"Bool","value":true},"right":{"type":"Bool","value":true}}"#
+    );
     let deserialized: BoolEquals = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert_eq!(deserialized.is_met().unwrap(), true);
   }
 }

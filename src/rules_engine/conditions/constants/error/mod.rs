@@ -33,5 +33,4 @@ mod tests {
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
     assert!(deserialized.is_met().is_err());
   }
-
 }

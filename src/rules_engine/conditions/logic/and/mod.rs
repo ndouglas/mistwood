@@ -108,7 +108,10 @@ mod tests {
     ];
     let condition = &And { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"And","conditions":[{"type":"Always"},{"type":"Never"}]}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"And","conditions":[{"type":"Always"},{"type":"Never"}]}"#
+    );
     let deserialized: And = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 2);
     assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);

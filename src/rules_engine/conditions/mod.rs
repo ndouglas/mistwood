@@ -1,9 +1,13 @@
 pub mod bool;
 pub mod constants;
-// pub mod int;
-// pub mod float;
+pub mod float;
+pub mod int;
+pub mod list;
 pub mod logic;
-// pub mod string;
+pub mod map;
+pub mod range;
+pub mod string;
+pub mod uint;
 
 // and Creates a Rule where all child Rules must be Met
 // at_least Creates a Rule where n child Rules must be Met

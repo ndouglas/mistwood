@@ -106,7 +106,10 @@ mod tests {
     ];
     let condition = &Nand { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Never"}]}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Never"}]}"#
+    );
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.is_met().unwrap(), true);
   }
@@ -120,7 +123,10 @@ mod tests {
     ];
     let condition = &Nand { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Error"}]}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"Nand","conditions":[{"type":"Always"},{"type":"Error"}]}"#
+    );
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
     assert!(deserialized.is_met().is_err());
   }

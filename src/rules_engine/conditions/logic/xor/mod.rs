@@ -171,7 +171,10 @@ mod tests {
     ];
     let condition = &Xor { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Xor","conditions":[{"type":"Always"},{"type":"Never"},{"type":"Error"}]}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"Xor","conditions":[{"type":"Always"},{"type":"Never"},{"type":"Error"}]}"#
+    );
     let deserialized: Xor = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 3);
     assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
@@ -189,7 +192,10 @@ mod tests {
     ];
     let condition = &Xor { conditions } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
-    assert_eq!(serialized, r#"{"type":"Xor","conditions":[{"type":"Always"},{"type":"Never"}]}"#);
+    assert_eq!(
+      serialized,
+      r#"{"type":"Xor","conditions":[{"type":"Always"},{"type":"Never"}]}"#
+    );
     let deserialized: Xor = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 2);
     assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
