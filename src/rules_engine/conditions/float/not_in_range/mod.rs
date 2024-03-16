@@ -1,0 +1,74 @@
+use crate::rules_engine::traits::float_argument::FloatArgument;
+use crate::rules_engine::traits::condition::Condition;
+use crate::rules_engine::traits::float_range_argument::FloatRangeArgument;
+use anyhow::Error as AnyError;
+use serde::{Deserialize, Serialize};
+use core::ops::Range;
+
+#[derive(Derivative, Serialize, Deserialize)]
+#[derivative(Debug)]
+pub struct FloatNotInRange {
+  #[derivative(Debug = "ignore")]
+  pub value: Box<dyn FloatArgument>,
+  #[derivative(Debug = "ignore")]
+  pub range: Box<dyn FloatRangeArgument>,
+}
+
+#[typetag::serde]
+impl Condition for FloatNotInRange {
+  fn is_met(&self) -> Result<bool, AnyError> {
+    let value = self.value.value()?;
+    let range = self.range.value()?;
+    Ok(!range.contains(&value))
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use crate::test::init as test_init;
+
+  #[test]
+  fn test_is_met() {
+    test_init();
+    let condition = FloatNotInRange {
+      value: Box::new(1.0),
+      range: Box::new(Range { start: 0.0, end: 2.0 }),
+    };
+    assert_eq!(condition.is_met().unwrap(), false);
+  }
+
+  #[test]
+  fn test_is_met2() {
+    test_init();
+    let condition = FloatNotInRange {
+      value: Box::new(1.0),
+      range: Box::new(Range { start: 1.0, end: 2.0 }),
+    };
+    assert_eq!(condition.is_met().unwrap(), false);
+  }
+
+  #[test]
+  fn test_is_met3() {
+    test_init();
+    let condition = FloatNotInRange {
+      value: Box::new(1.0),
+      range: Box::new(Range { start: 0.0, end: 1.0 }),
+    };
+    assert_eq!(condition.is_met().unwrap(), true);
+  }
+
+  #[test]
+  fn test_serde() {
+    test_init();
+    let condition = &FloatNotInRange {
+      value: Box::new(1.0),
+      range: Box::new(Range { start: 0.0, end: 1.0 }),
+    } as &dyn Condition;
+    let serialized = serde_json::to_string(condition).unwrap();
+    assert_eq!(serialized, r#"{"type":"FloatNotInRange","value":{"type":"Float","value":1.0},"range":{"type":"Range","start":0.0,"end":1.0}}"#);
+    let deserialized: FloatNotInRange = serde_json::from_str(&serialized).unwrap();
+    assert_eq!(deserialized.value.value().unwrap(), 1.0);
+    assert_eq!(deserialized.range.value().unwrap(), &Range { start: 0.0, end: 1.0 });
+  }
+}
