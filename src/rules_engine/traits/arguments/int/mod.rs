@@ -1,6 +1,7 @@
 use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
 use core::ops::Range;
+use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait IntArgument: Argument {
@@ -24,6 +25,7 @@ impl PartialEq for dyn IntArgument {
 }
 
 define_list_argument_trait_and_impl!(IntListArgument, IntArgument, "IntList");
+define_map_argument_trait_and_impl!(IntMapArgument, IntArgument, "IntMap");
 
 #[typetag::serde(tag = "type")]
 pub trait IntRangeArgument: Argument {
@@ -41,3 +43,4 @@ impl IntRangeArgument for Range<i64> {
 }
 
 define_list_argument_trait_and_impl!(IntRangeListArgument, IntRangeArgument, "IntRangeList");
+define_map_argument_trait_and_impl!(IntRangeMapArgument, IntRangeArgument, "IntRangeMap");

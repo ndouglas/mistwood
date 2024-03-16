@@ -1,5 +1,6 @@
 use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
+use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait StringArgument: Argument {
@@ -23,3 +24,4 @@ impl PartialEq for dyn StringArgument {
 }
 
 define_list_argument_trait_and_impl!(StringListArgument, StringArgument, "StringList");
+define_map_argument_trait_and_impl!(StringMapArgument, StringArgument, "StringMap");

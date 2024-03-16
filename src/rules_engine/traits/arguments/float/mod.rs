@@ -1,6 +1,7 @@
 use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
 use core::ops::Range;
+use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait FloatArgument: Argument {
@@ -18,6 +19,7 @@ impl FloatArgument for f64 {
 }
 
 define_list_argument_trait_and_impl!(FloatListArgument, FloatArgument, "FloatList");
+define_map_argument_trait_and_impl!(FloatMapArgument, FloatArgument, "FloatMap");
 
 #[typetag::serde(tag = "type")]
 pub trait FloatRangeArgument: Argument {
@@ -35,3 +37,4 @@ impl FloatRangeArgument for Range<f64> {
 }
 
 define_list_argument_trait_and_impl!(FloatRangeListArgument, FloatRangeArgument, "FloatRangeList");
+define_map_argument_trait_and_impl!(FloatRangeMapArgument, FloatRangeArgument, "FloatRangeMap");

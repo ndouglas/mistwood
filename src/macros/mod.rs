@@ -17,3 +17,23 @@ macro_rules! define_list_argument_trait_and_impl {
     }
   };
 }
+
+#[macro_export]
+macro_rules! define_map_argument_trait_and_impl {
+  ($trait_name:ident, $item_trait:ident, $serde_name:expr) => {
+    #[typetag::serde(tag = "type")]
+    pub trait $trait_name: Argument {
+      fn value(&self) -> Result<&HashMap<String, Box<dyn $item_trait>>, AnyError>;
+    }
+
+    #[typetag::serde(name = $serde_name)]
+    impl Argument for HashMap<String, Box<dyn $item_trait>> {}
+
+    #[typetag::serde(name = $serde_name)]
+    impl $trait_name for HashMap<String, Box<dyn $item_trait>> {
+      fn value(&self) -> Result<&HashMap<String, Box<dyn $item_trait>>, AnyError> {
+        Ok(self)
+      }
+    }
+  };
+}
