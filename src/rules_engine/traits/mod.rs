@@ -1,5 +1,6 @@
 pub mod argument;
 pub mod bool_argument;
+pub mod bool_operation;
 pub mod conclusion;
 pub mod condition;
 pub mod context;
@@ -9,6 +10,8 @@ pub mod float_argument;
 pub mod float_range_argument;
 pub mod int_argument;
 pub mod int_list_argument;
+pub mod int_operation;
 pub mod int_range_argument;
 pub mod map_argument;
+pub mod operation;
 pub mod string_argument;
