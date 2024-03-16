@@ -35,7 +35,7 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 0, end: 2 }),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -45,7 +45,7 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -55,7 +55,7 @@ mod tests {
       value: Box::new(2),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -73,6 +73,6 @@ mod tests {
     let deserialized: IntNotInRange = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.value().unwrap(), 1);
     assert_eq!(deserialized.range.value().unwrap(), &Range { start: 1, end: 2 });
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(!deserialized.is_met().unwrap());
   }
 }

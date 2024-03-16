@@ -29,7 +29,7 @@ mod tests {
     test_init();
     let inner = Always;
     let condition = Buffer { inner: Box::new(inner) };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -37,7 +37,7 @@ mod tests {
     test_init();
     let inner = Never {};
     let condition = Buffer { inner: Box::new(inner) };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]

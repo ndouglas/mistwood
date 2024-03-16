@@ -31,7 +31,7 @@ mod tests {
       left: Box::new(true),
       right: Box::new(true),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -41,7 +41,7 @@ mod tests {
       left: Box::new(true),
       right: Box::new(false),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -57,6 +57,6 @@ mod tests {
       r#"{"type":"BoolEquals","left":{"type":"Bool","value":true},"right":{"type":"Bool","value":true}}"#
     );
     let deserialized: BoolEquals = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.is_met().unwrap());
   }
 }

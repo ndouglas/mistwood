@@ -31,7 +31,7 @@ mod tests {
       left: Box::new(1),
       right: Box::new(1),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -41,7 +41,7 @@ mod tests {
       left: Box::new(1),
       right: Box::new(2),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -51,7 +51,7 @@ mod tests {
       left: Box::new(2),
       right: Box::new(1),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -67,6 +67,6 @@ mod tests {
       r#"{"type":"IntGreaterThan","left":{"type":"Int","value":1},"right":{"type":"Int","value":1}}"#
     );
     let deserialized: IntGreaterThan = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(!deserialized.is_met().unwrap());
   }
 }

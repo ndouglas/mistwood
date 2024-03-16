@@ -26,24 +26,26 @@ mod tests {
   #[test]
   fn test_is_met() {
     test_init();
-    let condition = IntListIsEmpty { list: Box::new(vec![]) };
-    assert_eq!(condition.is_met().unwrap(), true);
+    let condition = IntListIsEmpty {
+      list: Box::<Vec<Box<dyn IntArgument>>>::default(),
+    };
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
   fn test_is_met2() {
     test_init();
     let condition = IntListIsEmpty {
-      list: Box::new(vec![Box::new(1 as i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
   fn test_serde() {
     test_init();
     let condition = &IntListIsEmpty {
-      list: Box::new(vec![Box::new(1 as i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
     } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(
@@ -51,6 +53,6 @@ mod tests {
       r#"{"type":"IntListIsEmpty","list":{"type":"IntList","value":[{"type":"Int","value":1}]}}"#
     );
     let deserialized: IntListIsEmpty = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(!deserialized.is_met().unwrap());
   }
 }

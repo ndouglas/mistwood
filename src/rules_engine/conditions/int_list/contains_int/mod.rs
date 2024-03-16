@@ -30,27 +30,27 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = IntListContainsInt {
-      list: Box::new(vec![]),
+      list: Box::<Vec<Box<dyn IntArgument>>>::default(),
       value: Box::new(1),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
   fn test_is_met2() {
     test_init();
     let condition = IntListContainsInt {
-      list: Box::new(vec![Box::new(1 as i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
       value: Box::new(1),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
   fn test_serde() {
     test_init();
     let condition = &IntListContainsInt {
-      list: Box::new(vec![Box::new(1 as i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
       value: Box::new(1),
     } as &dyn Condition;
     let serialized = serde_json::to_string(condition).unwrap();
@@ -59,6 +59,6 @@ mod tests {
       r#"{"type":"IntListContainsInt","list":{"type":"IntList","value":[{"type":"Int","value":1}]},"value":{"type":"Int","value":1}}"#
     );
     let deserialized: IntListContainsInt = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.is_met().unwrap());
   }
 }

@@ -38,7 +38,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -46,7 +46,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -65,7 +65,7 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -76,7 +76,7 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -88,7 +88,7 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -100,7 +100,7 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -158,7 +158,7 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -177,8 +177,8 @@ mod tests {
     );
     let deserialized: Xor = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 3);
-    assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
-    assert_eq!(deserialized.conditions[1].is_met().unwrap(), false);
+    assert!(deserialized.conditions[0].is_met().unwrap());
+    assert!(!deserialized.conditions[1].is_met().unwrap());
     assert!(deserialized.conditions[2].is_met().is_err());
     assert!(deserialized.is_met().is_err());
   }
@@ -198,8 +198,8 @@ mod tests {
     );
     let deserialized: Xor = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 2);
-    assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
-    assert_eq!(deserialized.conditions[1].is_met().unwrap(), false);
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.conditions[0].is_met().unwrap());
+    assert!(!deserialized.conditions[1].is_met().unwrap());
+    assert!(deserialized.is_met().unwrap());
   }
 }

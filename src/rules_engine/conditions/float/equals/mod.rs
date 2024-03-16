@@ -33,7 +33,7 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.001,
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -44,7 +44,7 @@ mod tests {
       right: Box::new(1.1),
       tolerance: 0.05,
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -61,6 +61,6 @@ mod tests {
       r#"{"type":"FloatEquals","left":{"type":"Float","value":1.0},"right":{"type":"Float","value":1.0},"tolerance":0.001}"#
     );
     let deserialized: FloatEquals = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.is_met().unwrap());
   }
 }

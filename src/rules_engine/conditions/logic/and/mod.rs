@@ -34,7 +34,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = And { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -42,7 +42,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
     let condition = And { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -61,7 +61,7 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = And { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -72,7 +72,7 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = And { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -95,8 +95,8 @@ mod tests {
     assert_eq!(serialized, r#"{"type":"And","conditions":[{"type":"Always"}]}"#);
     let deserialized: And = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 1);
-    assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.conditions[0].is_met().unwrap());
+    assert!(deserialized.is_met().unwrap());
   }
 
   #[test]
@@ -114,9 +114,9 @@ mod tests {
     );
     let deserialized: And = serde_json::from_str(&serialized).unwrap();
     assert_eq!(deserialized.conditions.len(), 2);
-    assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
-    assert_eq!(deserialized.conditions[1].is_met().unwrap(), false);
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(deserialized.conditions[0].is_met().unwrap());
+    assert!(!deserialized.conditions[1].is_met().unwrap());
+    assert!(!deserialized.is_met().unwrap());
   }
 
   #[test]

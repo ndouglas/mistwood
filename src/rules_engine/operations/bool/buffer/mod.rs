@@ -1,3 +1,4 @@
+use crate::rules_engine::traits::argument::Argument;
 use crate::rules_engine::traits::bool_argument::BoolArgument;
 use crate::rules_engine::traits::bool_operation::BoolOperation;
 use crate::rules_engine::traits::operation::Operation;
@@ -20,6 +21,16 @@ impl BoolOperation for Buffer {
   }
 }
 
+#[typetag::serde]
+impl Argument for Buffer {}
+
+#[typetag::serde]
+impl BoolArgument for Buffer {
+  fn value(&self) -> Result<bool, AnyError> {
+    self.execute()?.value()
+  }
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -27,7 +38,7 @@ mod tests {
   #[test]
   fn test_execute() {
     let operation = Buffer { value: Box::new(true) };
-    assert_eq!(operation.execute().unwrap().value().unwrap(), true);
+    assert!(operation.execute().unwrap().value().unwrap());
   }
 
   #[test]

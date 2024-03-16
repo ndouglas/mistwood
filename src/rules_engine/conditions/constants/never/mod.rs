@@ -21,7 +21,7 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = Never {};
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -31,6 +31,6 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Never"}"#);
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(!deserialized.is_met().unwrap());
   }
 }

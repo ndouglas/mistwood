@@ -35,7 +35,7 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 0.0, end: 2.0 }),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -45,7 +45,7 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 1.0, end: 2.0 }),
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -55,7 +55,7 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 0.0, end: 1.0 }),
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]

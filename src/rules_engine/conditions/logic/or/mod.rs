@@ -34,7 +34,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = Or { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -42,7 +42,7 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
     let condition = Or { conditions };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -61,7 +61,7 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -72,7 +72,7 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -83,7 +83,7 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -105,7 +105,7 @@ mod tests {
     let serialized = serde_json::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Or","conditions":[{"type":"Always"}]}"#);
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.is_met().unwrap());
   }
 
   #[test]
@@ -122,6 +122,6 @@ mod tests {
       r#"{"type":"Or","conditions":[{"type":"Always"},{"type":"Never"}]}"#
     );
     let deserialized: Box<dyn Condition> = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), true);
+    assert!(deserialized.is_met().unwrap());
   }
 }

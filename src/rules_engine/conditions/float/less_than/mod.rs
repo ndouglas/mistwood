@@ -33,7 +33,7 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.01,
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -44,7 +44,7 @@ mod tests {
       right: Box::new(1.1),
       tolerance: 0.05,
     };
-    assert_eq!(condition.is_met().unwrap(), true);
+    assert!(condition.is_met().unwrap());
   }
 
   #[test]
@@ -55,7 +55,7 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.05,
     };
-    assert_eq!(condition.is_met().unwrap(), false);
+    assert!(!condition.is_met().unwrap());
   }
 
   #[test]
@@ -72,6 +72,6 @@ mod tests {
       r#"{"type":"FloatLessThan","left":{"type":"Float","value":1.0},"right":{"type":"Float","value":1.0},"tolerance":0.001}"#
     );
     let deserialized: FloatLessThan = serde_json::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met().unwrap(), false);
+    assert!(!deserialized.is_met().unwrap());
   }
 }
