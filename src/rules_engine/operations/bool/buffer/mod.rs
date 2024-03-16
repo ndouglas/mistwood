@@ -1,6 +1,5 @@
 use crate::prelude::BoolArgument;
 use crate::prelude::BoolOperation;
-use crate::rules_engine::traits::argument::Argument;
 use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 
@@ -20,9 +19,6 @@ impl BoolOperation for Buffer {
     Ok(Box::new(self.value.value()?))
   }
 }
-
-#[typetag::serde]
-impl Argument for Buffer {}
 
 #[typetag::serde]
 impl BoolArgument for Buffer {

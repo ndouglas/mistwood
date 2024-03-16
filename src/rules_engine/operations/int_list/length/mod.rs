@@ -1,7 +1,6 @@
 use crate::prelude::IntArgument;
 use crate::prelude::IntListArgument;
 use crate::prelude::IntOperation;
-use crate::rules_engine::traits::argument::Argument;
 use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 
@@ -21,9 +20,6 @@ impl IntOperation for IntListLength {
     Ok(Box::new(self.list.value()?.len() as i64) as Box<dyn IntArgument>)
   }
 }
-
-#[typetag::serde]
-impl Argument for IntListLength {}
 
 #[typetag::serde]
 impl IntArgument for IntListLength {

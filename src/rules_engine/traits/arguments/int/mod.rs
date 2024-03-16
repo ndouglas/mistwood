@@ -1,15 +1,11 @@
-use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
 use core::ops::Range;
 use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
-pub trait IntArgument: Argument {
+pub trait IntArgument {
   fn value(&self) -> Result<i64, AnyError>;
 }
-
-#[typetag::serde(name = "Int")]
-impl Argument for i64 {}
 
 #[typetag::serde(name = "Int")]
 impl IntArgument for i64 {
@@ -28,12 +24,9 @@ define_list_argument_trait_and_impl!(IntListArgument, IntArgument, "IntList");
 define_map_argument_trait_and_impl!(IntMapArgument, IntArgument, "IntMap");
 
 #[typetag::serde(tag = "type")]
-pub trait IntRangeArgument: Argument {
+pub trait IntRangeArgument {
   fn value(&self) -> Result<&Range<i64>, AnyError>;
 }
-
-#[typetag::serde(name = "IntRange")]
-impl Argument for Range<i64> {}
 
 #[typetag::serde(name = "IntRange")]
 impl IntRangeArgument for Range<i64> {

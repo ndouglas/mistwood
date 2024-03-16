@@ -1,10 +1,9 @@
-use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
 use specs::prelude::*;
 use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
-pub trait EntityArgument: Argument {
+pub trait EntityArgument {
   fn value(&self) -> Result<&Entity, AnyError>;
 }
 

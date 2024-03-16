@@ -1,14 +1,10 @@
-use crate::rules_engine::traits::argument::Argument;
 use anyhow::Error as AnyError;
 use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
-pub trait StringArgument: Argument {
+pub trait StringArgument {
   fn value(&self) -> Result<&String, AnyError>;
 }
-
-#[typetag::serde(name = "String")]
-impl Argument for String {}
 
 #[typetag::serde(name = "String")]
 impl StringArgument for String {
