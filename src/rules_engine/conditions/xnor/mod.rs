@@ -160,4 +160,17 @@ mod tests {
     let condition = Xnor { conditions };
     assert_eq!(condition.is_met().unwrap(), true);
   }
+
+  #[test]
+  fn test_serde() {
+    test_init();
+    let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
+    let condition = &Xnor { conditions } as &dyn Condition;
+    let serialized = serde_json::to_string(condition).unwrap();
+    assert_eq!(serialized, r#"{"type":"Xnor","conditions":[{"type":"Always"}]}"#);
+    let deserialized: Xnor = serde_json::from_str(&serialized).unwrap();
+    assert_eq!(deserialized.conditions.len(), 1);
+    assert_eq!(deserialized.conditions[0].is_met().unwrap(), true);
+    assert_eq!(deserialized.is_met().unwrap(), false);
+  }
 }
