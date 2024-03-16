@@ -1,5 +1,5 @@
+use crate::prelude::IntListArgument;
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::int_list_argument::IntListArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +20,7 @@ impl Condition for IntListIsEmpty {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::rules_engine::traits::int_argument::IntArgument;
+  use crate::prelude::IntArgument;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 

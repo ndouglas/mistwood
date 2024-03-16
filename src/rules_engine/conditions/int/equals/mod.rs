@@ -1,5 +1,5 @@
+use crate::prelude::IntArgument;
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::int_argument::IntArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 

@@ -1,6 +1,6 @@
+use crate::prelude::BoolArgument;
+use crate::prelude::BoolOperation;
 use crate::rules_engine::traits::argument::Argument;
-use crate::rules_engine::traits::bool_argument::BoolArgument;
-use crate::rules_engine::traits::bool_operation::BoolOperation;
 use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 

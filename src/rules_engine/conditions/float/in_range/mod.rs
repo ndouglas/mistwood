@@ -1,6 +1,6 @@
+use crate::prelude::FloatArgument;
+use crate::prelude::FloatRangeArgument;
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::float_argument::FloatArgument;
-use crate::rules_engine::traits::float_range_argument::FloatRangeArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 

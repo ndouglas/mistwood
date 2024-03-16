@@ -1,7 +1,7 @@
+use crate::prelude::IntArgument;
+use crate::prelude::IntListArgument;
+use crate::prelude::IntOperation;
 use crate::rules_engine::traits::argument::Argument;
-use crate::rules_engine::traits::int_argument::IntArgument;
-use crate::rules_engine::traits::int_list_argument::IntListArgument;
-use crate::rules_engine::traits::int_operation::IntOperation;
 use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 

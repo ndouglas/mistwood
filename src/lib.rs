@@ -27,6 +27,9 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
+#[macro_use]
+pub mod macros;
+
 pub mod actors;
 pub mod ai;
 pub mod data;
@@ -37,7 +40,17 @@ pub mod procgen;
 pub mod rules_engine;
 pub mod scripting;
 
-pub mod prelude {}
+pub mod prelude {
+  // pub use crate::actors::prelude::*;
+  // pub use crate::ai::prelude::*;
+  // pub use crate::data::prelude::*;
+  // pub use crate::ecs::prelude::*;
+  // pub use crate::events::prelude::*;
+  // pub use crate::frp::prelude::*;
+  // pub use crate::procgen::prelude::*;
+  pub use crate::rules_engine::prelude::*;
+  // pub use crate::scripting::prelude::*;
+}
 
 #[cfg(test)]
 pub mod test {

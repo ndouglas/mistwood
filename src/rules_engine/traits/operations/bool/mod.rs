@@ -1,4 +1,4 @@
-use crate::rules_engine::traits::bool_argument::BoolArgument;
+use crate::prelude::BoolArgument;
 use anyhow::Error as AnyError;
 
 #[typetag::serde(tag = "type")]

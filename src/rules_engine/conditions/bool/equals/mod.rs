@@ -1,4 +1,4 @@
-use crate::rules_engine::traits::bool_argument::BoolArgument;
+use crate::prelude::BoolArgument;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};

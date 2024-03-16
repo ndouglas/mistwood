@@ -1,6 +1,6 @@
+use crate::prelude::IntArgument;
+use crate::prelude::IntRangeArgument;
 use crate::rules_engine::traits::condition::Condition;
-use crate::rules_engine::traits::int_argument::IntArgument;
-use crate::rules_engine::traits::int_range_argument::IntRangeArgument;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 

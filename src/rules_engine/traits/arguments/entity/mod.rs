@@ -6,3 +6,5 @@ use specs::prelude::*;
 pub trait EntityArgument: Argument {
   fn value(&self) -> Result<&Entity, AnyError>;
 }
+
+define_list_argument_trait_and_impl!(EntityListArgument, EntityArgument, "EntityList");

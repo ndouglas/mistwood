@@ -15,3 +15,11 @@ impl BoolArgument for bool {
     Ok(*self)
   }
 }
+
+impl PartialEq for dyn BoolArgument {
+  fn eq(&self, other: &Self) -> bool {
+    self.value().unwrap() == other.value().unwrap()
+  }
+}
+
+define_list_argument_trait_and_impl!(BoolListArgument, BoolArgument, "BoolList");

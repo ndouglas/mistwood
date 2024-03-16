@@ -5,3 +5,5 @@ use anyhow::Error as AnyError;
 pub trait EnumArgument: Argument {
   fn value(&self) -> Result<&str, AnyError>;
 }
+
+define_list_argument_trait_and_impl!(EnumListArgument, EnumArgument, "EnumList");
