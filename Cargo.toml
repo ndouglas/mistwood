@@ -23,6 +23,7 @@ derive_builder = "0.20.0"
 derive_more = "0.99.17"
 futures = "0.3.30"
 log = "0.4.21"
+mlua = { version = "0.9.1", features = ["lua54", "vendored"] }
 mockall = "0.12.1"
 pretty_env_logger = "0.5.0"
 regex = "1.10.3"
@@ -34,4 +35,5 @@ simplelog = "0.12.2"
 specs = { version = "0.20.0", features = ["derive", "serde", "shred-derive"] }
 strum = { version = "0.26.2", features = ["derive"] }
 thiserror = "1.0.58"
+typetag = "0.2.16"
 uuid = { version = "1.7.0", features = ["v4", "fast-rng"] }

@@ -37,9 +37,7 @@ pub mod procgen;
 pub mod rules_engine;
 pub mod scripting;
 
-pub mod prelude {
-
-}
+pub mod prelude {}
 
 #[cfg(test)]
 pub mod test {
