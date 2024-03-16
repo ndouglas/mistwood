@@ -2,7 +2,7 @@ pub mod bool;
 pub mod constants;
 pub mod float;
 pub mod int;
-pub mod list;
+pub mod int_list;
 pub mod logic;
 pub mod map;
 pub mod range;

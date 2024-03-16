@@ -15,3 +15,9 @@ impl IntArgument for i64 {
     Ok(*self)
   }
 }
+
+impl PartialEq for dyn IntArgument {
+  fn eq(&self, other: &Self) -> bool {
+    self.value().unwrap() == other.value().unwrap()
+  }
+}
