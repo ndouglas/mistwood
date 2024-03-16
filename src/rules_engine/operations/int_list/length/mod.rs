@@ -1,7 +1,6 @@
 use crate::prelude::IntArgument;
 use crate::prelude::IntListArgument;
 use crate::prelude::IntOperation;
-use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 
 #[derive(Derivative, Serialize, Deserialize)]
@@ -10,9 +9,6 @@ pub struct IntListLength {
   #[derivative(Debug = "ignore")]
   list: Box<dyn IntListArgument>,
 }
-
-#[typetag::serde]
-impl Operation for IntListLength {}
 
 #[typetag::serde]
 impl IntOperation for IntListLength {
@@ -67,7 +63,7 @@ mod tests {
         Box::new(3_i64) as Box<dyn IntArgument>,
         Box::new(4_i64) as Box<dyn IntArgument>,
       ]),
-    } as &dyn Operation;
+    } as &dyn IntOperation;
     let serialized = serde_yaml::to_string(int_list_length).unwrap();
     println!("{}", serialized);
     assert_eq!(

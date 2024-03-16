@@ -1,2 +1,7 @@
-#[typetag::serde(tag = "type")]
-pub trait Operation {}
+pub mod bool;
+pub mod int;
+
+pub mod prelude {
+  pub use super::bool::*;
+  pub use super::int::*;
+}

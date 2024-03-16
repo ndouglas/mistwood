@@ -1,6 +1,5 @@
 use crate::prelude::BoolArgument;
 use crate::prelude::BoolOperation;
-use crate::rules_engine::traits::operation::Operation;
 use anyhow::Error as AnyError;
 
 #[derive(Serialize, Deserialize, Derivative)]
@@ -9,9 +8,6 @@ pub struct Buffer {
   #[derivative(Debug = "ignore")]
   value: Box<dyn BoolArgument>,
 }
-
-#[typetag::serde]
-impl Operation for Buffer {}
 
 #[typetag::serde]
 impl BoolOperation for Buffer {
