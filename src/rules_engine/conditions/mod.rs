@@ -7,4 +7,3 @@ pub mod logic;
 pub mod map;
 pub mod range;
 pub mod string;
-pub mod uint;

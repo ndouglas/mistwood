@@ -12,5 +12,3 @@ pub mod int_list_argument;
 pub mod int_range_argument;
 pub mod map_argument;
 pub mod string_argument;
-pub mod uint_argument;
-pub mod uint_range_argument;
