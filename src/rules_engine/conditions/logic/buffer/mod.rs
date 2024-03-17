@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -11,14 +12,15 @@ pub struct Buffer {
 
 #[typetag::serde]
 impl Condition for Buffer {
-  fn is_met(&self) -> Result<bool, AnyError> {
-    self.inner.is_met()
+  fn is_met(&self, context: &Box<dyn Context>) -> Result<bool, AnyError> {
+    self.inner.is_met(context)
   }
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::rules_engine::conditions::constants::always::Always;
   use crate::rules_engine::conditions::constants::error::Error;
   use crate::rules_engine::conditions::constants::never::Never;
@@ -29,7 +31,8 @@ mod tests {
     test_init();
     let inner = Always;
     let condition = Buffer { inner: Box::new(inner) };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -37,7 +40,8 @@ mod tests {
     test_init();
     let inner = Never {};
     let condition = Buffer { inner: Box::new(inner) };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -45,7 +49,8 @@ mod tests {
     test_init();
     let inner = Error {};
     let condition = Buffer { inner: Box::new(inner) };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -56,7 +61,11 @@ mod tests {
     let serialized = serde_yaml::to_string(&condition).unwrap();
     println!("{}", serialized);
     let deserialized: Buffer = serde_yaml::from_str(&serialized).unwrap();
-    assert_eq!(condition.is_met().unwrap(), deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert_eq!(
+      condition.is_met(&context).unwrap(),
+      deserialized.is_met(&context).unwrap()
+    );
   }
 
   #[test]
@@ -67,6 +76,7 @@ mod tests {
     let serialized = serde_yaml::to_string(&condition).unwrap();
     println!("{}", serialized);
     let deserialized: Result<Buffer, _> = serde_yaml::from_str(&serialized);
-    assert!(deserialized.unwrap().is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.unwrap().is_met(&context).is_err());
   }
 }

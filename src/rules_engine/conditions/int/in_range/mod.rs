@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::IntRangeValue;
 use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
@@ -15,7 +16,7 @@ pub struct IntInRange {
 
 #[typetag::serde]
 impl Condition for IntInRange {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     let value = self.value.evaluate()?;
     let range = self.range.evaluate()?;
     Ok(range.contains(&value))
@@ -25,6 +26,7 @@ impl Condition for IntInRange {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use core::ops::Range;
   use pretty_assertions::assert_eq;
@@ -36,7 +38,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 0, end: 2 }),
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -46,7 +49,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -56,7 +60,8 @@ mod tests {
       value: Box::new(2),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -83,8 +88,9 @@ range:
       .trim()
     );
     let deserialized: IntInRange = serde_yaml::from_str(&serialized).unwrap();
+    let context = Box::new(NullContext) as Box<dyn Context>;
     assert_eq!(deserialized.value.evaluate().unwrap(), 1);
     assert_eq!(deserialized.range.evaluate().unwrap(), Range { start: 1, end: 2 });
-    assert!(deserialized.is_met().unwrap());
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

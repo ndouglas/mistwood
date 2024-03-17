@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -11,10 +12,10 @@ pub struct Xor {
 
 #[typetag::serde]
 impl Condition for Xor {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, context: &Box<dyn Context>) -> Result<bool, AnyError> {
     let mut met = false;
     for condition in &self.conditions {
-      if condition.is_met()? {
+      if condition.is_met(context)? {
         if met {
           return Ok(false);
         }
@@ -28,6 +29,7 @@ impl Condition for Xor {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::rules_engine::conditions::constants::always::Always;
   use crate::rules_engine::conditions::constants::error::Error;
   use crate::rules_engine::conditions::constants::never::Never;
@@ -39,7 +41,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = Xor { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -47,7 +50,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
     let condition = Xor { conditions };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -55,7 +59,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
     let condition = Xor { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -66,7 +71,8 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -77,7 +83,8 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -89,7 +96,8 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -101,7 +109,8 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -112,7 +121,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -123,7 +133,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -135,7 +146,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -147,7 +159,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -159,7 +172,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -185,11 +199,12 @@ conditions:
       .trim()
     );
     let deserialized: Xor = serde_yaml::from_str(&serialized).unwrap();
+    let context = Box::new(NullContext) as Box<dyn Context>;
     assert_eq!(deserialized.conditions.len(), 3);
-    assert!(deserialized.conditions[0].is_met().unwrap());
-    assert!(!deserialized.conditions[1].is_met().unwrap());
-    assert!(deserialized.conditions[2].is_met().is_err());
-    assert!(deserialized.is_met().is_err());
+    assert!(deserialized.conditions[0].is_met(&context).unwrap());
+    assert!(!deserialized.conditions[1].is_met(&context).unwrap());
+    assert!(deserialized.conditions[2].is_met(&context).is_err());
+    assert!(deserialized.is_met(&context).is_err());
   }
 
   #[test]
@@ -213,9 +228,10 @@ conditions:
       .trim()
     );
     let deserialized: Xor = serde_yaml::from_str(&serialized).unwrap();
+    let context = Box::new(NullContext) as Box<dyn Context>;
     assert_eq!(deserialized.conditions.len(), 2);
-    assert!(deserialized.conditions[0].is_met().unwrap());
-    assert!(!deserialized.conditions[1].is_met().unwrap());
-    assert!(deserialized.is_met().unwrap());
+    assert!(deserialized.conditions[0].is_met(&context).unwrap());
+    assert!(!deserialized.conditions[1].is_met(&context).unwrap());
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

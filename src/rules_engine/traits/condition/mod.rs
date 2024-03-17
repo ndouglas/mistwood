@@ -1,6 +1,7 @@
+use crate::prelude::Context;
 use anyhow::Error as AnyError;
 
 #[typetag::serde(tag = "type")]
 pub trait Condition {
-  fn is_met(&self) -> Result<bool, AnyError>;
+  fn is_met(&self, context: &Box<dyn Context>) -> Result<bool, AnyError>;
 }

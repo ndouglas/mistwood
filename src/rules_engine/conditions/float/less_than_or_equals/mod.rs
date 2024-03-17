@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::FloatValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
@@ -15,7 +16,7 @@ pub struct FloatLessThanOrEquals {
 
 #[typetag::serde]
 impl Condition for FloatLessThanOrEquals {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     let less_than = self.right.evaluate()? - self.left.evaluate()? > self.tolerance;
     let equals = (self.left.evaluate()? - self.right.evaluate()?).abs() < self.tolerance;
     Ok(less_than || equals)
@@ -25,6 +26,7 @@ impl Condition for FloatLessThanOrEquals {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -36,7 +38,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.001,
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -47,7 +50,8 @@ mod tests {
       right: Box::new(1.1),
       tolerance: 0.05,
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -58,7 +62,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.05,
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -86,6 +91,7 @@ tolerance: 0.001
       .trim()
     );
     let deserialized: FloatLessThanOrEquals = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

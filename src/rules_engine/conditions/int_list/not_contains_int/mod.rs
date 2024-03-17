@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::IntListValue;
 use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
@@ -15,7 +16,7 @@ pub struct IntListNotContainsInt {
 
 #[typetag::serde]
 impl Condition for IntListNotContainsInt {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     let list = self.list.evaluate()?;
     let value = self.value.evaluate()?;
     Ok(!list.contains(&value))
@@ -26,6 +27,7 @@ impl Condition for IntListNotContainsInt {
 mod tests {
   use super::*;
   use crate::prelude::IntValue;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -36,7 +38,8 @@ mod tests {
       list: Box::<Vec<Box<dyn IntValue>>>::default(),
       value: Box::new(1),
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -46,7 +49,8 @@ mod tests {
       list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
       value: Box::new(1),
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -74,6 +78,7 @@ value:
       .trim()
     );
     let deserialized: IntListNotContainsInt = serde_yaml::from_str(&serialized).unwrap();
-    assert!(!deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!deserialized.is_met(&context).unwrap());
   }
 }

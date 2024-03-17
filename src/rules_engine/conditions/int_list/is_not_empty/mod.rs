@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::IntListValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
@@ -12,7 +13,7 @@ pub struct IntListIsNotEmpty {
 
 #[typetag::serde]
 impl Condition for IntListIsNotEmpty {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     Ok(!self.list.evaluate()?.is_empty())
   }
 }
@@ -21,6 +22,7 @@ impl Condition for IntListIsNotEmpty {
 mod tests {
   use super::*;
   use crate::prelude::IntValue;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -30,7 +32,8 @@ mod tests {
     let condition = IntListIsNotEmpty {
       list: Box::<Vec<Box<dyn IntValue>>>::default(),
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -39,7 +42,8 @@ mod tests {
     let condition = IntListIsNotEmpty {
       list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -63,6 +67,7 @@ list:
       .trim()
     );
     let deserialized: IntListIsNotEmpty = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

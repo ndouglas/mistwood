@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::IntListValue;
 use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
@@ -15,7 +16,7 @@ pub struct IntListLengthEquals {
 
 #[typetag::serde]
 impl Condition for IntListLengthEquals {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     Ok(self.list.evaluate()?.len() == self.length.evaluate()? as usize)
   }
 }
@@ -24,6 +25,7 @@ impl Condition for IntListLengthEquals {
 mod tests {
   use super::*;
   use crate::prelude::IntValue;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -38,7 +40,8 @@ mod tests {
       ]),
       length: Box::new(3_i64) as Box<dyn IntValue>,
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -48,7 +51,8 @@ mod tests {
       list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
       length: Box::new(3_i64) as Box<dyn IntValue>,
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -76,6 +80,7 @@ length:
       .trim()
     );
     let deserialized: IntListLengthEquals = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

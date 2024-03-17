@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -11,9 +12,9 @@ pub struct Or {
 
 #[typetag::serde]
 impl Condition for Or {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, context: &Box<dyn Context>) -> Result<bool, AnyError> {
     for condition in &self.conditions {
-      if condition.is_met()? {
+      if condition.is_met(context)? {
         return Ok(true);
       }
     }
@@ -24,6 +25,7 @@ impl Condition for Or {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::rules_engine::conditions::constants::always::Always;
   use crate::rules_engine::conditions::constants::error::Error;
   use crate::rules_engine::conditions::constants::never::Never;
@@ -35,7 +37,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Always {}) as Box<dyn Condition>];
     let condition = Or { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -43,7 +46,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Never {}) as Box<dyn Condition>];
     let condition = Or { conditions };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -51,7 +55,8 @@ mod tests {
     test_init();
     let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
     let condition = Or { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -62,7 +67,8 @@ mod tests {
       Box::new(Always {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -73,7 +79,8 @@ mod tests {
       Box::new(Never {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -84,7 +91,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -95,7 +103,8 @@ mod tests {
       Box::new(Error {}) as Box<dyn Condition>,
     ];
     let condition = Or { conditions };
-    assert!(condition.is_met().is_err());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).is_err());
   }
 
   #[test]
@@ -115,7 +124,8 @@ conditions:
       .trim()
     );
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.is_met(&context).unwrap());
   }
 
   #[test]
@@ -139,6 +149,7 @@ conditions:
       .trim()
     );
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(deserialized.is_met(&context).unwrap());
   }
 }

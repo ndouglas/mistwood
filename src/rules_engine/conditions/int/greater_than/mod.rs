@@ -1,3 +1,4 @@
+use crate::prelude::Context;
 use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
@@ -14,7 +15,7 @@ pub struct IntGreaterThan {
 
 #[typetag::serde]
 impl Condition for IntGreaterThan {
-  fn is_met(&self) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
     Ok(self.left.evaluate()? > self.right.evaluate()?)
   }
 }
@@ -22,6 +23,7 @@ impl Condition for IntGreaterThan {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::NullContext;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -32,7 +34,8 @@ mod tests {
       left: Box::new(1),
       right: Box::new(1),
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -42,7 +45,8 @@ mod tests {
       left: Box::new(1),
       right: Box::new(2),
     };
-    assert!(!condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -52,7 +56,8 @@ mod tests {
       left: Box::new(2),
       right: Box::new(1),
     };
-    assert!(condition.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(condition.is_met(&context).unwrap());
   }
 
   #[test]
@@ -78,6 +83,7 @@ right:
       .trim()
     );
     let deserialized: IntGreaterThan = serde_yaml::from_str(&serialized).unwrap();
-    assert!(!deserialized.is_met().unwrap());
+    let context = Box::new(NullContext) as Box<dyn Context>;
+    assert!(!deserialized.is_met(&context).unwrap());
   }
 }
