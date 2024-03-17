@@ -19,3 +19,5 @@
 // length_equals: Checks if a string's length is equal to a given value.
 // length_greater_than: Checks if a string's length is greater than a given value.
 // length_less_than: Checks if a string's length is less than a given value.
+
+pub mod prelude {}

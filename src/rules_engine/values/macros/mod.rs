@@ -37,10 +37,8 @@ macro_rules! value_script_impl {
     impl $trait_name for String {
       fn evaluate(&self) -> Result<$return_type, anyhow::Error> {
         use mlua::prelude::*;
-        use mlua::Function;
         let lua = Lua::new();
-        let function: Function = lua.load(self).eval()?;
-        let value: mlua::Value = function.call(())?;
+        let value = lua.load(self).eval()?;
         match value {
           $($match_arm)*,
           _ => Err(anyhow!("Unsupported return type {} from lua function (expected {}).", value.type_name(), stringify!($return_type)))
