@@ -11,8 +11,8 @@ pub struct Not {
 
 #[typetag::serde]
 impl Condition for Not {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
-    Ok(!self.inner.is_met(&context)?)
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
+    Ok(!self.inner.is_met(context)?)
   }
 }
 
@@ -29,7 +29,7 @@ mod tests {
     test_init();
     let inner = Always {};
     let condition = Not { inner: Box::new(inner) };
-    assert_eq!(condition.is_met(&context).unwrap(), false);
+    assert_eq!(condition.is_met(context).unwrap(), false);
   }
 
   #[test]
@@ -37,7 +37,7 @@ mod tests {
     test_init();
     let inner = Never {};
     let condition = Not { inner: Box::new(inner) };
-    assert_eq!(condition.is_met(&context).unwrap(), true);
+    assert_eq!(condition.is_met(context).unwrap(), true);
   }
 
   #[test]
@@ -45,7 +45,7 @@ mod tests {
     test_init();
     let inner = Error {};
     let condition = Not { inner: Box::new(inner) };
-    assert!(condition.is_met(&context).is_err());
+    assert!(condition.is_met(context).is_err());
   }
 
   #[test]
@@ -56,7 +56,7 @@ mod tests {
     let serialized = serde_yaml::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Not","inner":{"type":"Always"}}"#);
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.is_met(&context).unwrap(), false);
+    assert_eq!(deserialized.is_met(context).unwrap(), false);
   }
 
   #[test]
@@ -67,6 +67,6 @@ mod tests {
     let serialized = serde_yaml::to_string(condition).unwrap();
     assert_eq!(serialized, r#"{"type":"Not","inner":{"type":"Error"}}"#);
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    assert!(deserialized.is_met(&context).is_err());
+    assert!(deserialized.is_met(context).is_err());
   }
 }

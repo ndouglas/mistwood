@@ -16,7 +16,7 @@ pub struct FloatGreaterThanOrEquals {
 
 #[typetag::serde]
 impl Condition for FloatGreaterThanOrEquals {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     let greater_than = self.left.evaluate()? - self.right.evaluate()? > self.tolerance;
     let equals = (self.left.evaluate()? - self.right.evaluate()?).abs() < self.tolerance;
     Ok(greater_than || equals)
@@ -38,8 +38,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.001,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -50,8 +50,8 @@ mod tests {
       right: Box::new(1.1),
       tolerance: 0.05,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -62,8 +62,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.05,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -91,7 +91,7 @@ tolerance: 0.001
       .trim()
     );
     let deserialized: FloatGreaterThanOrEquals = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

@@ -8,7 +8,7 @@ pub struct Always;
 
 #[typetag::serde]
 impl Condition for Always {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     Ok(true)
   }
 }
@@ -24,8 +24,8 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = Always;
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -42,7 +42,7 @@ type: Always
       .trim()
     );
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

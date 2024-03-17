@@ -16,7 +16,7 @@ pub struct IntListLengthNotEquals {
 
 #[typetag::serde]
 impl Condition for IntListLengthNotEquals {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     Ok(self.list.evaluate()?.len() != self.length.evaluate()? as usize)
   }
 }
@@ -40,8 +40,8 @@ mod tests {
       ]),
       length: Box::new(3_i64) as Box<dyn IntValue>,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -51,8 +51,8 @@ mod tests {
       list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
       length: Box::new(3_i64) as Box<dyn IntValue>,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -80,7 +80,7 @@ length:
       .trim()
     );
     let deserialized: IntListLengthNotEquals = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!deserialized.is_met(context).unwrap());
   }
 }

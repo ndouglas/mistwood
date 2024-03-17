@@ -8,7 +8,7 @@ pub struct Error {}
 
 #[typetag::serde]
 impl Condition for Error {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     Err(anyhow!("This condition always returns an error."))
   }
 }
@@ -24,8 +24,8 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = Error {};
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).is_err());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).is_err());
   }
 
   #[test]
@@ -42,7 +42,7 @@ type: Error
       .trim()
     );
     let deserialized: Box<dyn Condition> = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).is_err());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).is_err());
   }
 }

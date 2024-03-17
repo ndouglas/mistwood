@@ -10,7 +10,7 @@ pub struct ThrowError {
 
 #[typetag::serde]
 impl Conclusion for ThrowError {
-  fn execute(&self, _context: &Box<dyn Context>) -> Result<(), AnyError> {
+  fn execute(&self, _context: &dyn Context) -> Result<(), AnyError> {
     Err(AnyError::msg(self.message.clone()))
   }
 }
@@ -29,8 +29,8 @@ mod tests {
     let throw_error = ThrowError {
       message: "test".to_string(),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(throw_error.execute(&context).is_err());
-    assert_eq!(throw_error.execute(&context).unwrap_err().to_string(), "test");
+    let context = &NullContext as &dyn Context;
+    assert!(throw_error.execute(context).is_err());
+    assert_eq!(throw_error.execute(context).unwrap_err().to_string(), "test");
   }
 }

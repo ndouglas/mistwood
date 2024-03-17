@@ -13,7 +13,7 @@ pub struct FloatListIsNotEmpty {
 
 #[typetag::serde]
 impl Condition for FloatListIsNotEmpty {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     Ok(!self.list.evaluate()?.is_empty())
   }
 }
@@ -32,8 +32,8 @@ mod tests {
     let condition = FloatListIsNotEmpty {
       list: Box::<Vec<Box<dyn FloatValue>>>::default(),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -42,8 +42,8 @@ mod tests {
     let condition = FloatListIsNotEmpty {
       list: Box::new(vec![Box::new(1_f64) as Box<dyn FloatValue>]),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -67,7 +67,7 @@ list:
       .trim()
     );
     let deserialized: FloatListIsNotEmpty = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

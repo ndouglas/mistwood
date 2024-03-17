@@ -19,9 +19,9 @@ pub struct Rule {
 
 impl Rule {
   pub fn execute(&self) -> Result<(), AnyError> {
-    if self.condition.is_met(&self.context)? {
+    if self.condition.is_met(&*self.context)? {
       for conclusion in &self.conclusions {
-        conclusion.execute(&self.context)?;
+        conclusion.execute(&*self.context)?;
       }
     }
     Ok(())

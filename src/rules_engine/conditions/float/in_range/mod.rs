@@ -16,7 +16,7 @@ pub struct FloatInRange {
 
 #[typetag::serde]
 impl Condition for FloatInRange {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     let value = self.value.evaluate()?;
     let range = self.range.evaluate()?;
     Ok(range.contains(&value))
@@ -38,8 +38,8 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 0.0, end: 2.0 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -49,8 +49,8 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 1.0, end: 2.0 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -60,8 +60,8 @@ mod tests {
       value: Box::new(1.0),
       range: Box::new(Range { start: 0.0, end: 1.0 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]

@@ -8,7 +8,7 @@ pub struct NoOp;
 
 #[typetag::serde]
 impl Conclusion for NoOp {
-  fn execute(&self, _context: &Box<dyn Context>) -> Result<(), AnyError> {
+  fn execute(&self, _context: &dyn Context) -> Result<(), AnyError> {
     Ok(())
   }
 }
@@ -25,7 +25,7 @@ mod tests {
   fn test_no_op() {
     test_init();
     let no_op = NoOp;
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(no_op.execute(&context).is_ok());
+    let context = &NullContext as &dyn Context;
+    assert!(no_op.execute(context).is_ok());
   }
 }

@@ -16,7 +16,7 @@ pub struct FloatLessThanOrEquals {
 
 #[typetag::serde]
 impl Condition for FloatLessThanOrEquals {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     let less_than = self.right.evaluate()? - self.left.evaluate()? > self.tolerance;
     let equals = (self.left.evaluate()? - self.right.evaluate()?).abs() < self.tolerance;
     Ok(less_than || equals)
@@ -38,8 +38,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.001,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -50,8 +50,8 @@ mod tests {
       right: Box::new(1.1),
       tolerance: 0.05,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -62,8 +62,8 @@ mod tests {
       right: Box::new(1.0),
       tolerance: 0.05,
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -91,7 +91,7 @@ tolerance: 0.001
       .trim()
     );
     let deserialized: FloatLessThanOrEquals = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

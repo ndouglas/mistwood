@@ -16,7 +16,7 @@ pub struct IntInRange {
 
 #[typetag::serde]
 impl Condition for IntInRange {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     let value = self.value.evaluate()?;
     let range = self.range.evaluate()?;
     Ok(range.contains(&value))
@@ -38,8 +38,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 0, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -49,8 +49,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -60,8 +60,8 @@ mod tests {
       value: Box::new(2),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -88,9 +88,9 @@ range:
       .trim()
     );
     let deserialized: IntInRange = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
+    let context = &NullContext as &dyn Context;
     assert_eq!(deserialized.value.evaluate().unwrap(), 1);
     assert_eq!(deserialized.range.evaluate().unwrap(), Range { start: 1, end: 2 });
-    assert!(deserialized.is_met(&context).unwrap());
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

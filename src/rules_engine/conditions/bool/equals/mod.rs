@@ -15,7 +15,7 @@ pub struct BoolEquals {
 
 #[typetag::serde]
 impl Condition for BoolEquals {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     Ok(self.left.evaluate()? == self.right.evaluate()?)
   }
 }
@@ -34,8 +34,8 @@ mod tests {
       left: Box::new(true),
       right: Box::new(true),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -45,8 +45,8 @@ mod tests {
       left: Box::new(true),
       right: Box::new(false),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -72,7 +72,7 @@ right:
       .trim()
     );
     let deserialized: BoolEquals = serde_yaml::from_str(&serialized).unwrap();
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(deserialized.is_met(context).unwrap());
   }
 }

@@ -16,7 +16,7 @@ pub struct IntNotInRange {
 
 #[typetag::serde]
 impl Condition for IntNotInRange {
-  fn is_met(&self, _context: &Box<dyn Context>) -> Result<bool, AnyError> {
+  fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
     let value = self.value.evaluate()?;
     let range = self.range.evaluate()?;
     Ok(!range.contains(&value))
@@ -38,8 +38,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 0, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -49,8 +49,8 @@ mod tests {
       value: Box::new(1),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -60,8 +60,8 @@ mod tests {
       value: Box::new(2),
       range: Box::new(Range { start: 1, end: 2 }),
     };
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(condition.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(condition.is_met(context).unwrap());
   }
 
   #[test]
@@ -90,7 +90,7 @@ range:
     let deserialized: IntNotInRange = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.evaluate().unwrap(), 1);
     assert_eq!(deserialized.range.evaluate().unwrap(), Range { start: 1, end: 2 });
-    let context = Box::new(NullContext) as Box<dyn Context>;
-    assert!(!deserialized.is_met(&context).unwrap());
+    let context = &NullContext as &dyn Context;
+    assert!(!deserialized.is_met(context).unwrap());
   }
 }
