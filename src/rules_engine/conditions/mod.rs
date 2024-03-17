@@ -1,6 +1,7 @@
 pub mod bool;
 pub mod constants;
 pub mod float;
+pub mod float_list;
 pub mod int;
 pub mod int_list;
 pub mod int_map;

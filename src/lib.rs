@@ -38,7 +38,7 @@ pub mod events;
 pub mod frp;
 pub mod procgen;
 pub mod rules_engine;
-pub mod scripting;
+pub mod script;
 
 pub mod prelude {
   // pub use crate::actors::prelude::*;
@@ -49,7 +49,7 @@ pub mod prelude {
   // pub use crate::frp::prelude::*;
   // pub use crate::procgen::prelude::*;
   pub use crate::rules_engine::prelude::*;
-  // pub use crate::scripting::prelude::*;
+  // pub use crate::script::prelude::*;
 }
 
 #[cfg(test)]
