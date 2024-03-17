@@ -13,7 +13,7 @@ pub struct FloatListIsEmpty {
 #[typetag::serde]
 impl Condition for FloatListIsEmpty {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(self.list.value()?.is_empty())
+    Ok(self.list.evaluate()?.is_empty())
   }
 }
 

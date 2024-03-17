@@ -13,7 +13,7 @@ pub struct IntListLength {
 #[typetag::serde]
 impl IntOperation for IntListLength {
   fn execute(&self) -> Result<Box<dyn IntArgument>, AnyError> {
-    Ok(Box::new(self.list.value()?.len() as i64) as Box<dyn IntArgument>)
+    Ok(Box::new(self.list.evaluate()?.len() as i64) as Box<dyn IntArgument>)
   }
 }
 
@@ -33,7 +33,7 @@ mod tests {
         Box::new(3_i64) as Box<dyn IntArgument>,
       ]) as Box<dyn IntListArgument>,
     };
-    assert_eq!(int_list_length.execute().unwrap().value().unwrap(), 3);
+    assert_eq!(int_list_length.execute().unwrap().evaluate().unwrap(), 3);
   }
 
   #[test]
@@ -46,7 +46,7 @@ mod tests {
         Box::new(4_i64) as Box<dyn IntArgument>,
       ]),
     };
-    assert_eq!(int_list_length.execute().unwrap().value().unwrap(), 4);
+    assert_eq!(int_list_length.execute().unwrap().evaluate().unwrap(), 4);
   }
 
   #[test]
@@ -80,6 +80,6 @@ list:
       .trim()
     );
     let deserialized: IntListLength = serde_yaml::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.execute().unwrap().value().unwrap(), 4);
+    assert_eq!(deserialized.execute().unwrap().evaluate().unwrap(), 4);
   }
 }

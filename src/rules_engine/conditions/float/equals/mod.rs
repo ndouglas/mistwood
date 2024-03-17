@@ -16,7 +16,7 @@ pub struct FloatEquals {
 #[typetag::serde]
 impl Condition for FloatEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok((self.left.value()? - self.right.value()?).abs() < self.tolerance)
+    Ok((self.left.evaluate()? - self.right.evaluate()?).abs() < self.tolerance)
   }
 }
 

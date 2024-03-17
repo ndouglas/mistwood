@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait EnumArgument {
-  fn value(&self) -> Result<&str, AnyError>;
+  fn evaluate(&self) -> Result<&str, AnyError>;
 }
 
 define_list_argument_trait_and_impl!(EnumListArgument, EnumArgument, "EnumList");

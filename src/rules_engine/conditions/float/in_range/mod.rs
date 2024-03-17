@@ -16,8 +16,8 @@ pub struct FloatInRange {
 #[typetag::serde]
 impl Condition for FloatInRange {
   fn is_met(&self) -> Result<bool, AnyError> {
-    let value = self.value.value()?;
-    let range = self.range.value()?;
+    let value = self.value.evaluate()?;
+    let range = self.range.evaluate()?;
     Ok(range.contains(&value))
   }
 }
@@ -83,7 +83,7 @@ range:
       .trim()
     );
     let deserialized: FloatInRange = serde_yaml::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.value.value().unwrap(), 1.0);
-    assert_eq!(deserialized.range.value().unwrap(), &Range { start: 0.0, end: 1.0 });
+    assert_eq!(deserialized.value.evaluate().unwrap(), 1.0);
+    assert_eq!(deserialized.range.evaluate().unwrap(), &Range { start: 0.0, end: 1.0 });
   }
 }

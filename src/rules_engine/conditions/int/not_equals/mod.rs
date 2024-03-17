@@ -15,7 +15,7 @@ pub struct IntNotEquals {
 #[typetag::serde]
 impl Condition for IntNotEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(self.left.value()? != self.right.value()?)
+    Ok(self.left.evaluate()? != self.right.evaluate()?)
   }
 }
 

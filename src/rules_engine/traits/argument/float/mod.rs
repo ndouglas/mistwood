@@ -4,12 +4,12 @@ use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait FloatArgument {
-  fn value(&self) -> Result<f64, AnyError>;
+  fn evaluate(&self) -> Result<f64, AnyError>;
 }
 
 #[typetag::serde(name = "Float")]
 impl FloatArgument for f64 {
-  fn value(&self) -> Result<f64, anyhow::Error> {
+  fn evaluate(&self) -> Result<f64, anyhow::Error> {
     Ok(*self)
   }
 }
@@ -19,12 +19,12 @@ define_map_argument_trait_and_impl!(FloatMapArgument, FloatArgument, "FloatMap")
 
 #[typetag::serde(tag = "type")]
 pub trait FloatRangeArgument {
-  fn value(&self) -> Result<&Range<f64>, AnyError>;
+  fn evaluate(&self) -> Result<&Range<f64>, AnyError>;
 }
 
 #[typetag::serde(name = "FloatRange")]
 impl FloatRangeArgument for Range<f64> {
-  fn value(&self) -> Result<&Range<f64>, AnyError> {
+  fn evaluate(&self) -> Result<&Range<f64>, AnyError> {
     Ok(self)
   }
 }

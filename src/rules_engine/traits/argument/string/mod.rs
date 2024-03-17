@@ -3,19 +3,19 @@ use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait StringArgument {
-  fn value(&self) -> Result<String, AnyError>;
+  fn evaluate(&self) -> Result<String, AnyError>;
 }
 
 #[typetag::serde(name = "String")]
 impl StringArgument for String {
-  fn value(&self) -> Result<String, anyhow::Error> {
+  fn evaluate(&self) -> Result<String, anyhow::Error> {
     Ok(self.clone())
   }
 }
 
 impl PartialEq for dyn StringArgument {
   fn eq(&self, other: &Self) -> bool {
-    self.value().unwrap() == other.value().unwrap()
+    self.evaluate().unwrap() == other.evaluate().unwrap()
   }
 }
 

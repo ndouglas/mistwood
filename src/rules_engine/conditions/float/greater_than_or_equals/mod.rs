@@ -16,8 +16,8 @@ pub struct FloatGreaterThanOrEquals {
 #[typetag::serde]
 impl Condition for FloatGreaterThanOrEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
-    let greater_than = self.left.value()? - self.right.value()? > self.tolerance;
-    let equals = (self.left.value()? - self.right.value()?).abs() < self.tolerance;
+    let greater_than = self.left.evaluate()? - self.right.evaluate()? > self.tolerance;
+    let equals = (self.left.evaluate()? - self.right.evaluate()?).abs() < self.tolerance;
     Ok(greater_than || equals)
   }
 }

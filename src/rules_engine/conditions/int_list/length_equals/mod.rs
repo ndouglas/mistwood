@@ -16,7 +16,7 @@ pub struct IntListLengthEquals {
 #[typetag::serde]
 impl Condition for IntListLengthEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(self.list.value()?.len() == self.length.value()? as usize)
+    Ok(self.list.evaluate()?.len() == self.length.evaluate()? as usize)
   }
 }
 

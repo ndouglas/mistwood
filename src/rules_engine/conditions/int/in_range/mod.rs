@@ -16,8 +16,8 @@ pub struct IntInRange {
 #[typetag::serde]
 impl Condition for IntInRange {
   fn is_met(&self) -> Result<bool, AnyError> {
-    let value = self.value.value()?;
-    let range = self.range.value()?;
+    let value = self.value.evaluate()?;
+    let range = self.range.evaluate()?;
     Ok(range.contains(&value))
   }
 }
@@ -83,8 +83,8 @@ range:
       .trim()
     );
     let deserialized: IntInRange = serde_yaml::from_str(&serialized).unwrap();
-    assert_eq!(deserialized.value.value().unwrap(), 1);
-    assert_eq!(deserialized.range.value().unwrap(), &Range { start: 1, end: 2 });
+    assert_eq!(deserialized.value.evaluate().unwrap(), 1);
+    assert_eq!(deserialized.range.evaluate().unwrap(), &Range { start: 1, end: 2 });
     assert!(deserialized.is_met().unwrap());
   }
 }

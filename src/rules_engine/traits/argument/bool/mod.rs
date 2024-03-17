@@ -3,19 +3,19 @@ use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait BoolArgument {
-  fn value(&self) -> Result<bool, AnyError>;
+  fn evaluate(&self) -> Result<bool, AnyError>;
 }
 
 #[typetag::serde(name = "Bool")]
 impl BoolArgument for bool {
-  fn value(&self) -> Result<bool, anyhow::Error> {
+  fn evaluate(&self) -> Result<bool, anyhow::Error> {
     Ok(*self)
   }
 }
 
 impl PartialEq for dyn BoolArgument {
   fn eq(&self, other: &Self) -> bool {
-    self.value().unwrap() == other.value().unwrap()
+    self.evaluate().unwrap() == other.evaluate().unwrap()
   }
 }
 
