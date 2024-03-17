@@ -5,3 +5,6 @@ use specs::world::Index as EntityId;
 pub trait EntityValue {
   fn evaluate(&self) -> Result<EntityId, AnyError>;
 }
+
+value_list_trait!(EntityListValue, EntityId);
+value_map_trait!(EntityMapValue, EntityId);

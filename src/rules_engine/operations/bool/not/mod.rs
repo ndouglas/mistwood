@@ -16,7 +16,7 @@ impl BoolOperation for Not {
   }
 }
 
-define_argument_for_operation!(BoolValue, Not, bool);
+operation_value_impl!(BoolValue, Not, bool);
 
 #[cfg(test)]
 mod tests {

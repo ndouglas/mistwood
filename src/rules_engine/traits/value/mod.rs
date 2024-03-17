@@ -1,3 +1,6 @@
+#[macro_use]
+pub mod macros;
+
 pub mod bool;
 pub mod entity;
 pub mod r#enum;
@@ -14,6 +17,7 @@ pub mod prelude {
   pub use super::float_range::*;
   pub use super::int::*;
   pub use super::int_range::*;
+  pub use super::macros::*;
   pub use super::r#enum::*;
   pub use super::string::*;
 }

@@ -17,7 +17,7 @@ impl IntOperation for IntListLength {
   }
 }
 
-define_argument_for_operation!(IntValue, IntListLength, i64);
+operation_value_impl!(IntValue, IntListLength, i64);
 
 #[cfg(test)]
 mod tests {

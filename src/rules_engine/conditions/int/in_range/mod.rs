@@ -1,4 +1,4 @@
-use crate::prelude::IntRangeArgument;
+use crate::prelude::IntRangeValue;
 use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
@@ -10,7 +10,7 @@ pub struct IntInRange {
   #[derivative(Debug = "ignore")]
   pub value: Box<dyn IntValue>,
   #[derivative(Debug = "ignore")]
-  pub range: Box<dyn IntRangeArgument>,
+  pub range: Box<dyn IntRangeValue>,
 }
 
 #[typetag::serde]

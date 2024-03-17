@@ -1,13 +1,16 @@
+use crate::prelude::IntListValue;
+use crate::prelude::IntMapValue;
+use crate::prelude::IntScriptValue;
 use crate::prelude::IntValue;
 use anyhow::Error as AnyError;
-use std::collections::HashMap;
 
 #[typetag::serde(name = "Int")]
 impl IntValue for i64 {
-  fn evaluate(&self) -> Result<i64, anyhow::Error> {
+  fn evaluate(&self) -> Result<i64, AnyError> {
     Ok(*self)
   }
 }
 
-define_list_argument_trait_and_impl!(IntListValue, IntValue, "IntList", i64);
-define_map_argument_trait_and_impl!(IntMapValue, IntValue, "IntMap", i64);
+value_list_impl!(IntListValue, IntValue, "IntList", i64);
+value_map_impl!(IntMapValue, IntValue, "IntMap", i64);
+value_script_impl!(IntScriptValue, IntValue, "IntScript", i64, mlua::Value::Integer(i) => Ok(i));

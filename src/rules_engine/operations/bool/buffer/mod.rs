@@ -16,7 +16,7 @@ impl BoolOperation for Buffer {
   }
 }
 
-define_argument_for_operation!(BoolValue, Buffer, bool);
+operation_value_impl!(BoolValue, Buffer, bool);
 
 #[cfg(test)]
 mod tests {

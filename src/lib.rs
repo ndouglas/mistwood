@@ -27,9 +27,6 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
-#[macro_use]
-pub mod macros;
-
 pub mod actors;
 pub mod ai;
 pub mod data;

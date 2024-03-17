@@ -1,7 +1,7 @@
+use crate::prelude::EntityListValue;
+use crate::prelude::EntityMapValue;
 use crate::prelude::EntityValue;
-use anyhow::Error as AnyError;
 use specs::world::Index as EntityId;
-use std::collections::HashMap;
 
-define_list_argument_trait_and_impl!(EntityListValue, EntityValue, "EntityList", EntityId);
-define_map_argument_trait_and_impl!(EntityMapValue, EntityValue, "EntityMap", EntityId);
+value_list_impl!(EntityListValue, EntityValue, "EntityList", EntityId);
+value_map_impl!(EntityMapValue, EntityValue, "EntityMap", EntityId);

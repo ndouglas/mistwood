@@ -1,6 +1,8 @@
+use crate::prelude::BoolListValue;
+use crate::prelude::BoolMapValue;
+use crate::prelude::BoolScriptValue;
 use crate::rules_engine::prelude::BoolValue;
 use anyhow::Error as AnyError;
-use std::collections::HashMap;
 
 #[typetag::serde(name = "Bool")]
 impl BoolValue for bool {
@@ -9,6 +11,6 @@ impl BoolValue for bool {
   }
 }
 
-define_list_argument_trait_and_impl!(BoolListValue, BoolValue, "BoolList", bool);
-define_map_argument_trait_and_impl!(BoolMapValue, BoolValue, "BoolMap", bool);
-define_script_argument_trait_and_string_impl!(BoolScriptValue, BoolValue, "BoolScript", bool, mlua::Value::Boolean(b) => Ok(b));
+value_list_impl!(BoolListValue, BoolValue, "BoolList", bool);
+value_map_impl!(BoolMapValue, BoolValue, "BoolMap", bool);
+value_script_impl!(BoolScriptValue, BoolValue, "BoolScript", bool, mlua::Value::Boolean(b) => Ok(b));
