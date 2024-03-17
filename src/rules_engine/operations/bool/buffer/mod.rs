@@ -16,12 +16,7 @@ impl BoolOperation for Buffer {
   }
 }
 
-#[typetag::serde]
-impl BoolArgument for Buffer {
-  fn value(&self) -> Result<bool, AnyError> {
-    self.execute()?.value()
-  }
-}
+define_argument_for_operation!(BoolArgument, Buffer, bool);
 
 #[cfg(test)]
 mod tests {

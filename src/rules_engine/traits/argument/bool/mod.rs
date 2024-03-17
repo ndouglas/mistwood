@@ -21,3 +21,4 @@ impl PartialEq for dyn BoolArgument {
 
 define_list_argument_trait_and_impl!(BoolListArgument, BoolArgument, "BoolList");
 define_map_argument_trait_and_impl!(BoolMapArgument, BoolArgument, "BoolMap");
+define_script_argument_impl!(BoolScriptArgument, BoolArgument, "BoolScript", bool, Boolean);

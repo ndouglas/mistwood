@@ -16,6 +16,7 @@ impl FloatArgument for f64 {
 
 define_list_argument_trait_and_impl!(FloatListArgument, FloatArgument, "FloatList");
 define_map_argument_trait_and_impl!(FloatMapArgument, FloatArgument, "FloatMap");
+define_script_argument_impl!(FloatScriptArgument, FloatArgument, "FloatScript", f64, Number);
 
 #[typetag::serde(tag = "type")]
 pub trait FloatRangeArgument {

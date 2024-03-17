@@ -16,12 +16,7 @@ impl BoolOperation for Not {
   }
 }
 
-#[typetag::serde]
-impl BoolArgument for Not {
-  fn value(&self) -> Result<bool, AnyError> {
-    self.execute()?.value()
-  }
-}
+define_argument_for_operation!(BoolArgument, Not, bool);
 
 #[cfg(test)]
 mod tests {

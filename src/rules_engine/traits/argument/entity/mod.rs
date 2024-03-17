@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 #[typetag::serde(tag = "type")]
 pub trait EntityArgument {
-  fn value(&self) -> Result<&Entity, AnyError>;
+  fn value(&self) -> Result<Entity, AnyError>;
 }
 
 define_list_argument_trait_and_impl!(EntityListArgument, EntityArgument, "EntityList");

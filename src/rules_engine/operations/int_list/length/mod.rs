@@ -17,12 +17,7 @@ impl IntOperation for IntListLength {
   }
 }
 
-#[typetag::serde]
-impl IntArgument for IntListLength {
-  fn value(&self) -> Result<i64, AnyError> {
-    self.execute()?.value()
-  }
-}
+define_argument_for_operation!(IntArgument, IntListLength, i64);
 
 #[cfg(test)]
 mod tests {
