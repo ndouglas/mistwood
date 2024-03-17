@@ -22,7 +22,6 @@ impl PartialEq for dyn IntArgument {
 
 define_list_argument_trait_and_impl!(IntListArgument, IntArgument, "IntList");
 define_map_argument_trait_and_impl!(IntMapArgument, IntArgument, "IntMap");
-define_script_argument_impl!(IntScriptArgument, IntArgument, "IntScript", i64, Integer);
 
 #[typetag::serde(tag = "type")]
 pub trait IntRangeArgument {
