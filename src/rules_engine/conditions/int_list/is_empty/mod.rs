@@ -1,4 +1,4 @@
-use crate::prelude::IntListArgument;
+use crate::prelude::IntListValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct IntListIsEmpty {
   #[derivative(Debug = "ignore")]
-  pub list: Box<dyn IntListArgument>,
+  pub list: Box<dyn IntListValue>,
 }
 
 #[typetag::serde]
@@ -20,7 +20,7 @@ impl Condition for IntListIsEmpty {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::prelude::IntArgument;
+  use crate::prelude::IntValue;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -28,7 +28,7 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = IntListIsEmpty {
-      list: Box::<Vec<Box<dyn IntArgument>>>::default(),
+      list: Box::<Vec<Box<dyn IntValue>>>::default(),
     };
     assert!(condition.is_met().unwrap());
   }
@@ -37,7 +37,7 @@ mod tests {
   fn test_is_met2() {
     test_init();
     let condition = IntListIsEmpty {
-      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
     };
     assert!(!condition.is_met().unwrap());
   }
@@ -46,7 +46,7 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &IntListIsEmpty {
-      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
     } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
     println!("{}", serialized);

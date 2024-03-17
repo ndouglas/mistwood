@@ -1,4 +1,4 @@
-use crate::prelude::IntArgument;
+use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct IntEquals {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn IntArgument>,
+  pub left: Box<dyn IntValue>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn IntArgument>,
+  pub right: Box<dyn IntValue>,
 }
 
 #[typetag::serde]
@@ -49,8 +49,8 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &IntEquals {
-      left: Box::new(1_i64) as Box<dyn IntArgument>,
-      right: Box::new(1_i64) as Box<dyn IntArgument>,
+      left: Box::new(1_i64) as Box<dyn IntValue>,
+      right: Box::new(1_i64) as Box<dyn IntValue>,
     } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
     println!("{}", serialized);

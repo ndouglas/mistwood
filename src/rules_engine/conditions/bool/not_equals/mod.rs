@@ -1,4 +1,4 @@
-use crate::prelude::BoolArgument;
+use crate::prelude::BoolValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct BoolNotEquals {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn BoolArgument>,
+  pub left: Box<dyn BoolValue>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn BoolArgument>,
+  pub right: Box<dyn BoolValue>,
 }
 
 #[typetag::serde]

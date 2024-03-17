@@ -12,4 +12,4 @@ impl IntRangeArgument for Range<i64> {
 
 define_list_argument_trait_and_impl!(IntRangeListArgument, IntRangeArgument, "IntRangeList", Range<i64>);
 define_map_argument_trait_and_impl!(IntRangeMapArgument, IntRangeArgument, "IntRangeMap", Range<i64>);
-define_script_argument_trait_and_string_impl!(IntScriptArgument, IntArgument, "IntScript", i64, mlua::Value::Integer(i) => Ok(i));
+define_script_argument_trait_and_string_impl!(IntScriptValue, IntValue, "IntScript", i64, mlua::Value::Integer(i) => Ok(i));

@@ -12,4 +12,4 @@ impl FloatRangeArgument for Range<f64> {
 
 define_list_argument_trait_and_impl!(FloatRangeListArgument, FloatRangeArgument, "FloatRangeList", Range<f64>);
 define_map_argument_trait_and_impl!(FloatRangeMapArgument, FloatRangeArgument, "FloatRangeMap", Range<f64>);
-define_script_argument_trait_and_string_impl!(FloatScriptArgument, FloatArgument, "FloatScript", f64, mlua::Value::Number(n) => Ok(n));
+define_script_argument_trait_and_string_impl!(FloatScriptValue, FloatValue, "FloatScript", f64, mlua::Value::Number(n) => Ok(n));

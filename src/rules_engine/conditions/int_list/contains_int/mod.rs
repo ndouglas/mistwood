@@ -1,5 +1,5 @@
-use crate::prelude::IntArgument;
-use crate::prelude::IntListArgument;
+use crate::prelude::IntListValue;
+use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -8,18 +8,14 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct IntListContainsInt {
   #[derivative(Debug = "ignore")]
-  pub list: Box<dyn IntListArgument>,
+  pub list: Box<dyn IntListValue>,
   #[derivative(Debug = "ignore")]
-  pub value: Box<dyn IntArgument>,
+  pub value: Box<dyn IntValue>,
 }
 
 #[typetag::serde]
 impl Condition for IntListContainsInt {
   fn is_met(&self) -> Result<bool, AnyError> {
-    // We have a list of int arguments and we're looking for an int value.
-    // So we will map the list of int arguments (evaluating each to get an int value),
-    // evaluate the value we're looking for,
-    // and then check if the list contains the value we're looking for.
     let list = self.list.evaluate()?;
     let value = self.value.evaluate()?;
     Ok(list.contains(&value))
@@ -29,7 +25,7 @@ impl Condition for IntListContainsInt {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::prelude::IntArgument;
+  use crate::prelude::IntValue;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
@@ -37,7 +33,7 @@ mod tests {
   fn test_is_met() {
     test_init();
     let condition = IntListContainsInt {
-      list: Box::<Vec<Box<dyn IntArgument>>>::default(),
+      list: Box::<Vec<Box<dyn IntValue>>>::default(),
       value: Box::new(1),
     };
     assert!(!condition.is_met().unwrap());
@@ -47,7 +43,7 @@ mod tests {
   fn test_is_met2() {
     test_init();
     let condition = IntListContainsInt {
-      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
       value: Box::new(1),
     };
     assert!(condition.is_met().unwrap());
@@ -57,7 +53,7 @@ mod tests {
   fn test_serde() {
     test_init();
     let condition = &IntListContainsInt {
-      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntValue>]),
       value: Box::new(1),
     } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();

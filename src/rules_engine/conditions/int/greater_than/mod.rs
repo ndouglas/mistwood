@@ -1,4 +1,4 @@
-use crate::prelude::IntArgument;
+use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct IntGreaterThan {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn IntArgument>,
+  pub left: Box<dyn IntValue>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn IntArgument>,
+  pub right: Box<dyn IntValue>,
 }
 
 #[typetag::serde]

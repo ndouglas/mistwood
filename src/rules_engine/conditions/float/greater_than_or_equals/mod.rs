@@ -1,4 +1,4 @@
-use crate::prelude::FloatArgument;
+use crate::prelude::FloatValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct FloatGreaterThanOrEquals {
   #[derivative(Debug = "ignore")]
-  pub left: Box<dyn FloatArgument>,
+  pub left: Box<dyn FloatValue>,
   #[derivative(Debug = "ignore")]
-  pub right: Box<dyn FloatArgument>,
+  pub right: Box<dyn FloatValue>,
   pub tolerance: f64,
 }
 

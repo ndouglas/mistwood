@@ -1,23 +1,23 @@
-use crate::prelude::IntArgument;
-use crate::prelude::IntListArgument;
+use crate::prelude::IntListValue;
 use crate::prelude::IntOperation;
+use crate::prelude::IntValue;
 use anyhow::Error as AnyError;
 
 #[derive(Derivative, Serialize, Deserialize)]
 #[derivative(Debug)]
 pub struct IntListLength {
   #[derivative(Debug = "ignore")]
-  list: Box<dyn IntListArgument>,
+  list: Box<dyn IntListValue>,
 }
 
 #[typetag::serde]
 impl IntOperation for IntListLength {
-  fn execute(&self) -> Result<Box<dyn IntArgument>, AnyError> {
-    Ok(Box::new(self.list.evaluate()?.len() as i64) as Box<dyn IntArgument>)
+  fn execute(&self) -> Result<Box<dyn IntValue>, AnyError> {
+    Ok(Box::new(self.list.evaluate()?.len() as i64) as Box<dyn IntValue>)
   }
 }
 
-define_argument_for_operation!(IntArgument, IntListLength, i64);
+define_argument_for_operation!(IntValue, IntListLength, i64);
 
 #[cfg(test)]
 mod tests {
@@ -28,10 +28,10 @@ mod tests {
   fn test_int_list_length() {
     let int_list_length = IntListLength {
       list: Box::new(vec![
-        Box::new(1_i64) as Box<dyn IntArgument>,
-        Box::new(2_i64) as Box<dyn IntArgument>,
-        Box::new(3_i64) as Box<dyn IntArgument>,
-      ]) as Box<dyn IntListArgument>,
+        Box::new(1_i64) as Box<dyn IntValue>,
+        Box::new(2_i64) as Box<dyn IntValue>,
+        Box::new(3_i64) as Box<dyn IntValue>,
+      ]) as Box<dyn IntListValue>,
     };
     assert_eq!(int_list_length.execute().unwrap().evaluate().unwrap(), 3);
   }
@@ -40,10 +40,10 @@ mod tests {
   fn test_int_list_length2() {
     let int_list_length = IntListLength {
       list: Box::new(vec![
-        Box::new(1_i64) as Box<dyn IntArgument>,
-        Box::new(2_i64) as Box<dyn IntArgument>,
-        Box::new(3_i64) as Box<dyn IntArgument>,
-        Box::new(4_i64) as Box<dyn IntArgument>,
+        Box::new(1_i64) as Box<dyn IntValue>,
+        Box::new(2_i64) as Box<dyn IntValue>,
+        Box::new(3_i64) as Box<dyn IntValue>,
+        Box::new(4_i64) as Box<dyn IntValue>,
       ]),
     };
     assert_eq!(int_list_length.execute().unwrap().evaluate().unwrap(), 4);
@@ -53,10 +53,10 @@ mod tests {
   fn test_serde() {
     let int_list_length = &IntListLength {
       list: Box::new(vec![
-        Box::new(1_i64) as Box<dyn IntArgument>,
-        Box::new(2_i64) as Box<dyn IntArgument>,
-        Box::new(3_i64) as Box<dyn IntArgument>,
-        Box::new(4_i64) as Box<dyn IntArgument>,
+        Box::new(1_i64) as Box<dyn IntValue>,
+        Box::new(2_i64) as Box<dyn IntValue>,
+        Box::new(3_i64) as Box<dyn IntValue>,
+        Box::new(4_i64) as Box<dyn IntValue>,
       ]),
     } as &dyn IntOperation;
     let serialized = serde_yaml::to_string(int_list_length).unwrap();

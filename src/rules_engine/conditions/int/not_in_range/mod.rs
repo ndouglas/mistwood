@@ -1,5 +1,5 @@
-use crate::prelude::IntArgument;
 use crate::prelude::IntRangeArgument;
+use crate::prelude::IntValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct IntNotInRange {
   #[derivative(Debug = "ignore")]
-  pub value: Box<dyn IntArgument>,
+  pub value: Box<dyn IntValue>,
   #[derivative(Debug = "ignore")]
   pub range: Box<dyn IntRangeArgument>,
 }

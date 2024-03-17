@@ -1,5 +1,5 @@
-use crate::prelude::FloatArgument;
 use crate::prelude::FloatRangeArgument;
+use crate::prelude::FloatValue;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derivative(Debug)]
 pub struct FloatNotInRange {
   #[derivative(Debug = "ignore")]
-  pub value: Box<dyn FloatArgument>,
+  pub value: Box<dyn FloatValue>,
   #[derivative(Debug = "ignore")]
   pub range: Box<dyn FloatRangeArgument>,
 }

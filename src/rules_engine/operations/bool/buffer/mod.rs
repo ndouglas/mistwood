@@ -1,22 +1,22 @@
-use crate::prelude::BoolArgument;
 use crate::prelude::BoolOperation;
+use crate::prelude::BoolValue;
 use anyhow::Error as AnyError;
 
 #[derive(Serialize, Deserialize, Derivative)]
 #[derivative(Debug)]
 pub struct Buffer {
   #[derivative(Debug = "ignore")]
-  value: Box<dyn BoolArgument>,
+  value: Box<dyn BoolValue>,
 }
 
 #[typetag::serde]
 impl BoolOperation for Buffer {
-  fn execute(&self) -> Result<Box<dyn BoolArgument>, AnyError> {
+  fn execute(&self) -> Result<Box<dyn BoolValue>, AnyError> {
     Ok(Box::new(self.value.evaluate()?))
   }
 }
 
-define_argument_for_operation!(BoolArgument, Buffer, bool);
+define_argument_for_operation!(BoolValue, Buffer, bool);
 
 #[cfg(test)]
 mod tests {
