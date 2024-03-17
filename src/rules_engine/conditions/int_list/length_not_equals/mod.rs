@@ -1,20 +1,20 @@
-use crate::prelude::FloatListArgument;
 use crate::prelude::IntArgument;
+use crate::prelude::IntListArgument;
 use crate::rules_engine::traits::condition::Condition;
 use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
 #[derive(Derivative, Serialize, Deserialize)]
 #[derivative(Debug)]
-pub struct FloatListNotLengthEquals {
+pub struct IntListLengthNotEquals {
   #[derivative(Debug = "ignore")]
-  pub list: Box<dyn FloatListArgument>,
+  pub list: Box<dyn IntListArgument>,
   #[derivative(Debug = "ignore")]
   pub length: Box<dyn IntArgument>,
 }
 
 #[typetag::serde]
-impl Condition for FloatListNotLengthEquals {
+impl Condition for IntListLengthNotEquals {
   fn is_met(&self) -> Result<bool, AnyError> {
     Ok(self.list.value()?.len() != self.length.value()? as usize)
   }
@@ -23,7 +23,6 @@ impl Condition for FloatListNotLengthEquals {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::prelude::FloatArgument;
   use crate::prelude::IntArgument;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
@@ -31,11 +30,11 @@ mod tests {
   #[test]
   fn test_is_met() {
     test_init();
-    let condition = FloatListNotLengthEquals {
+    let condition = IntListLengthNotEquals {
       list: Box::new(vec![
-        Box::new(1_f64) as Box<dyn FloatArgument>,
-        Box::new(2_f64) as Box<dyn FloatArgument>,
-        Box::new(3_f64) as Box<dyn FloatArgument>,
+        Box::new(1_i64) as Box<dyn IntArgument>,
+        Box::new(2_i64) as Box<dyn IntArgument>,
+        Box::new(3_i64) as Box<dyn IntArgument>,
       ]),
       length: Box::new(3_i64) as Box<dyn IntArgument>,
     };
@@ -45,8 +44,8 @@ mod tests {
   #[test]
   fn test_is_met2() {
     test_init();
-    let condition = FloatListNotLengthEquals {
-      list: Box::new(vec![Box::new(1_f64) as Box<dyn FloatArgument>]),
+    let condition = IntListLengthNotEquals {
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
       length: Box::new(3_i64) as Box<dyn IntArgument>,
     };
     assert!(condition.is_met().unwrap());
@@ -55,8 +54,8 @@ mod tests {
   #[test]
   fn test_serde() {
     test_init();
-    let condition = &FloatListNotLengthEquals {
-      list: Box::new(vec![Box::new(1_f64) as Box<dyn FloatArgument>]),
+    let condition = &IntListLengthNotEquals {
+      list: Box::new(vec![Box::new(1_i64) as Box<dyn IntArgument>]),
       length: Box::new(1_i64) as Box<dyn IntArgument>,
     } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
@@ -64,19 +63,19 @@ mod tests {
     assert_eq!(
       serialized.trim(),
       r#"
-type: FloatListNotLengthEquals
+type: IntListLengthNotEquals
 list:
-  type: FloatList
+  type: IntList
   value:
-  - type: Float
-    value: 1.0
+  - type: Int
+    value: 1
 length:
   type: Int
   value: 1
           "#
       .trim()
     );
-    let deserialized: FloatListNotLengthEquals = serde_yaml::from_str(&serialized).unwrap();
+    let deserialized: IntListLengthNotEquals = serde_yaml::from_str(&serialized).unwrap();
     assert!(!deserialized.is_met().unwrap());
   }
 }
