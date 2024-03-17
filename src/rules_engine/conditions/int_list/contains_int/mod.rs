@@ -16,7 +16,13 @@ pub struct IntListContainsInt {
 #[typetag::serde]
 impl Condition for IntListContainsInt {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(self.list.evaluate()?.contains(&self.value))
+    // We have a list of int arguments and we're looking for an int value.
+    // So we will map the list of int arguments (evaluating each to get an int value),
+    // evaluate the value we're looking for,
+    // and then check if the list contains the value we're looking for.
+    let list = self.list.evaluate()?;
+    let value = self.value.evaluate()?;
+    Ok(list.contains(&value))
   }
 }
 

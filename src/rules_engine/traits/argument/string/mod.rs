@@ -19,5 +19,6 @@ impl PartialEq for dyn StringArgument {
   }
 }
 
-define_list_argument_trait_and_impl!(StringListArgument, StringArgument, "StringList");
-define_map_argument_trait_and_impl!(StringMapArgument, StringArgument, "StringMap");
+define_list_argument_trait_and_impl!(StringListArgument, StringArgument, "StringList", String);
+define_map_argument_trait_and_impl!(StringMapArgument, StringArgument, "StringMap", String);
+define_script_argument_trait_and_string_impl!(StringScriptArgument, StringArgument, "StringScript", String, mlua::Value::String(s) => Ok(s.to_str().unwrap().to_string()));

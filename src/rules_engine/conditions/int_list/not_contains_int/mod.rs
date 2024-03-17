@@ -16,7 +16,9 @@ pub struct IntListNotContainsInt {
 #[typetag::serde]
 impl Condition for IntListNotContainsInt {
   fn is_met(&self) -> Result<bool, AnyError> {
-    Ok(!self.list.evaluate()?.contains(&self.value))
+    let list = self.list.evaluate()?;
+    let value = self.value.evaluate()?;
+    Ok(!list.contains(&value))
   }
 }
 

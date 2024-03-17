@@ -84,7 +84,7 @@ range:
     );
     let deserialized: IntInRange = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.evaluate().unwrap(), 1);
-    assert_eq!(deserialized.range.evaluate().unwrap(), &Range { start: 1, end: 2 });
+    assert_eq!(deserialized.range.evaluate().unwrap(), Range { start: 1, end: 2 });
     assert!(deserialized.is_met().unwrap());
   }
 }

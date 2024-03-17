@@ -84,6 +84,6 @@ range:
     );
     let deserialized: FloatInRange = serde_yaml::from_str(&serialized).unwrap();
     assert_eq!(deserialized.value.evaluate().unwrap(), 1.0);
-    assert_eq!(deserialized.range.evaluate().unwrap(), &Range { start: 0.0, end: 1.0 });
+    assert_eq!(deserialized.range.evaluate().unwrap(), Range { start: 0.0, end: 1.0 });
   }
 }

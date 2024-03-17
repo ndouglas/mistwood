@@ -13,11 +13,6 @@ impl BoolArgument for bool {
   }
 }
 
-impl PartialEq for dyn BoolArgument {
-  fn eq(&self, other: &Self) -> bool {
-    self.evaluate().unwrap() == other.evaluate().unwrap()
-  }
-}
-
-define_list_argument_trait_and_impl!(BoolListArgument, BoolArgument, "BoolList");
-define_map_argument_trait_and_impl!(BoolMapArgument, BoolArgument, "BoolMap");
+define_list_argument_trait_and_impl!(BoolListArgument, BoolArgument, "BoolList", bool);
+define_map_argument_trait_and_impl!(BoolMapArgument, BoolArgument, "BoolMap", bool);
+define_script_argument_trait_and_string_impl!(BoolScriptArgument, BoolArgument, "BoolScript", bool, mlua::Value::Boolean(b) => Ok(b));
