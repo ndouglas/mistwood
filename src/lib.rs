@@ -34,7 +34,6 @@ pub mod ecs;
 pub mod events;
 pub mod frp;
 pub mod procgen;
-pub mod rules_engine;
 pub mod script;
 
 pub mod prelude {
@@ -45,7 +44,6 @@ pub mod prelude {
   // pub use crate::events::prelude::*;
   // pub use crate::frp::prelude::*;
   // pub use crate::procgen::prelude::*;
-  pub use crate::rules_engine::prelude::*;
   // pub use crate::script::prelude::*;
 }
 
