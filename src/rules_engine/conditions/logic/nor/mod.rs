@@ -53,7 +53,9 @@ mod tests {
   #[test]
   fn test_is_error() {
     test_init();
-    let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
+    let conditions = vec![Box::new(Error {
+      message: "test".to_string(),
+    }) as Box<dyn Condition>];
     let condition = Nor { conditions };
     let context = &NullContext as &dyn Context;
     assert!(condition.is_met(context).is_err());
@@ -100,7 +102,9 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Nor { conditions };
     let context = &NullContext as &dyn Context;
@@ -112,7 +116,9 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Never {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Nor { conditions };
     let context = &NullContext as &dyn Context;

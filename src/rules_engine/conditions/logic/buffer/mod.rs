@@ -47,7 +47,9 @@ mod tests {
   #[test]
   fn test_is_error() {
     test_init();
-    let inner = Error {};
+    let inner = Error {
+      message: "test".to_string(),
+    };
     let condition = Buffer { inner: Box::new(inner) };
     let context = &NullContext as &dyn Context;
     assert!(condition.is_met(context).is_err());
@@ -71,7 +73,9 @@ mod tests {
   #[test]
   fn test_serde_with_error() {
     test_init();
-    let inner = Error {};
+    let inner = Error {
+      message: "test".to_string(),
+    };
     let condition = Buffer { inner: Box::new(inner) };
     let serialized = serde_yaml::to_string(&condition).unwrap();
     println!("{}", serialized);

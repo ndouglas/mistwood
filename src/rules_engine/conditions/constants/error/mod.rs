@@ -4,12 +4,14 @@ use anyhow::Error as AnyError;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Error {}
+pub struct Error {
+  pub message: String,
+}
 
 #[typetag::serde]
 impl Condition for Error {
   fn is_met(&self, _context: &dyn Context) -> Result<bool, AnyError> {
-    Err(anyhow!("This condition always returns an error."))
+    Err(anyhow!("Error: {}", self.message))
   }
 }
 
@@ -23,7 +25,9 @@ mod tests {
   #[test]
   fn test_is_met() {
     test_init();
-    let condition = Error {};
+    let condition = Error {
+      message: "test".to_string(),
+    };
     let context = &NullContext as &dyn Context;
     assert!(condition.is_met(context).is_err());
   }
@@ -31,13 +35,16 @@ mod tests {
   #[test]
   fn test_serde() {
     test_init();
-    let condition = &Error {} as &dyn Condition;
+    let condition = &Error {
+      message: "test".to_string(),
+    } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
     println!("{}", serialized);
     assert_eq!(
       serialized.trim(),
       r#"
 type: Error
+message: test
           "#
       .trim()
     );

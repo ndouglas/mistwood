@@ -31,16 +31,21 @@ impl Rule {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prelude::Always;
   use crate::prelude::Conclusion;
   use crate::prelude::Condition;
+  use crate::prelude::Error as ErrorCondition;
+  use crate::prelude::Never;
+  use crate::prelude::NoOp;
   use crate::prelude::NullContext;
+  use crate::prelude::ThrowError;
   use crate::test::init as test_init;
 
   #[test]
   fn test_rule() {
     test_init();
-    let condition = Box::new(crate::prelude::Always) as Box<dyn Condition>;
-    let conclusions = vec![Box::new(crate::prelude::NoOp) as Box<dyn Conclusion>];
+    let condition = Box::new(Always) as Box<dyn Condition>;
+    let conclusions = vec![Box::new(NoOp) as Box<dyn Conclusion>];
     let context = Box::new(NullContext);
     let rule = Rule {
       name: "test".to_string(),
@@ -50,5 +55,59 @@ mod tests {
       context,
     };
     assert!(rule.execute().is_ok());
+  }
+
+  #[test]
+  fn test_rule2() {
+    test_init();
+    let condition = Box::new(Never) as Box<dyn Condition>;
+    let conclusions = vec![Box::new(ThrowError {
+      message: "test".to_string(),
+    }) as Box<dyn Conclusion>];
+    let context = Box::new(NullContext);
+    let rule = Rule {
+      name: "test".to_string(),
+      description: "test".to_string(),
+      condition,
+      conclusions,
+      context,
+    };
+    assert!(rule.execute().is_ok());
+  }
+
+  #[test]
+  fn test_rule3() {
+    test_init();
+    let condition = Box::new(Always) as Box<dyn Condition>;
+    let conclusions = vec![Box::new(ThrowError {
+      message: "test".to_string(),
+    }) as Box<dyn Conclusion>];
+    let context = Box::new(NullContext);
+    let rule = Rule {
+      name: "test".to_string(),
+      description: "test".to_string(),
+      condition,
+      conclusions,
+      context,
+    };
+    assert!(rule.execute().is_err());
+  }
+
+  #[test]
+  fn test_rule4() {
+    test_init();
+    let condition = Box::new(ErrorCondition {
+      message: "test".to_string(),
+    }) as Box<dyn Condition>;
+    let conclusions = vec![Box::new(NoOp) as Box<dyn Conclusion>];
+    let context = Box::new(NullContext);
+    let rule = Rule {
+      name: "test".to_string(),
+      description: "test".to_string(),
+      condition,
+      conclusions,
+      context,
+    };
+    assert!(rule.execute().is_err());
   }
 }

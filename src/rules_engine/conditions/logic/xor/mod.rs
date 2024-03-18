@@ -57,7 +57,9 @@ mod tests {
   #[test]
   fn test_is_error() {
     test_init();
-    let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
+    let conditions = vec![Box::new(Error {
+      message: "test".to_string(),
+    }) as Box<dyn Condition>];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
     assert!(condition.is_met(context).is_err());
@@ -118,7 +120,9 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
@@ -130,7 +134,9 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Never {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
@@ -143,7 +149,9 @@ mod tests {
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Never {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
@@ -156,7 +164,9 @@ mod tests {
     let conditions = vec![
       Box::new(Never {}) as Box<dyn Condition>,
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
@@ -169,7 +179,9 @@ mod tests {
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Xor { conditions };
     let context = &NullContext as &dyn Context;
@@ -182,7 +194,9 @@ mod tests {
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
       Box::new(Never {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = &Xor { conditions } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
@@ -195,6 +209,7 @@ conditions:
 - type: Always
 - type: Never
 - type: Error
+  message: test
     "#
       .trim()
     );
@@ -224,7 +239,7 @@ type: Xor
 conditions:
 - type: Always
 - type: Never
-          "#
+      "#
       .trim()
     );
     let deserialized: Xor = serde_yaml::from_str(&serialized).unwrap();

@@ -53,7 +53,9 @@ mod tests {
   #[test]
   fn test_is_error() {
     test_init();
-    let conditions = vec![Box::new(Error {}) as Box<dyn Condition>];
+    let conditions = vec![Box::new(Error {
+      message: "test".to_string(),
+    }) as Box<dyn Condition>];
     let condition = Nand { conditions };
     let context = &NullContext as &dyn Context;
     assert!(condition.is_met(context).is_err());
@@ -88,7 +90,9 @@ mod tests {
     test_init();
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = Nand { conditions };
     let context = &NullContext as &dyn Context;
@@ -144,7 +148,9 @@ conditions:
     test_init();
     let conditions = vec![
       Box::new(Always {}) as Box<dyn Condition>,
-      Box::new(Error {}) as Box<dyn Condition>,
+      Box::new(Error {
+        message: "test".to_string(),
+      }) as Box<dyn Condition>,
     ];
     let condition = &Nand { conditions } as &dyn Condition;
     let serialized = serde_yaml::to_string(condition).unwrap();
@@ -156,6 +162,7 @@ type: Nand
 conditions:
 - type: Always
 - type: Error
+  message: test
           "#
       .trim()
     );
