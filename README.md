@@ -1,5 +1,7 @@
 # Mistwood
 
+[Project](https://github.com/users/ndouglas/projects/3)
+
 A framework for roguelikes, MUDs, and similar games combining the Actor model (courtesy of [Actix](http://actix.rs)), an Entity-Component-System architecture (courtesy of [Specs](https://specs.amethyst.rs/)), and various other technologies.
 
 I've been using Specs and other ECS systems with roguelike development with some success, but I never managed to deal with some architectural issues come with that approach. The tremendous complexity that comes with roguelike development is, arguably, the challenge and the fun of the genre, but it seemed to spiral out of control for me when I applied an ECS approach.
