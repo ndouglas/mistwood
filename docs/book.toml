@@ -1,0 +1,13 @@
+[book]
+authors = ["Nathan Douglas"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Mistwood"
+description = "A companion book for Mistwood."
+
+[output.html]
+mathjax-support = true
+site-url = "/mistwood/"
+git-repository-url = "https://github.com/ndouglas/mistwood"
+git-repository-icon = "fa-github"
