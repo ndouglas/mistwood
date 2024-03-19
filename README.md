@@ -1,6 +1,9 @@
 # Mistwood
 
 [Project](https://github.com/users/ndouglas/projects/3)
+[Brainstorming](https://github.com/ndouglas/mistwood/tree/main/READMEs/brainstorming)
+[Architecture](https://github.com/ndouglas/mistwood/blob/main/READMEs/architecture.md)
+[Component Catalog](https://github.com/ndouglas/mistwood/blob/main/READMEs/component_catalog.md)
 
 A framework for roguelikes, MUDs, and similar games combining the Actor model (courtesy of [Actix](http://actix.rs)), an Entity-Component-System architecture (courtesy of [Specs](https://specs.amethyst.rs/)), and various other technologies.
 
