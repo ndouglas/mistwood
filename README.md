@@ -1,6 +1,6 @@
 # Mistwood
 
-A framework for roguelikes, MUDs, and similar games combining the Actor model (courtesy of [Actix](http://actix.rs)), an Entity-Component-System architecture (courtesy of [Specs](https://specs.amethyst.rs/)), Rules engines, and embedded Lua scripting (courtesy of [mlua](https://github.com/mlua-rs/mlua)).
+A framework for roguelikes, MUDs, and similar games combining the Actor model (courtesy of [Actix](http://actix.rs)), an Entity-Component-System architecture (courtesy of [Specs](https://specs.amethyst.rs/)), and various other technologies.
 
 I've been using Specs and other ECS systems with roguelike development with some success, but I never managed to deal with some architectural issues come with that approach. The tremendous complexity that comes with roguelike development is, arguably, the challenge and the fun of the genre, but it seemed to spiral out of control for me when I applied an ECS approach.
 
@@ -11,9 +11,9 @@ I had an idea for combining the two approaches into a single architecture.
 At the same time, there are a few other concepts that I think are generally useful for developing this sort of hyper-complicated game:
 - Rules Engines
 - Data-Driven Design
-- Event-Driven Design
+- Data-Oriented and Actor-Oriented Pub-Sub
 - Test-Driven Design
-- Functional Reactive Programming
+- Futures, Streams, and Signals/Functional Reactive Programming
 - Embedded Scripting
 - Old-Fashioned AI algorithms (Pathfinding, Goal-Oriented Action Programming, Behavior Trees, etc)
 - Procedural Generation algorithms (Wave Function Collapse, Drunkard's Walk, basically a Greatest Hits)
