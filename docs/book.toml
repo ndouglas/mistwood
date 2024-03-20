@@ -5,6 +5,7 @@ multilingual = false
 src = "src"
 title = "Mistwood"
 description = "A companion book for Mistwood."
+create-missing = false
 
 [output.html]
 mathjax-support = true
