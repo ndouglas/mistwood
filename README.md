@@ -1,9 +1,12 @@
+[![codecov](https://codecov.io/gh/ndouglas/mistwood/graph/badge.svg?token=ZO8NPEDOTB)](https://codecov.io/gh/ndouglas/mistwood)
+
 # Mistwood
 
 [Project](https://github.com/users/ndouglas/projects/3)
 [Brainstorming](https://github.com/ndouglas/mistwood/tree/main/READMEs/brainstorming)
 [Architecture](https://github.com/ndouglas/mistwood/blob/main/READMEs/architecture.md)
 [Component Catalog](https://github.com/ndouglas/mistwood/blob/main/READMEs/component_catalog.md)
+[Documentation](https://ndouglas.github.io/mistwood/)
 
 A framework for roguelikes, MUDs, and similar games combining the Actor model (courtesy of [Actix](http://actix.rs)), an Entity-Component-System architecture (courtesy of [Specs](https://specs.amethyst.rs/)), and various other technologies.
 
@@ -36,3 +39,5 @@ My goal is to make the following clean and easy to implement:
 I have several roguelike and MUD projects that I've never managed to get very far with due to architectural concerns, so my hope is that I can come up with a pleasing combination of these ideas and then get a little further 🙂
 
 I'm starting to think I actually like mucking around with architectural concepts more than I actually like making games, so eh. Wish me luck!
+
+![Code Coverage Graph](https://codecov.io/gh/ndouglas/mistwood/graphs/icicle.svg?token=ZO8NPEDOTB)
