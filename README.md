@@ -1,3 +1,4 @@
+![CI](https://github.com/ndouglas/mistwood/actions/workflows/continuous_integration.yml/badge.svg?branch=main)
 [![codecov](https://codecov.io/gh/ndouglas/mistwood/graph/badge.svg?token=ZO8NPEDOTB)](https://codecov.io/gh/ndouglas/mistwood)
 
 # Mistwood
