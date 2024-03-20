@@ -27,6 +27,7 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
+/// Re-export commonly used items.
 pub mod prelude {}
 
 #[cfg(test)]
