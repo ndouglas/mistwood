@@ -1,0 +1,50 @@
+name: Code Coverage
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  code_coverage:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Update local toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: clippy,rustfmt
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update;
+          sudo apt-get install -y \
+            libasound2-dev \
+            portaudio19-dev \
+            build-essential \
+            libpulse-dev \
+            libdbus-1-dev \
+            libudev-dev \
+            ;
+
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@47d27149ff6b3422864ec504071d5cc7873d642e # v2.8.15
+        with:
+          tool: cargo-llvm-cov@0.5.27
+
+      - name: Generate code coverage
+        run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          fail_ci_if_error: true
