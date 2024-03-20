@@ -7,3 +7,7 @@
 - [_Cosmos_ and Tatooine](005_astronomy/_introduction.md)
 - [_The Golden Bough_ and Procedural Comparative Religion](006_supernatural/_introduction.md)
 - [The Sociology of the Goblin Village](007_sociology/_introduction.md)
+
+---
+
+- [Rust Documentation](rustdoc/doc/mistwood/index.html)

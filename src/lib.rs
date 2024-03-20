@@ -56,7 +56,7 @@ pub mod test {
   #[allow(unused_imports)]
   use super::*;
 
-  // Call this function at the beginning of each test module.
+  /// Call this function at the beginning of each test module.
   pub fn init() {
     // Enable logging for tests.
     let _ = builder().is_test(true).try_init();
