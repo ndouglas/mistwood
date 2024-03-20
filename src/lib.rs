@@ -27,25 +27,7 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
-pub mod actors;
-pub mod ai;
-pub mod data;
-pub mod ecs;
-pub mod events;
-pub mod frp;
-pub mod procgen;
-pub mod script;
-
-pub mod prelude {
-  // pub use crate::actors::prelude::*;
-  // pub use crate::ai::prelude::*;
-  // pub use crate::data::prelude::*;
-  // pub use crate::ecs::prelude::*;
-  // pub use crate::events::prelude::*;
-  // pub use crate::frp::prelude::*;
-  // pub use crate::procgen::prelude::*;
-  // pub use crate::script::prelude::*;
-}
+pub mod prelude {}
 
 #[cfg(test)]
 pub mod test {
@@ -56,7 +38,7 @@ pub mod test {
   #[allow(unused_imports)]
   use super::*;
 
-  /// Call this function at the beginning of each test module.
+  /// Call this function at the beginning of each test.
   pub fn init() {
     // Enable logging for tests.
     let _ = builder().is_test(true).try_init();
