@@ -24,6 +24,6 @@ body:
     id: 'acceptance-criteria'
     attributes:
       label: 'Acceptance Criteria'
-      description: |
+      value: |
         - [ ] AC 1
         - [ ] AC 2
