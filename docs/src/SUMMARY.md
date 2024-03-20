@@ -8,6 +8,6 @@
 - [_The Golden Bough_ and Procedural Comparative Religion](006_supernatural/_introduction.md)
 - [The Sociology of the Goblin Village](007_sociology/_introduction.md)
 
----
+# Other
 
 - [Rust Documentation](rustdoc/doc/mistwood/index.html)
