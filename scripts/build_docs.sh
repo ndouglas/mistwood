@@ -20,5 +20,6 @@ cargo doc \
   --target-dir docs/src/rustdoc || die "Failed to build rustdoc";
 pushd docs > /dev/null; # base_dir -> base_dir/docs
 mdbook build . || die "Failed to build mdbook";
+find . -type f -not \( -perm 644 -o -perm 755 \) -exec chmod 755 {} \;
 popd > /dev/null; # base_dir/docs -> base_dir
 popd > /dev/null; # base_dir -> cwd
