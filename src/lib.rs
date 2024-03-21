@@ -76,11 +76,14 @@ extern crate thiserror;
 pub mod _types;
 /// Dependency Injection.
 pub mod di;
+/// Message processing.
+pub mod messaging;
 
 /// Prelude for the library.
 pub mod prelude {
   pub use crate::_types::prelude::*;
   pub use crate::di::prelude::*;
+  pub use crate::messaging::prelude::*;
 }
 
 #[cfg(test)]
