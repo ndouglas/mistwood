@@ -1,5 +1,6 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
+use std::fmt::{self, Debug, Formatter};
 
 /// A map from types to values.
 ///
@@ -40,6 +41,12 @@ impl TypeMap {
       .0
       .get_mut(&TypeId::of::<T>())
       .map(|t| t.downcast_mut::<T>().unwrap())
+  }
+}
+
+impl Debug for TypeMap {
+  fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    write!(f, "TypeMap {{ ... }}")
   }
 }
 

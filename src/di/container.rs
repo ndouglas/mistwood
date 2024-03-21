@@ -34,7 +34,7 @@ use std::sync::{Arc, Mutex};
 /// let string = container.get::<NewString>().unwrap();
 /// assert_eq!(string.lock().unwrap().0, "Hello, world!".to_string());
 /// ```
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct Container(pub TypeMap);
 
 impl Container {
