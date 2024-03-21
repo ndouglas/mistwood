@@ -11,4 +11,5 @@ runs:
         mdbook-version: "0.4.7"
 
     - name: Generate book from markdown
+      shell: bash
       run: './scripts/build_docs.sh'
