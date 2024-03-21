@@ -19,7 +19,6 @@
 #![deny(rustdoc::invalid_html_tags)]
 #![deny(rustdoc::invalid_rust_codeblocks)]
 #![deny(rustdoc::missing_crate_level_docs)]
-#![deny(rustdoc::missing_docs)]
 #![deny(rustdoc::unescaped_backticks)]
 #![deny(ambiguous_glob_imports)]
 #![deny(ambiguous_glob_reexports)]
@@ -30,6 +29,7 @@
 #![deny(meta_variable_misuse)]
 #![deny(missing_copy_implementations)]
 #![deny(missing_debug_implementations)]
+#![deny(missing_docs)]
 #![deny(non_ascii_idents)]
 #![deny(single_use_lifetimes)]
 #![deny(trivial_casts)]
@@ -77,6 +77,7 @@ pub mod _types;
 /// Dependency Injection.
 pub mod di;
 
+/// Prelude for the library.
 pub mod prelude {
   pub use crate::_types::prelude::*;
   pub use crate::di::prelude::*;
