@@ -1,7 +1,11 @@
+/// Traits required by the DI system.
 pub mod _traits;
+/// Types required by the DI system.
 pub mod _types;
+/// A container for dependency injection.
 pub mod container;
 
+/// Prelude.
 pub mod prelude {
   pub use super::_traits::builder::Builder;
   pub use super::_traits::get_input::GetInput;

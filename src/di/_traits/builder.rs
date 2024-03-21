@@ -21,8 +21,14 @@ use crate::di::_traits::get_input::GetInput;
 /// }
 /// ```
 pub trait Builder {
+  /// The input type for the builder. This will normally be a single type or a
+  /// tuple of types. This is used to specify the dependencies of the service
+  /// being built.
   type Input: GetInput;
+  /// The output type for the builder. This is the type of the service being
+  /// built.
   type Output: 'static;
+  /// Build the service.
   fn build(input: Self::Input) -> Self::Output;
 }
 

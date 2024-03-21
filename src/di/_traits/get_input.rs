@@ -3,6 +3,7 @@ use crate::di::_types::Object;
 
 /// A trait for retrieving inputs for dependency injection objects.
 pub trait GetInput: Sized {
+  /// Get the input for a type `T` from the given `InputProvider`.
   fn get_input<P: InputProvider>(provider: &P) -> Option<Self>;
 }
 
