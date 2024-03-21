@@ -15,6 +15,7 @@ runs:
       uses: Swatinem/rust-cache@v2
 
     - name: Install dependencies
+      shell: bash
       run: |
         sudo apt-get update;
         sudo apt-get install -y \
@@ -27,6 +28,7 @@ runs:
           ;
 
     - name: Toolchain info
+      shell: bash
       run: |
         cargo --version --verbose;
         rustc --version;
