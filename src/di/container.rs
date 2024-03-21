@@ -54,13 +54,13 @@ impl Container {
 
   /// Get a reference to a value of type `T`.
   pub fn get<T: 'static>(&self) -> Option<Object<T>> {
-    self.0.get::<Object<T>>().map(|t| t.clone())
+    self.0.get::<Object<T>>().cloned()
   }
 }
 
 impl InputProvider for Container {
   /// Provide the requested input from the container.
   fn provide<T: 'static>(&self) -> Option<Object<T>> {
-    self.0.get::<Object<T>>().map(|t| t.clone())
+    self.0.get::<Object<T>>().cloned()
   }
 }

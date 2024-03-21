@@ -20,6 +20,6 @@ impl GetInput for () {
 
 impl<S: GetInput, T: GetInput> GetInput for (S, T) {
   fn get_input<P: InputProvider>(provider: &P) -> Option<Self> {
-    S::get_input(provider).and_then(|s| T::get_input(provider).and_then(|t| Some((s, t))))
+    S::get_input(provider).and_then(|s| T::get_input(provider).map(|t| (s, t)))
   }
 }
