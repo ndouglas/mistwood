@@ -1,3 +1,48 @@
+//! A library for roguelikes, MUDs, and other text adventures.
+//!
+//! I don't really anticipate anyone using this library, as it's very specific
+//! and intensely opinionated. Nevertheless, I'm making it public in case
+//! someone finds it useful or interesting.
+//!
+//! This crate provides a set of tools for building text-based games:
+//!
+//! - **Dependency Injection**: A system for managing game state and providing
+//!   services to game objects. Doing this in a performant, flexible, and safe
+//!   way is absolutely necessary.
+//!
+//!
+
+// Linting.
+#![deny(rustdoc::bare_urls)]
+#![deny(rustdoc::broken_intra_doc_links)]
+#![deny(rustdoc::invalid_codeblock_attributes)]
+#![deny(rustdoc::invalid_html_tags)]
+#![deny(rustdoc::invalid_rust_codeblocks)]
+#![deny(rustdoc::missing_crate_level_docs)]
+#![deny(rustdoc::missing_docs)]
+#![deny(rustdoc::unescaped_backticks)]
+#![deny(ambiguous_glob_imports)]
+#![deny(ambiguous_glob_reexports)]
+#![deny(bare_trait_objects)]
+#![deny(const_item_mutation)]
+#![deny(explicit_outlives_requirements)]
+#![deny(let_underscore_drop)]
+#![deny(meta_variable_misuse)]
+#![deny(missing_copy_implementations)]
+#![deny(missing_debug_implementations)]
+#![deny(non_ascii_idents)]
+#![deny(single_use_lifetimes)]
+#![deny(trivial_casts)]
+#![deny(trivial_numeric_casts)]
+#![deny(unreachable_pub)]
+#![deny(unsafe_code)]
+// #![warn(unused_crate_dependencies)]
+#![deny(unused_extern_crates)]
+#![deny(unused_import_braces)]
+#![deny(unused_lifetimes)]
+#![deny(unused_qualifications)]
+#![deny(variant_size_differences)]
+
 // Crate-wide configuration.
 #[allow(unused_imports)]
 #[macro_use]
