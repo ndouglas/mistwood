@@ -18,12 +18,6 @@ impl GetInput for () {
   }
 }
 
-impl<S: GetInput, T: GetInput> GetInput for (S, T) {
-  fn get_input<P: InputProvider>(provider: &P) -> Option<Self> {
-    S::get_input(provider).and_then(|s| T::get_input(provider).map(|t| (s, t)))
-  }
-}
-
 macro_rules! impl_get_input_for_tuple {
   ( $($name:ident),* ) => {
     /// Implement `GetInput` for a tuple of types.
@@ -37,7 +31,7 @@ macro_rules! impl_get_input_for_tuple {
 }
 
 impl_get_input_for_tuple!(A);
-// impl_get_input_for_tuple!(A, B);
+impl_get_input_for_tuple!(A, B);
 impl_get_input_for_tuple!(A, B, C);
 impl_get_input_for_tuple!(A, B, C, D);
 impl_get_input_for_tuple!(A, B, C, D, E);
