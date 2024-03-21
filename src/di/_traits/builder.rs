@@ -1,3 +1,5 @@
+use crate::di::_traits::get_input::GetInput;
+
 /// A trait for a builder; this represents a constructor within our DI system.
 ///
 /// @see <https://willcrichton.net/rust-api-type-patterns/registries.html>
@@ -19,8 +21,8 @@
 /// }
 /// ```
 pub trait Builder {
-  type Input;
-  type Output;
+  type Input: GetInput;
+  type Output: 'static;
   fn build(input: Self::Input) -> Self::Output;
 }
 
