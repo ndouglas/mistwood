@@ -27,11 +27,14 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
+/// Library-wide type definitions.
 pub mod _types;
+/// Dependency Injection.
+pub mod di;
 
 pub mod prelude {
-  /// Re-export commonly used items from _types.
   pub use crate::_types::prelude::*;
+  pub use crate::di::prelude::*;
 }
 
 #[cfg(test)]
