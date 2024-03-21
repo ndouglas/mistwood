@@ -13,26 +13,8 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Update local toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-          components: clippy,rustfmt
-
-      - name: Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update;
-          sudo apt-get install -y \
-            libasound2-dev \
-            portaudio19-dev \
-            build-essential \
-            libpulse-dev \
-            libdbus-1-dev \
-            libudev-dev \
-            ;
+      - name: Post-Checkout Actions
+        uses: ./.github/actions/post-checkout
 
       - name: Install cargo-llvm-cov
         uses: taiki-e/install-action@47d27149ff6b3422864ec504071d5cc7873d642e # v2.8.15

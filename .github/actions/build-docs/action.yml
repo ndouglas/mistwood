@@ -1,0 +1,14 @@
+name: "Build Docs"
+description: "Builds project documentation."
+inputs: {}
+runs:
+  using: "composite"
+  steps:
+
+    - name: Install mdbook
+      uses: peaceiris/actions-mdbook@v1.2.0
+      with:
+        mdbook-version: "0.4.7"
+
+    - name: Generate book from markdown
+      run: './scripts/build_docs.sh'
