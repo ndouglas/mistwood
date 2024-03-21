@@ -22,6 +22,7 @@ derivative = "2.2.0"
 derive_builder = "0.20.0"
 derive_more = "0.99.17"
 futures = "0.3.30"
+handlebars = "5.1.0"
 log = "0.4.21"
 mlua = { version = "0.9.6", features = [
   "async",
