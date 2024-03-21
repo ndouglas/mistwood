@@ -1,0 +1,9 @@
+## Dwarves, Goblins, and the Underdark
+
+The feeling I want for the abandoned mountain dwarf kingdom is very similar to that of Zork; there’s a sense of grandeur, tragedy, and haunting beauty, but also humor (bureaucratic humor, absurdity, etc).  The dwarves are like an absolutist bureaucracy.  They don’t have to worry about competition and are extremely good at what they do, so consequently they’re short-sighted.
+
+Dwarves don’t have beasts of burden, so they can only migrate short distances.  They tend to honeycomb a particular mountain and gradually, over generations, migrate to neighboring areas, leaving behind empty systems teeming with traps, forgotten treasures, etc.
+
+The underdark is survival horror.  Going down thirty levels in the underdark should be absolutely terrifying.  The fundamental food source in the underdark is based on organisms that live around volcanic vents, luminescent microorganisms, etc.  The food chain is very stable, but it’s also limited to specific locations.  There are many things that live deep in the earth that can and will eat a dwarf (or a human, etc), but they don’t tend to actively seek them out.  They don’t tend to compete for resources with dwarves, so conflict tends to be intermittent.
+
+Goblins are small creatures, about three feet high at the limit.  They’re somewhat cunning, but physically weak, and breed rapidly.  They’re extremely suspicious of and hostile to outsiders, most of whom are substantially larger and more powerful.  They can be enslaved, but they tend to be difficult to manage and usually escape sooner or later.  They don’t have an aptitude for magic, but they greatly value it.  They tend toward religion because they can form alliances with minor deities to defend themselves and improve their lot, and are uncaring about what havoc they’re asked to wreak in return.
