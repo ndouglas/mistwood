@@ -45,7 +45,7 @@ The Message Template Provider is a trait describing an object that provides mess
 
 ### Message Template Provider Registry
 
-The Message Template Provider Registry maintains a HashMap<MessageVoucherClass, Box<dyn MessageTemplateProvider>> of Message Template Providers. The registry simply proxies the exchange of the message template voucher for the message template. The message template provider registry should be a globally accessible service.
+The Message Template Provider Registry maintains a HashMap<MessageVoucherClass, Box<dyn MessageTemplateList>> of Message Template Providers. The registry simply proxies the exchange of the message template voucher for the message template. The message template provider registry should be a globally accessible service.
 
 ### Message Metadata
 

@@ -1,6 +1,6 @@
 use crate::di::prelude::Builder;
 use crate::messaging::prelude::MessagingError;
-use crate::messaging::prelude::TemplateProvider;
+use crate::messaging::prelude::TemplateList;
 use rand::prelude::*;
 
 /// The Template Provider Registry is a registry of Template Providers.
@@ -21,7 +21,7 @@ impl TemplateProviderRegistry {
   }
 
   /// Get a template from the provider.
-  pub fn get_template<T: TemplateProvider + 'static>(&mut self) -> Result<String, MessagingError> {
+  pub fn get_template<T: TemplateList + 'static>(&mut self) -> Result<String, MessagingError> {
     let number = self.rng.gen::<usize>();
     T::get_template(number)
   }
@@ -50,9 +50,9 @@ mod tests {
   use pretty_assertions::assert_eq;
   use rand::rngs::mock::StepRng;
 
-  struct TestTemplateProvider;
+  struct TestTemplateList;
 
-  impl TemplateProvider for TestTemplateProvider {
+  impl TemplateList for TestTemplateList {
     const TEMPLATES: &'static [&'static str] = &["a tisket", "a tasket", "a green and yellow basket"];
   }
 
@@ -63,19 +63,19 @@ mod tests {
     let mut registry = TemplateProviderRegistry::new();
     registry.rng = Box::new(step_rng);
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>().unwrap(),
+      registry.get_template::<TestTemplateList>().unwrap(),
       "a tisket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>().unwrap(),
+      registry.get_template::<TestTemplateList>().unwrap(),
       "a tasket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>().unwrap(),
+      registry.get_template::<TestTemplateList>().unwrap(),
       "a green and yellow basket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>().unwrap(),
+      registry.get_template::<TestTemplateList>().unwrap(),
       "a tisket".to_string()
     );
   }
@@ -89,7 +89,7 @@ mod tests {
     let mut registry = binding.lock().unwrap();
     registry.rng = Box::new(StepRng::new(2, 1));
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>().unwrap(),
+      registry.get_template::<TestTemplateList>().unwrap(),
       "a green and yellow basket".to_string()
     );
   }
