@@ -9,8 +9,8 @@ pub mod gravity;
 pub mod message;
 /// The Template Processor is a wrapper around Handlebars.
 pub mod template_processor;
-/// The Template Provider Registry is a registry of Template Providers.
-pub mod template_provider_registry;
+/// The Template Provider proxies requests to Template Lists.
+pub mod template_provider;
 
 /// Prelude.
 pub mod prelude {
@@ -19,5 +19,5 @@ pub mod prelude {
   pub use super::gravity::Gravity;
   pub use super::message::Message;
   pub use super::template_processor::TemplateProcessor;
-  pub use super::template_provider_registry::TemplateProviderRegistry;
+  pub use super::template_provider::TemplateProvider;
 }

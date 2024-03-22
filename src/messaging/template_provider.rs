@@ -3,16 +3,19 @@ use crate::messaging::prelude::MessagingError;
 use crate::messaging::prelude::TemplateList;
 use rand::prelude::*;
 
-/// The Template Provider Registry is a registry of Template Providers.
+/// The Template Provider proxies requests to Template Lists.
+///
+/// It provides a random number generator and a method to get a template from a
+/// template list.
 #[derive(Derivative)]
 #[derivative(Debug)]
-pub struct TemplateProviderRegistry {
+pub struct TemplateProvider {
   /// The random number generator.
   #[derivative(Debug = "ignore")]
   pub rng: Box<dyn RngCore>,
 }
 
-impl TemplateProviderRegistry {
+impl TemplateProvider {
   /// Create a new instance with a specified random number generator.
   pub fn new() -> Self {
     Self {
@@ -27,19 +30,19 @@ impl TemplateProviderRegistry {
   }
 }
 
-impl Default for TemplateProviderRegistry {
+impl Default for TemplateProvider {
   fn default() -> Self {
     Self::new()
   }
 }
 
-/// A builder for the `TemplateProviderRegistry`.
-impl Builder for TemplateProviderRegistry {
+/// A builder for the `TemplateProvider`.
+impl Builder for TemplateProvider {
   type Input = ();
-  type Output = TemplateProviderRegistry;
+  type Output = TemplateProvider;
 
   fn build(_: Self::Input) -> Self::Output {
-    TemplateProviderRegistry::new()
+    TemplateProvider::new()
   }
 }
 
@@ -60,7 +63,7 @@ mod tests {
   fn test_template_provider_registry() {
     test_init();
     let step_rng = StepRng::new(0, 1);
-    let mut registry = TemplateProviderRegistry::new();
+    let mut registry = TemplateProvider::new();
     registry.rng = Box::new(step_rng);
     assert_eq!(
       registry.get_template::<TestTemplateList>().unwrap(),
@@ -84,8 +87,8 @@ mod tests {
   fn test_template_provider_registry_builder() {
     test_init();
     let mut container = crate::di::prelude::Container::new();
-    container.build::<TemplateProviderRegistry>();
-    let binding = container.get::<TemplateProviderRegistry>().unwrap();
+    container.build::<TemplateProvider>();
+    let binding = container.get::<TemplateProvider>().unwrap();
     let mut registry = binding.lock().unwrap();
     registry.rng = Box::new(StepRng::new(2, 1));
     assert_eq!(
