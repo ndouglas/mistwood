@@ -7,9 +7,9 @@
 //! This crate provides a set of tools for building text-based games:
 //!
 //! - **Dependency Injection**: A system for managing game state and providing
-//!   services to game objects. Doing this in a performant, flexible, and safe
-//!   way is absolutely necessary.
-//!
+//!   services to game objects.
+//! - **Messaging**: A highly extensible system for creating messages that can
+//!   be displayed to the player, based on template processing.
 //!
 
 // Linting.
