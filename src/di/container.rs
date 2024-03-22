@@ -15,8 +15,8 @@ use std::sync::{Arc, Mutex};
 /// # Example
 ///
 /// ```rust
-/// use mistwood::prelude::Builder;
-/// use mistwood::prelude::Container;
+/// use mistwood::di::prelude::Builder;
+/// use mistwood::di::prelude::Container;
 ///
 /// #[derive(Debug, PartialEq)]
 /// struct NewString(String);
