@@ -1,3 +1,4 @@
+use crate::di::prelude::Builder;
 use crate::messaging::_traits::template_provider::TemplateProvider;
 use crate::messaging::prelude::Template;
 use crate::prelude::TypeMap;
@@ -20,6 +21,16 @@ impl TemplateProviderRegistry {
   /// Get a template from the provider.
   pub fn get_template<T: TemplateProvider + 'static>(&self, number: i64) -> Option<Template> {
     self.0.get::<T>().map(|provider| provider.get_template(number))
+  }
+}
+
+/// A builder for the `TemplateProviderRegistry`.
+impl Builder for TemplateProviderRegistry {
+  type Input = ();
+  type Output = TemplateProviderRegistry;
+
+  fn build(_: Self::Input) -> Self::Output {
+    TemplateProviderRegistry::new()
   }
 }
 
@@ -66,6 +77,26 @@ mod tests {
     );
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(3),
+      Some(Template::Static("a static string"))
+    );
+  }
+
+  #[test]
+  fn test_template_provider_registry_builder() {
+    test_init();
+    let mut container = crate::di::prelude::Container::new();
+    container.build::<TemplateProviderRegistry>();
+    let binding = container.get::<TemplateProviderRegistry>().unwrap();
+    let mut registry = binding.lock().unwrap();
+    registry.set::<TestTemplateProvider>(TestTemplateProvider {
+      templates: vec![
+        Template::Static("a static string"),
+        Template::Borrowed("a borrowed string"),
+        Template::Owned("an owned string".to_string()),
+      ],
+    });
+    assert_eq!(
+      registry.get_template::<TestTemplateProvider>(0),
       Some(Template::Static("a static string"))
     );
   }
