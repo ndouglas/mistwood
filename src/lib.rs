@@ -64,6 +64,9 @@ extern crate derive_more;
 extern crate log;
 #[allow(unused_imports)]
 #[macro_use]
+extern crate paste;
+#[allow(unused_imports)]
+#[macro_use]
 extern crate serde;
 #[allow(unused_imports)]
 #[macro_use]

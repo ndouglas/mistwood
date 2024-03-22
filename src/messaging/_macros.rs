@@ -1,12 +1,6 @@
-/// A macro to generate a list of templates for a struct.
-#[macro_export]
-macro_rules! template_list {
-  ($struct_name:ident, [$($template:expr),* $(,)?]) => {
-    pub struct $struct_name;
-    impl TemplateList for $struct_name {
-      const TEMPLATES: &'static [&'static str] = &[
-        $($template),*
-      ];
-    }
-  };
-}
+/// Create a message from a template struct and data.
+#[macro_use]
+pub mod create_message;
+/// Define a list of templates for a given struct, with an optional schema.
+#[macro_use]
+pub mod template_list;

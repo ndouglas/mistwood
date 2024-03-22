@@ -1,7 +1,19 @@
 use crate::di::prelude::Builder;
+use crate::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
+use crate::messaging::prelude::Message;
+use crate::messaging::prelude::MessagingError;
 
 /// We use Handlebars to process templates.
 pub use handlebars::Handlebars as TemplateProcessor;
+
+impl TemplateProcessorTrait for TemplateProcessor<'static> {
+  /// Process a message.
+  fn process_message(&self, message: &Message) -> Result<String, MessagingError> {
+    let template = &message.template;
+    let data = &message.data;
+    Ok(self.render_template(template, data)?)
+  }
+}
 
 /// A builder for the `TemplateProcessor`.
 impl Builder for TemplateProcessor<'static> {
