@@ -5,6 +5,8 @@ pub mod _traits;
 pub mod gravity;
 /// The Template contains the specific format of the message.
 pub mod template;
+/// The Template Processor is a wrapper around Handlebars.
+pub mod template_processor;
 /// The Template Provider Registry is a registry of Template Providers.
 pub mod template_provider_registry;
 
