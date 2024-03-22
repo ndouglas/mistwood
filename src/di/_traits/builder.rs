@@ -7,7 +7,7 @@ use crate::di::_traits::get_input::GetInput;
 /// # Example
 ///
 /// ```rust
-/// use mistwood::prelude::Builder;
+/// use mistwood::di::prelude::Builder;
 ///
 /// struct MyBuilder;
 ///

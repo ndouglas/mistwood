@@ -81,9 +81,7 @@ pub mod messaging;
 
 /// Prelude for the library.
 pub mod prelude {
-  pub use crate::_types::prelude::*;
-  pub use crate::di::prelude::*;
-  pub use crate::messaging::prelude::*;
+  pub use crate::_types::prelude::TypeMap;
 }
 
 #[cfg(test)]

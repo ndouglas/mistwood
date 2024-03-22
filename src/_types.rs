@@ -3,5 +3,5 @@ pub mod type_map;
 
 /// Prelude.
 pub mod prelude {
-  pub use super::type_map::*;
+  pub use super::type_map::TypeMap;
 }
