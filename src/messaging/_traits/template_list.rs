@@ -1,6 +1,6 @@
 use crate::messaging::_error::MessagingError;
 
-/// This trait describes a struct that provides message templates. It simply
+/// This trait describes a struct that contains message templates. It simply
 /// takes an integer and returns a message template from its list; normally,
 /// it's just going to return the message template at $number % $vector_length.
 /// Errors should just not occur at this point.
