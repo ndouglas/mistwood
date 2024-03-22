@@ -1,6 +1,7 @@
 /// Error types for Messaging.
 pub mod _error;
 /// Macros for Messaging.
+#[macro_use]
 pub mod _macros;
 /// Includes Messaging-specific traits.
 pub mod _traits;

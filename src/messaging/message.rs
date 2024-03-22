@@ -17,15 +17,3 @@ pub struct Message {
   #[derivative(PartialOrd = "ignore")]
   pub metadata: Option<JsonValue>,
 }
-
-impl Message {
-  /// Create a new message.
-  pub fn new(template: String, gravity: Gravity, data: JsonValue, metadata: Option<JsonValue>) -> Self {
-    Self {
-      template,
-      gravity,
-      data,
-      metadata,
-    }
-  }
-}
