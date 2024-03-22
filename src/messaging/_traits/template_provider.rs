@@ -1,11 +1,29 @@
-/// This trait describes an object that provides message templates. It may be a
-/// struct or an enum variant. It simply takes an integer and returns a message
-/// template from its list; normally, it's just going to return the message
-/// template at $number % $vector_length. Errors should just not occur at this
-/// point.
+use crate::messaging::_error::MessagingError;
+
+/// This trait describes a struct that provides message templates. It simply
+/// takes an integer and returns a message template from its list; normally,
+/// it's just going to return the message template at $number % $vector_length.
+/// Errors should just not occur at this point.
 pub trait TemplateProvider {
-  /// Produces a string from the given number.
-  fn get_template(&self, number: i64) -> String;
+  /// The list of templates provided.
+  ///
+  /// Each template is written in Handlebars syntax.
+  ///
+  /// Examples:
+  /// - "Hello, world!"
+  /// - "Thank you for playing {{ game_name }}!"
+  const TEMPLATES: &'static [&'static str];
+
+  /// Get a template.
+  fn get_template(number: usize) -> Result<String, MessagingError> {
+    if Self::TEMPLATES.is_empty() {
+      return Err(MessagingError::NoTemplatesInTemplateProvider);
+    }
+    let length = Self::TEMPLATES.len();
+    let index = number % length;
+    let template = Self::TEMPLATES[index].to_string();
+    Ok(template)
+  }
 }
 
 #[cfg(test)]
@@ -14,24 +32,22 @@ mod test {
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 
-  #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-  struct TestTemplateProvider {
-    templates: Vec<String>,
-  }
+  struct TestTemplateProvider;
 
   impl TemplateProvider for TestTemplateProvider {
-    fn get_template(&self, number: i64) -> String {
-      self.templates[(number % self.templates.len() as i64) as usize].clone()
-    }
+    const TEMPLATES: &'static [&'static str] = &["Hello, world!", "Goodbye, world!"];
   }
 
   #[test]
   fn test_template_provider() {
     test_init();
-    let provider = TestTemplateProvider {
-      templates: vec!["Hello, world!".to_string(), "Goodbye, world!".to_string()],
-    };
-    assert_eq!(provider.get_template(0), "Hello, world!".to_string());
-    assert_eq!(provider.get_template(1), "Goodbye, world!".to_string());
+    assert_eq!(
+      TestTemplateProvider::get_template(0).unwrap(),
+      "Hello, world!".to_string()
+    );
+    assert_eq!(
+      TestTemplateProvider::get_template(1).unwrap(),
+      "Goodbye, world!".to_string()
+    );
   }
 }
