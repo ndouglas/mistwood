@@ -9,6 +9,7 @@ impl Builder for TemplateProcessor<'static> {
   type Output = TemplateProcessor<'static>;
 
   fn build(_: Self::Input) -> Self::Output {
+    #[allow(unused_mut)]
     let mut result = TemplateProcessor::new();
     #[cfg(debug_assertions)]
     {
