@@ -15,7 +15,7 @@ pub mod template_provider_registry;
 /// Prelude.
 pub mod prelude {
   pub use super::_error::MessagingError;
-  pub use super::_traits::template_provider::TemplateProvider;
+  pub use super::_traits::template_list::TemplateList;
   pub use super::gravity::Gravity;
   pub use super::message::Message;
   pub use super::template_processor::TemplateProcessor;
