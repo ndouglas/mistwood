@@ -1,6 +1,5 @@
 use crate::di::prelude::Builder;
 use crate::messaging::_traits::template_provider::TemplateProvider;
-use crate::messaging::prelude::Template;
 use crate::prelude::TypeMap;
 
 /// The Template Provider Registry is a registry of Template Providers.
@@ -19,7 +18,7 @@ impl TemplateProviderRegistry {
   }
 
   /// Get a template from the provider.
-  pub fn get_template<T: TemplateProvider + 'static>(&self, number: i64) -> Option<Template> {
+  pub fn get_template<T: TemplateProvider + 'static>(&self, number: i64) -> Option<String> {
     self.0.get::<T>().map(|provider| provider.get_template(number))
   }
 }
@@ -42,11 +41,11 @@ mod tests {
 
   #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
   struct TestTemplateProvider {
-    templates: Vec<Template<'static>>,
+    templates: Vec<String>,
   }
 
   impl TemplateProvider for TestTemplateProvider {
-    fn get_template(&self, number: i64) -> Template {
+    fn get_template(&self, number: i64) -> String {
       self.templates[(number % self.templates.len() as i64) as usize].clone()
     }
   }
@@ -57,27 +56,27 @@ mod tests {
     let mut registry = TemplateProviderRegistry::new();
     let provider = TestTemplateProvider {
       templates: vec![
-        Template::Static("a static string"),
-        Template::Borrowed("a borrowed string"),
-        Template::Owned("an owned string".to_string()),
+        "a tisket".to_string(),
+        "a tasket".to_string(),
+        "a green and yellow basket".to_string(),
       ],
     };
     registry.set(provider.clone());
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(0),
-      Some(Template::Static("a static string"))
+      Some("a tisket".to_string())
     );
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(1),
-      Some(Template::Borrowed("a borrowed string"))
+      Some("a tasket".to_string())
     );
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(2),
-      Some(Template::Owned("an owned string".to_string()))
+      Some("a green and yellow basket".to_string())
     );
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(3),
-      Some(Template::Static("a static string"))
+      Some("a tisket".to_string())
     );
   }
 
@@ -90,14 +89,13 @@ mod tests {
     let mut registry = binding.lock().unwrap();
     registry.set::<TestTemplateProvider>(TestTemplateProvider {
       templates: vec![
-        Template::Static("a static string"),
-        Template::Borrowed("a borrowed string"),
-        Template::Owned("an owned string".to_string()),
+        "all creatures great and small".to_string(),
+        "all things wise and wonderful".to_string(),
       ],
     });
     assert_eq!(
       registry.get_template::<TestTemplateProvider>(0),
-      Some(Template::Static("a static string"))
+      Some("all creatures great and small".to_string())
     );
   }
 }
