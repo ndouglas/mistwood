@@ -1,25 +1,35 @@
 use crate::di::prelude::Builder;
-use crate::messaging::_traits::template_provider::TemplateProvider;
-use crate::prelude::TypeMap;
+use crate::messaging::prelude::MessagingError;
+use crate::messaging::prelude::TemplateProvider;
+use rand::prelude::*;
 
 /// The Template Provider Registry is a registry of Template Providers.
-#[derive(Debug, Default)]
-pub struct TemplateProviderRegistry(pub TypeMap);
+#[derive(Derivative)]
+#[derivative(Debug)]
+pub struct TemplateProviderRegistry {
+  /// The random number generator.
+  #[derivative(Debug = "ignore")]
+  pub rng: Box<dyn RngCore>,
+}
 
 impl TemplateProviderRegistry {
-  /// Create a new, empty `TemplateProviderRegistry`.
+  /// Create a new instance with a specified random number generator.
   pub fn new() -> Self {
-    Self(TypeMap::new())
-  }
-
-  /// Set a template provider.
-  pub fn set<T: TemplateProvider + 'static>(&mut self, t: T) {
-    self.0.set::<T>(t);
+    Self {
+      rng: Box::new(thread_rng()),
+    }
   }
 
   /// Get a template from the provider.
-  pub fn get_template<T: TemplateProvider + 'static>(&self, number: i64) -> Option<String> {
-    self.0.get::<T>().map(|provider| provider.get_template(number))
+  pub fn get_template<T: TemplateProvider + 'static>(&mut self) -> Result<String, MessagingError> {
+    let number = self.rng.gen::<usize>();
+    T::get_template(number)
+  }
+}
+
+impl Default for TemplateProviderRegistry {
+  fn default() -> Self {
+    Self::new()
   }
 }
 
@@ -38,45 +48,35 @@ mod tests {
   use super::*;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
+  use rand::rngs::mock::StepRng;
 
-  #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-  struct TestTemplateProvider {
-    templates: Vec<String>,
-  }
+  struct TestTemplateProvider;
 
   impl TemplateProvider for TestTemplateProvider {
-    fn get_template(&self, number: i64) -> String {
-      self.templates[(number % self.templates.len() as i64) as usize].clone()
-    }
+    const TEMPLATES: &'static [&'static str] = &["a tisket", "a tasket", "a green and yellow basket"];
   }
 
   #[test]
   fn test_template_provider_registry() {
     test_init();
+    let step_rng = StepRng::new(0, 1);
     let mut registry = TemplateProviderRegistry::new();
-    let provider = TestTemplateProvider {
-      templates: vec![
-        "a tisket".to_string(),
-        "a tasket".to_string(),
-        "a green and yellow basket".to_string(),
-      ],
-    };
-    registry.set(provider.clone());
+    registry.rng = Box::new(step_rng);
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>(0),
-      Some("a tisket".to_string())
+      registry.get_template::<TestTemplateProvider>().unwrap(),
+      "a tisket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>(1),
-      Some("a tasket".to_string())
+      registry.get_template::<TestTemplateProvider>().unwrap(),
+      "a tasket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>(2),
-      Some("a green and yellow basket".to_string())
+      registry.get_template::<TestTemplateProvider>().unwrap(),
+      "a green and yellow basket".to_string()
     );
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>(3),
-      Some("a tisket".to_string())
+      registry.get_template::<TestTemplateProvider>().unwrap(),
+      "a tisket".to_string()
     );
   }
 
@@ -87,15 +87,10 @@ mod tests {
     container.build::<TemplateProviderRegistry>();
     let binding = container.get::<TemplateProviderRegistry>().unwrap();
     let mut registry = binding.lock().unwrap();
-    registry.set::<TestTemplateProvider>(TestTemplateProvider {
-      templates: vec![
-        "all creatures great and small".to_string(),
-        "all things wise and wonderful".to_string(),
-      ],
-    });
+    registry.rng = Box::new(StepRng::new(2, 1));
     assert_eq!(
-      registry.get_template::<TestTemplateProvider>(0),
-      Some("all creatures great and small".to_string())
+      registry.get_template::<TestTemplateProvider>().unwrap(),
+      "a green and yellow basket".to_string()
     );
   }
 }

@@ -1,3 +1,5 @@
+/// Error types for Messaging.
+pub mod _error;
 /// Includes Messaging-specific traits.
 pub mod _traits;
 /// The Gravity of the message indicates the general seriousness or severity
@@ -12,6 +14,7 @@ pub mod template_provider_registry;
 
 /// Prelude.
 pub mod prelude {
+  pub use super::_error::MessagingError;
   pub use super::_traits::template_provider::TemplateProvider;
   pub use super::gravity::Gravity;
   pub use super::message::Message;
