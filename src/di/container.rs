@@ -1,3 +1,4 @@
+use crate::di::_error::DiError;
 use crate::di::_traits::builder::Builder;
 use crate::di::_traits::get_input::GetInput;
 use crate::di::_traits::input_provider::InputProvider;
@@ -17,6 +18,7 @@ use std::sync::{Arc, Mutex};
 /// ```rust
 /// use mistwood::di::prelude::Builder;
 /// use mistwood::di::prelude::Container;
+/// use mistwood::di::prelude::DiError;
 ///
 /// #[derive(Debug, PartialEq)]
 /// struct NewString(String);
@@ -24,8 +26,8 @@ use std::sync::{Arc, Mutex};
 /// impl Builder for NewString {
 ///   type Input = ();
 ///   type Output = NewString;
-///   fn build(_: Self::Input) -> Self::Output {
-///     NewString("Hello, world!".to_string())
+///   fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+///     Ok(NewString("Hello, world!".to_string()))
 ///   }
 /// }
 ///
@@ -44,30 +46,35 @@ impl Container {
   }
 
   /// Set a value of type `T`.
-  pub fn build<T: Builder>(&mut self) -> Option<Object<T::Output>> {
+  pub fn build<T: Builder>(&mut self) -> Result<Object<T::Output>, DiError> {
     let input = T::Input::get_input(self)?;
-    let object = T::build(input);
+    let object = T::build(input)?;
     let sync_object = Arc::new(Mutex::new(object));
     self.0.set::<Object<T::Output>>(sync_object.clone());
-    Some(sync_object)
+    Ok(sync_object)
   }
 
   /// Get a reference to a value of type `T`.
-  pub fn get<T: Builder + 'static>(&self) -> Option<Object<T>> {
-    self.0.get::<Object<T>>().cloned()
+  pub fn get<T: 'static>(&self) -> Result<Object<T>, DiError> {
+    if let Some(object) = self.0.get::<Object<T>>() {
+      Ok(object.clone())
+    } else {
+      Err(DiError::NotFound(format!("{} not found", std::any::type_name::<T>())))
+    }
   }
 }
 
 impl InputProvider for Container {
   /// Provide the requested input from the container.
-  fn provide<T: 'static>(&self) -> Option<Object<T>> {
-    self.0.get::<Object<T>>().cloned()
+  fn provide<T: 'static>(&self) -> Result<Object<T>, DiError> {
+    self.get::<T>()
   }
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::di::_error::DiError;
 
   #[derive(Debug, PartialEq)]
   struct NewString(String);
@@ -75,8 +82,8 @@ mod tests {
   impl Builder for NewString {
     type Input = ();
     type Output = NewString;
-    fn build(_: Self::Input) -> Self::Output {
-      NewString("Hello, world!".to_string())
+    fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+      Ok(NewString("Hello, world!".to_string()))
     }
   }
 
@@ -86,8 +93,8 @@ mod tests {
   impl Builder for NewInt {
     type Input = ();
     type Output = NewInt;
-    fn build(_: Self::Input) -> Self::Output {
-      NewInt(42)
+    fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+      Ok(NewInt(42))
     }
   }
 
@@ -99,8 +106,8 @@ mod tests {
   impl Builder for IntContainer {
     type Input = Object<NewInt>;
     type Output = IntContainer;
-    fn build(new_int: Self::Input) -> Self::Output {
-      IntContainer { new_int }
+    fn build(new_int: Self::Input) -> Result<Self::Output, DiError> {
+      Ok(IntContainer { new_int })
     }
   }
 
@@ -113,18 +120,18 @@ mod tests {
   impl Builder for FactProvider {
     type Input = (Object<NewString>, Object<IntContainer>);
     type Output = FactProvider;
-    fn build((new_string, int_container): Self::Input) -> Self::Output {
-      FactProvider {
+    fn build((new_string, int_container): Self::Input) -> Result<Self::Output, DiError> {
+      Ok(FactProvider {
         new_string,
         int_container,
-      }
+      })
     }
   }
 
   #[test]
   fn test_container() {
     let mut container = Container::new();
-    container.build::<NewString>();
+    container.build::<NewString>().unwrap();
     let string = container.get::<NewString>().unwrap();
     assert_eq!(string.lock().unwrap().0, "Hello, world!".to_string());
   }
@@ -132,10 +139,10 @@ mod tests {
   #[test]
   fn test_fact_provider() {
     let mut container = Container::new();
-    container.build::<NewString>();
-    container.build::<NewInt>();
-    container.build::<IntContainer>();
-    container.build::<FactProvider>();
+    container.build::<NewString>().unwrap();
+    container.build::<NewInt>().unwrap();
+    container.build::<IntContainer>().unwrap();
+    container.build::<FactProvider>().unwrap();
     let fact_provider = container.get::<FactProvider>().unwrap();
     assert_eq!(
       fact_provider.lock().unwrap().new_string.lock().unwrap().0,

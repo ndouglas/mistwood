@@ -1,4 +1,5 @@
 use crate::di::prelude::Builder;
+use crate::di::prelude::DiError;
 use crate::prng::_traits::factory::Factory as FactoryTrait;
 use rand::prelude::*;
 use rand::rngs::mock::StepRng;
@@ -33,8 +34,8 @@ impl Builder for Factory {
   type Input = ();
   type Output = Factory;
 
-  fn build(_: Self::Input) -> Self::Output {
-    Factory::new()
+  fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+    Ok(Factory::new())
   }
 }
 

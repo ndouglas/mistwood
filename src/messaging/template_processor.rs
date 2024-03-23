@@ -1,4 +1,5 @@
 use crate::di::prelude::Builder;
+use crate::di::prelude::DiError;
 use crate::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use crate::messaging::prelude::Message;
 use crate::messaging::prelude::MessagingError;
@@ -20,14 +21,14 @@ impl Builder for TemplateProcessor<'static> {
   type Input = ();
   type Output = TemplateProcessor<'static>;
 
-  fn build(_: Self::Input) -> Self::Output {
+  fn build(_: Self::Input) -> Result<Self::Output, DiError> {
     #[allow(unused_mut)]
     let mut result = TemplateProcessor::new();
     #[cfg(debug_assertions)]
     {
       result.set_dev_mode(true);
     }
-    result
+    Ok(result)
   }
 }
 
@@ -43,7 +44,7 @@ mod tests {
   fn test_template_processor() {
     test_init();
     let mut container = Container::new();
-    container.build::<TemplateProcessor>();
+    container.build::<TemplateProcessor>().unwrap();
     let binding = container.get::<TemplateProcessor>().unwrap();
     let template_processor = binding.lock().unwrap();
     assert_eq!(template_processor.dev_mode(), cfg!(debug_assertions));
