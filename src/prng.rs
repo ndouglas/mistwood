@@ -1,4 +1,6 @@
-/// Types for pseudorandom number generators.
+/// Traits.
+pub mod _traits;
+/// Types.
 pub mod _types;
 /// A pseudorandom number generator factory.
 pub mod factory;
