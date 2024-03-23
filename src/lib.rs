@@ -81,6 +81,8 @@ pub mod _types;
 pub mod di;
 /// Message processing.
 pub mod messaging;
+/// Pseudorandom number generation and related utilities.
+pub mod prng;
 
 /// Prelude for the library.
 pub mod prelude {
