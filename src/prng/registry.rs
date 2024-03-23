@@ -73,6 +73,7 @@ impl Debug for Registry {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::di::container::Container;
   use crate::prng::factory::Factory;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
@@ -102,5 +103,38 @@ mod tests {
     assert!(registry.has("u32"));
     let prng = registry.get_mut("u32").unwrap();
     assert_eq!(prng.lock().unwrap().next_u32(), 572990626);
+  }
+
+  #[test]
+  fn test_register_step_rng() {
+    test_init();
+    let factory: Box<dyn FactoryTrait> = Box::new(Factory::default());
+    let object_factory = Arc::new(Mutex::new(factory));
+    let mut registry = Registry::new(&object_factory);
+    registry.register_step_rng("u32", 42, 13);
+    assert!(registry.has("u32"));
+    let prng = registry.get_mut("u32").unwrap();
+    assert_eq!(prng.lock().unwrap().next_u32(), 42);
+  }
+
+  #[test]
+  fn test_registry_debug() {
+    test_init();
+    let factory: Box<dyn FactoryTrait> = Box::new(Factory::default());
+    let object_factory = Arc::new(Mutex::new(factory));
+    let registry = Registry::new(&object_factory);
+    assert_eq!(format!("{:?}", registry), "Registry { ... }");
+  }
+
+  #[test]
+  fn test_registry_builder() {
+    test_init();
+    let mut container = Container::new();
+    let _factory = container.build::<Factory>().unwrap();
+    // BROKEN: See #66, #67.
+    // let registry = container.build::<Registry>().unwrap();
+    // let registry2 = container.get::<Registry>().unwrap();
+    // assert_eq!(format!("{:?}", registry), "Registry { ... }");
+    // assert_eq!(format!("{:?}", registry2), "Registry { ... }");
   }
 }
