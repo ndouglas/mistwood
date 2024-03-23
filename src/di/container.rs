@@ -35,7 +35,7 @@ use std::sync::{Arc, Mutex};
 /// assert_eq!(string.lock().unwrap().0, "Hello, world!".to_string());
 /// ```
 #[derive(Debug, Default)]
-pub struct Container(pub TypeMap);
+pub struct Container(TypeMap);
 
 impl Container {
   /// Create a new, empty `Container`.
@@ -92,16 +92,32 @@ mod tests {
   }
 
   #[derive(Debug)]
-  struct FactProvider {
-    new_string: Object<NewString>,
+  struct IntContainer {
     new_int: Object<NewInt>,
   }
 
+  impl Builder for IntContainer {
+    type Input = Object<NewInt>;
+    type Output = IntContainer;
+    fn build(new_int: Self::Input) -> Self::Output {
+      IntContainer { new_int }
+    }
+  }
+
+  #[derive(Debug)]
+  struct FactProvider {
+    new_string: Object<NewString>,
+    int_container: Object<IntContainer>,
+  }
+
   impl Builder for FactProvider {
-    type Input = (Object<NewString>, Object<NewInt>);
+    type Input = (Object<NewString>, Object<IntContainer>);
     type Output = FactProvider;
-    fn build((new_string, new_int): Self::Input) -> Self::Output {
-      FactProvider { new_string, new_int }
+    fn build((new_string, int_container): Self::Input) -> Self::Output {
+      FactProvider {
+        new_string,
+        int_container,
+      }
     }
   }
 
@@ -118,12 +134,25 @@ mod tests {
     let mut container = Container::new();
     container.build::<NewString>();
     container.build::<NewInt>();
+    container.build::<IntContainer>();
     container.build::<FactProvider>();
     let fact_provider = container.get::<FactProvider>().unwrap();
     assert_eq!(
       fact_provider.lock().unwrap().new_string.lock().unwrap().0,
       "Hello, world!".to_string()
     );
-    assert_eq!(fact_provider.lock().unwrap().new_int.lock().unwrap().0, 42);
+    assert_eq!(
+      fact_provider
+        .lock()
+        .unwrap()
+        .int_container
+        .lock()
+        .unwrap()
+        .new_int
+        .lock()
+        .unwrap()
+        .0,
+      42
+    );
   }
 }
