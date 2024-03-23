@@ -2,22 +2,18 @@
 #[macro_export]
 macro_rules! create_message {
   // Variant with data
-  ($template_struct:ident, $gravity:expr, {$($data_key:ident: $data_value:expr),* $(,)?}) => {{
+  ($template_provider:expr, $template_struct:ident, $gravity:expr, {$($data_key:ident: $data_value:expr),* $(,)?}) => {{
     paste::paste! {
-      // Force a compile error if the template struct does not implement the
-      // DataTemplate trait. This means the template does not require data.
+      // Create a struct to hold the data for the template.
+      // Missing fields will cause a compile error.
       type TemplateDataType = <$template_struct as $crate::messaging::_traits::data_template::DataTemplate>::DataType;
       let data = TemplateDataType {
         $($data_key: $data_value),*
       };
+      // Serialize the data to JSON.
       let data_json = serde_json::to_value(&data).expect(&format!("failed to serialize {:#?}", data));
       let message_gravity = $gravity;
-      // @todo: Remove this once Template Provider service is implemented.
-      let mut template_provider = $crate::messaging::template_provider::TemplateProvider::new();
-      // @todo: Remove this once RNG service is implemented.
-      let step_rng = rand::rngs::mock::StepRng::new(0, 0);
-      template_provider.rng = Box::new(step_rng);
-      let template_string = template_provider.get_template::<$template_struct>()
+      let template_string = $template_provider.get_template::<$template_struct>()
         .expect("failed to retrieve template");
       $crate::messaging::prelude::Message {
         template: template_string,
@@ -28,19 +24,14 @@ macro_rules! create_message {
     }
   }};
   // Variant without data
-  ($template_struct:ident, $gravity:expr) => {{
+  ($template_provider:expr, $template_struct:ident, $gravity:expr) => {{
     paste::paste! {
       // Force a compile error if the template struct does not implement the
       // SimpleTemplate trait. This means that the template requires data.
       let _: &dyn $crate::messaging::_traits::simple_template::SimpleTemplate = &$template_struct;
       let data_json = serde_json::Value::Null;
       let message_gravity = $gravity;
-      // @todo: Remove this once Template Provider service is implemented.
-      let mut template_provider = $crate::messaging::template_provider::TemplateProvider::new();
-      // @todo: Remove this once RNG service is implemented.
-      let step_rng = rand::rngs::mock::StepRng::new(0, 0);
-      template_provider.rng = Box::new(step_rng);
-      let template_string = template_provider.get_template::<$template_struct>()
+      let template_string = $template_provider.get_template::<$template_struct>()
         .expect("failed to retrieve template");
       $crate::messaging::prelude::Message {
         template: template_string,
@@ -56,12 +47,12 @@ macro_rules! create_message {
 #[macro_export]
 macro_rules! info_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Info, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Info, {$($data_key: $data_value),*})
   };
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Info)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Info)
   };
 }
 
@@ -69,12 +60,12 @@ macro_rules! info_message {
 #[macro_export]
 macro_rules! notice_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Notice, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Notice, {$($data_key: $data_value),*})
   };
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Notice)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Notice)
   };
 }
 
@@ -82,12 +73,12 @@ macro_rules! notice_message {
 #[macro_export]
 macro_rules! warning_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Warning, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Warning, {$($data_key: $data_value),*})
   };
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Warning)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Warning)
   };
 }
 
@@ -95,12 +86,12 @@ macro_rules! warning_message {
 #[macro_export]
 macro_rules! alert_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Alert, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Alert, {$($data_key: $data_value),*})
   };
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Alert)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Alert)
   };
 }
 
@@ -108,12 +99,12 @@ macro_rules! alert_message {
 #[macro_export]
 macro_rules! critical_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Critical, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Critical, {$($data_key: $data_value),*})
   };
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Critical)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Critical)
   };
 }
 
@@ -121,12 +112,12 @@ macro_rules! critical_message {
 #[macro_export]
 macro_rules! fatal_message {
   // Variant with data
-  ($template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {{
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Fatal, {$($data_key: $data_value),*})
+  ($template_provider:expr, $template_struct:ident, {$($data_key:ident: $data_value:expr),* $(,)?}) => {{
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Fatal, {$($data_key: $data_value),*})
   }};
   // Variant without data
-  ($template_struct:ident) => {
-    create_message!($template_struct, $crate::messaging::prelude::Gravity::Fatal)
+  ($template_provider:expr, $template_struct:ident) => {
+    create_message!($template_provider, $template_struct, $crate::messaging::prelude::Gravity::Fatal)
   };
 }
 
@@ -136,9 +127,11 @@ mod test {
   use super::*;
   use crate::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
   use crate::messaging::prelude::*;
+  use crate::messaging::template_provider::TemplateProvider;
   use crate::template_list;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
+  use rand::rngs::mock::StepRng;
   use serde_json::json;
 
   template_list!(TestTemplateList, ["Hello, world!", "Goodbye, world!"]);
@@ -147,7 +140,10 @@ mod test {
   #[test]
   fn test_create_message() {
     test_init();
-    let message = create_message!(TestTemplateList, Gravity::Info);
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = create_message!(template_provider, TestTemplateList, Gravity::Info);
     assert_eq!(message.template, "Hello, world!");
     assert_eq!(message.gravity, Gravity::Info);
     assert_eq!(message.data, serde_json::Value::Null);
@@ -156,7 +152,11 @@ mod test {
   #[test]
   fn test_create_message_with_data() {
     test_init();
-    let message = create_message!(TestTemplateList2, Gravity::Info, {name: "Alice".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message =
+      create_message!(template_provider, TestTemplateList2, Gravity::Info, {name: "Alice".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Info);
@@ -167,7 +167,10 @@ mod test {
   #[test]
   fn test_info_message() {
     test_init();
-    let message = info_message!(TestTemplateList);
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = info_message!(template_provider, TestTemplateList);
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, world!");
     assert_eq!(message.gravity, Gravity::Info);
@@ -178,7 +181,10 @@ mod test {
   #[test]
   fn test_info_message2() {
     test_init();
-    let message = info_message!(TestTemplateList2, {name: "Bob".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = info_message!(template_provider, TestTemplateList2, {name: "Bob".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Info);
@@ -189,7 +195,10 @@ mod test {
   #[test]
   fn test_notice_message() {
     test_init();
-    let message = notice_message!(TestTemplateList2, {name: "Alice".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = notice_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Notice);
@@ -200,7 +209,10 @@ mod test {
   #[test]
   fn test_warning_message() {
     test_init();
-    let message = warning_message!(TestTemplateList2, {name: "Alice".to_string(), age:
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = warning_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age:
 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
@@ -212,7 +224,10 @@ mod test {
   #[test]
   fn test_alert_message() {
     test_init();
-    let message = alert_message!(TestTemplateList2, {name: "Alice".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = alert_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Alert);
@@ -223,7 +238,10 @@ mod test {
   #[test]
   fn test_critical_message() {
     test_init();
-    let message = critical_message!(TestTemplateList2, {name: "Alice".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = critical_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Critical);
@@ -234,7 +252,10 @@ mod test {
   #[test]
   fn test_fatal_message() {
     test_init();
-    let message = fatal_message!(TestTemplateList2, {name: "Alice".to_string(), age: 42});
+    let mut template_provider = TemplateProvider::new();
+    let step_rng = StepRng::new(0, 0);
+    template_provider.rng = Box::new(step_rng);
+    let message = fatal_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
     assert_eq!(message.template, "Hello, {{ name }}!");
     assert_eq!(message.gravity, Gravity::Fatal);
