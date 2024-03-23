@@ -4,20 +4,28 @@ macro_rules! template_list {
   // Variant with data schema
   ($struct_name:ident, [$($template:expr),* $(,)?], { $($field_name:ident: $field_type:ty),* $(,)? }) => {
     paste! {
+      /// This data type is used to store the data for the template.
+      /// You specify the fields and their types in the macro call.
       #[derive(serde::Serialize, Debug)]
       #[allow(missing_docs,missing_copy_implementations,missing_debug_implementations,unreachable_pub)]
       pub struct [<$struct_name DataType>] {
         $(pub $field_name: $field_type),*
       }
 
+      /// This struct is used to store the template list.
       #[allow(missing_docs,missing_copy_implementations,missing_debug_implementations,unreachable_pub)]
       pub struct $struct_name;
+
+      /// Implement the TemplateList trait for the struct.
       #[allow(unused_qualifications)]
       impl $crate::messaging::prelude::TemplateList for $struct_name {
+        /// The list of templates for the struct.
         const TEMPLATES: &'static [&'static str] = &[
           $($template),*
         ];
       }
+
+      /// Implement the SimpleTemplate trait for the struct.
       #[allow(unused_qualifications)]
       impl $crate::messaging::_traits::data_template::DataTemplate for $struct_name {
         type DataType = [<$struct_name DataType>];
@@ -26,14 +34,20 @@ macro_rules! template_list {
   };
   // Variant without data schema
   ($struct_name:ident, [$($template:expr),* $(,)?]) => {
+    /// This struct is used to store the template list.
     #[allow(missing_docs,missing_copy_implementations,missing_debug_implementations,unreachable_pub)]
     pub struct $struct_name;
+
+    /// Implement the TemplateList trait for the struct.
     #[allow(unused_qualifications)]
     impl $crate::messaging::prelude::TemplateList for $struct_name {
+      /// The list of templates for the struct.
       const TEMPLATES: &'static [&'static str] = &[
         $($template),*
       ];
     }
+
+    /// Implement the SimpleTemplate trait for the struct.
     #[allow(unused_qualifications)]
     impl $crate::messaging::_traits::simple_template::SimpleTemplate for $struct_name {}
   };
