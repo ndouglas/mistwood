@@ -1,2 +1,2 @@
-/// Stock templates about the environment.
-pub mod environment;
+/// "Thank you for playing!" messages.
+pub mod thanks_for_playing;
