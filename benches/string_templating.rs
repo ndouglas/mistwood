@@ -24,14 +24,24 @@ fn string_templating(criterion: &mut Criterion) {
   for i in message_data.iter() {
     group.bench_with_input(BenchmarkId::new("Message Creation and Templating", i.0), i, |b, i| {
       b.iter(|| {
-        let message = Message::new(i.0.to_string(), gravity, i.1.clone(), metadata.clone());
+        let message = Message {
+          template: i.0.to_string(),
+          gravity,
+          data: i.1.clone(),
+          metadata: metadata.clone(),
+        };
         template_processor
           .render_template(&message.template, &message.data)
           .unwrap()
       })
     });
     group.bench_with_input(BenchmarkId::new("Message Templating", i.0), i, |b, i| {
-      let message = Message::new(i.0.to_string(), gravity, i.1.clone(), metadata.clone());
+      let message = Message {
+        template: i.0.to_string(),
+        gravity,
+        data: i.1.clone(),
+        metadata: metadata.clone(),
+      };
       b.iter(|| {
         template_processor
           .render_template(&message.template, &message.data)
