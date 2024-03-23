@@ -10,7 +10,8 @@
 //!   services to game objects.
 //! - **Messaging**: A highly extensible system for creating messages that can
 //!   be displayed to the player, based on template processing.
-//!
+//! - **Pseudorandom Number Generation**: A system for managing pseudorandom
+//!   number generators, including a registry for sharing them across the game.
 
 // Linting.
 #![deny(rustdoc::bare_urls)]
