@@ -52,9 +52,17 @@ game position, or end this session of the game?|
 		       (<EQUAL? .WRD ,W?QUIT ,W?Q>
 			<QUIT>)>>>
 
+// Quit the game.
+//
+// This prompts the user:
+//   "Do you wish to leave the game? (Y is affirmative): "
+//
+// If the answer is Y or y, the game quits immediately.
+// Otherwise, the reply is "Ok." and the game continues.
+
 <ROUTINE V-QUIT ("AUX" SCOR)
 	 <V-SCORE>
-	 <TELL 
+	 <TELL
 "Do you wish to leave the game? (Y is affirmative): ">
 	 <COND (<YES?>
 		<QUIT>)
@@ -523,11 +531,11 @@ Release ">
 "Thank you very much. I was rather thirsty (from all this talking,
 probably)." CR>>
 
-<ROUTINE V-ECHO ("AUX" LST MAX (ECH 0) CNT) 
+<ROUTINE V-ECHO ("AUX" LST MAX (ECH 0) CNT)
 	 #DECL ((LST) <PRIMTYPE VECTOR> (MAX CNT ECH) FIX)
 	 %<COND (<==? ,ZORK-NUMBER 1>
 		 '<COND (<G? <GETB ,P-LEXV ,P-LEXWORDS> 0>
-	                 <SET LST <REST 
+	                 <SET LST <REST
 				   ,P-LEXV
 				   <* <GETB ,P-LEXV ,P-LEXWORDS> ,P-WORDLEN>>>
 	                 <SET MAX <- <+ <GETB .LST 0> <GETB .LST 1>> 1>>
@@ -707,7 +715,7 @@ somewhere." CR>)
 
 <ROUTINE PRE-GIVE ()
 	 <COND (<NOT <HELD? ,PRSO>>
-		<TELL 
+		<TELL
 "That's easy for you to say since you don't even have the " D ,PRSO "." CR>)>>
 
 <ROUTINE V-GIVE ()
@@ -949,7 +957,7 @@ killing yourself." CR CR>
 			      <NOT ,CYCLOPS-FLAG>>
 		         <DISABLE <INT I-CYCLOPS>>
 		         <SETG CYCLOPS-FLAG T>
-		         <TELL 
+		         <TELL
 "The cyclops, hearing the name of his father's deadly nemesis, flees the room
 by knocking down the wall on the east of the room." CR>
 		        <SETG MAGIC-FLAG T>
@@ -1422,7 +1430,7 @@ the manual." CR>)>)
 			      <SCOL-GO .OBJ>
 			      <RTRUE>)
 			     (<AND <EQUAL? ,HERE ,SCOL-ACTIVE>
-				   <EQUAL? ,PRSO 
+				   <EQUAL? ,PRSO
 					   <GET <SET M <GET-WALL ,HERE>> 1>>>
 			      <SETG SCOL-ROOM <GET .M 2>>
 			      <SETG PRSO <GETP ,PRSO ,P?SIZE>>
@@ -2151,7 +2159,7 @@ stumbled into an authentic grue lair!">))
 
 <ROUTINE GLOBAL-IN? (OBJ1 OBJ2 "AUX" TX)
 	 <COND (<SET TX <GETPT .OBJ2 ,P?GLOBAL>>
-		<ZMEMQB .OBJ1 .TX <- <PTSIZE .TX> 1>>)>> 
+		<ZMEMQB .OBJ1 .TX <- <PTSIZE .TX> 1>>)>>
 
 <ROUTINE FIND-IN (WHERE WHAT "AUX" W)
 	 <SET W <FIRST? .WHERE>>
@@ -2211,7 +2219,7 @@ stumbled into an authentic grue lair!">))
 	 "What a concept!">>
 
 <GLOBAL DUMMY
-	<LTABLE 0 
+	<LTABLE 0
 		"Look around."
 	        "Too late for that."
 	        "Have your eyes checked.">>
