@@ -6,3 +6,4 @@ cargo fmt -- --check;
 cargo clippy -- -D warnings;
 cargo test;
 cargo test --benches;
+$(git rev-parse --show-toplevel)/scripts/build_docs.sh;
