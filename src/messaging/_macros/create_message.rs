@@ -164,102 +164,110 @@ mod test {
     assert_eq!(rendered, "Hello, Alice!");
   }
 
-  #[test]
-  fn test_info_message() {
+  fn setup_template_provider() -> TemplateProvider {
     test_init();
     let mut template_provider = TemplateProvider::new();
     let step_rng = StepRng::new(0, 0);
     template_provider.rng = Box::new(step_rng);
-    let message = info_message!(template_provider, TestTemplateList);
+    template_provider
+  }
+
+  fn check_message(message: &Message, template: &str, gravity: Gravity, data: serde_json::Value, expected: &str) {
     let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, world!");
-    assert_eq!(message.gravity, Gravity::Info);
-    assert_eq!(message.data, serde_json::Value::Null);
-    assert_eq!(rendered, "Hello, world!");
+    assert_eq!(message.template, template);
+    assert_eq!(message.gravity, gravity);
+    assert_eq!(message.data, data);
+    assert_eq!(rendered, expected);
+  }
+
+  #[test]
+  fn test_info_message() {
+    let mut template_provider = setup_template_provider();
+    let message = info_message!(template_provider, TestTemplateList);
+    check_message(
+      &message,
+      "Hello, world!",
+      Gravity::Info,
+      serde_json::Value::Null,
+      "Hello, world!",
+    );
   }
 
   #[test]
   fn test_info_message2() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
+    let mut template_provider = setup_template_provider();
     let message = info_message!(template_provider, TestTemplateList2, {name: "Bob".to_string(), age: 42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Info);
-    assert_eq!(message.data, json!({"name": "Bob", "age": 42}));
-    assert_eq!(rendered, "Hello, Bob!");
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Info,
+      json!({"name": "Bob", "age": 42}),
+      "Hello, Bob!",
+    );
   }
 
   #[test]
   fn test_notice_message() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
+    let mut template_provider = setup_template_provider();
     let message = notice_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Notice);
-    assert_eq!(message.data, json!({"name": "Alice", "age": 42}));
-    assert_eq!(rendered, "Hello, Alice!");
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Notice,
+      json!({"name": "Alice", "age": 42}),
+      "Hello, Alice!",
+    );
   }
 
   #[test]
   fn test_warning_message() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
-    let message = warning_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age:
-42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Warning);
-    assert_eq!(message.data, json!({"name": "Alice", "age": 42}));
-    assert_eq!(rendered, "Hello, Alice!");
+    let mut template_provider = setup_template_provider();
+    let message = warning_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Warning,
+      json!({"name": "Alice", "age": 42}),
+      "Hello, Alice!",
+    );
   }
 
   #[test]
   fn test_alert_message() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
+    let mut template_provider = setup_template_provider();
     let message = alert_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Alert);
-    assert_eq!(message.data, json!({"name": "Alice", "age": 42}));
-    assert_eq!(rendered, "Hello, Alice!");
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Alert,
+      json!({"name": "Alice", "age": 42}),
+      "Hello, Alice!",
+    );
   }
 
   #[test]
   fn test_critical_message() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
+    let mut template_provider = setup_template_provider();
     let message = critical_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Critical);
-    assert_eq!(message.data, json!({"name": "Alice", "age": 42}));
-    assert_eq!(rendered, "Hello, Alice!");
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Critical,
+      json!({"name": "Alice", "age": 42}),
+      "Hello, Alice!",
+    );
   }
 
   #[test]
   fn test_fatal_message() {
-    test_init();
-    let mut template_provider = TemplateProvider::new();
-    let step_rng = StepRng::new(0, 0);
-    template_provider.rng = Box::new(step_rng);
+    let mut template_provider = setup_template_provider();
     let message = fatal_message!(template_provider, TestTemplateList2, {name: "Alice".to_string(), age: 42});
-    let rendered = TemplateProcessor::new().process_message(&message).unwrap();
-    assert_eq!(message.template, "Hello, {{ name }}!");
-    assert_eq!(message.gravity, Gravity::Fatal);
-    assert_eq!(message.data, json!({"name": "Alice", "age": 42}));
-    assert_eq!(rendered, "Hello, Alice!");
+    check_message(
+      &message,
+      "Hello, {{ name }}!",
+      Gravity::Fatal,
+      json!({"name": "Alice", "age": 42}),
+      "Hello, Alice!",
+    );
   }
 }
