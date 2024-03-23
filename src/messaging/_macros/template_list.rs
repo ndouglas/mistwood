@@ -3,7 +3,7 @@
 macro_rules! template_list {
   // Variant with data schema
   ($struct_name:ident, [$($template:expr),* $(,)?], { $($field_name:ident: $field_type:ty),* $(,)? }) => {
-    paste! {
+    paste::paste! {
       /// This data type is used to store the data for the template.
       /// You specify the fields and their types in the macro call.
       #[derive(serde::Serialize, Debug)]
