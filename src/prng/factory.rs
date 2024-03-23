@@ -32,10 +32,10 @@ impl FactoryTrait for Factory {
 /// A builder for the `Factory`.
 impl Builder for Factory {
   type Input = ();
-  type Output = Factory;
+  type Output = Box<dyn FactoryTrait>;
 
   fn build(_: Self::Input) -> Result<Self::Output, DiError> {
-    Ok(Factory::new())
+    Ok(Box::new(Factory::new()))
   }
 }
 
