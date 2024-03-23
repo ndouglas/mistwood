@@ -39,7 +39,7 @@ use crate::di::_traits::get_input::GetInput;
 /// ```
 pub trait Builder {
   /// The input type for the builder. This will normally be a single type or a
-  /// tuple of types, each of which is likely to be Object<Box<T>>. This is
+  /// tuple of types, each of which is likely to be `Object<Box<T>>`. This is
   /// used to specify the dependencies of the service being built.
   ///
   /// For instance:

@@ -18,6 +18,10 @@ macro_rules! template_list {
           $($template),*
         ];
       }
+      #[allow(unused_qualifications)]
+      impl $crate::messaging::_traits::data_template::DataTemplate for $struct_name {
+        type DataType = [<$struct_name DataType>];
+      }
     }
   };
   // Variant without data schema
@@ -30,6 +34,8 @@ macro_rules! template_list {
         $($template),*
       ];
     }
+    #[allow(unused_qualifications)]
+    impl $crate::messaging::_traits::simple_template::SimpleTemplate for $struct_name {}
   };
 }
 

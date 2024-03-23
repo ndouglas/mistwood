@@ -14,6 +14,10 @@ keywords = ["mistwood"]
 name = "mistwood"
 path = "src/lib.rs"
 
+[[example]]
+name = "mistdemo"
+path = "examples/mistdemo.rs"
+
 [dependencies]
 actix = "0.13.3"
 all_asserts = "2.3.1"

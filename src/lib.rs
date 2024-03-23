@@ -42,6 +42,7 @@
 #![deny(unused_lifetimes)]
 #![deny(unused_qualifications)]
 #![deny(variant_size_differences)]
+#![allow(unused_macros)]
 
 // Crate-wide configuration.
 #[allow(unused_imports)]
