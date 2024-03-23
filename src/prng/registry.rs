@@ -1,5 +1,7 @@
+use crate::di::_types::Object;
+use crate::di::prelude::Builder;
+use crate::prng::_traits::factory::Factory as FactoryTrait;
 use crate::prng::_types::SafePrng;
-use crate::prng::factory::Factory;
 use rand::RngCore;
 use std::collections::HashMap;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
@@ -9,17 +11,17 @@ use std::sync::{Arc, Mutex};
 ///
 /// This is a simple wrapper around `HashMap` that allows us to store and
 /// retrieve pseudorandom number generators by a string key.
-#[derive(Default)]
 pub struct Registry {
   prngs: HashMap<String, SafePrng>,
   /// A factory for creating pseudorandom number generators.
-  pub factory: Factory,
+  pub factory: Object<Box<dyn FactoryTrait>>,
 }
 
 impl Registry {
   /// Create a new, empty `Registry`.
-  pub fn new(factory: Factory) -> Self {
+  pub fn new(factory: &Object<Box<dyn FactoryTrait>>) -> Self {
     let prngs = HashMap::new();
+    let factory = factory.clone();
     Self { prngs, factory }
   }
 
@@ -41,20 +43,24 @@ impl Registry {
 
   /// Register a seedable prng for a key.
   pub fn register_seedable_rng(&mut self, key: &str, seed: u64) {
-    let rng = self.factory.create_seedable_rng(seed);
+    let rng = self.factory.lock().unwrap().create_seedable_rng(seed);
     self.set(key, rng);
   }
 
   /// Register a step prng for a key.
   pub fn register_step_rng(&mut self, key: &str, start: u64, step: u64) {
-    let rng = self.factory.create_step_rng(start, step);
+    let rng = self.factory.lock().unwrap().create_step_rng(start, step);
     self.set(key, rng);
   }
+}
 
-  /// Register a seedable prng for a key based on the type `T`.
-  pub fn register_seedable_rng_from_type<T: 'static>(&mut self, key: &str, seed: u64) {
-    let rng = self.factory.create_seedable_rng_from_type::<T>(seed);
-    self.set(key, rng);
+/// A builder for the `Registry`.
+impl Builder for Registry {
+  type Input = (Object<Box<dyn FactoryTrait>>,);
+  type Output = Registry;
+
+  fn build((factory,): Self::Input) -> Self::Output {
+    Registry::new(&factory)
   }
 }
 
@@ -67,6 +73,7 @@ impl Debug for Registry {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::prng::factory::Factory;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
   use rand::rngs::mock::StepRng;
@@ -74,12 +81,26 @@ mod tests {
   #[test]
   fn test_registry() {
     test_init();
-    let mut registry = Registry::default();
+    let factory: Box<dyn FactoryTrait> = Box::new(Factory::default());
+    let object_factory = Arc::new(Mutex::new(factory));
+    let mut registry = Registry::new(&object_factory);
     let rng = StepRng::new(42, 13);
     let prng = Box::new(rng);
     registry.set("u32", prng);
     assert!(registry.has("u32"));
     let prng = registry.get_mut("u32").unwrap();
     assert_eq!(prng.lock().unwrap().next_u32(), 42);
+  }
+
+  #[test]
+  fn test_register_seedable_rng() {
+    test_init();
+    let factory: Box<dyn FactoryTrait> = Box::new(Factory::default());
+    let object_factory = Arc::new(Mutex::new(factory));
+    let mut registry = Registry::new(&object_factory);
+    registry.register_seedable_rng("u32", 42);
+    assert!(registry.has("u32"));
+    let prng = registry.get_mut("u32").unwrap();
+    assert_eq!(prng.lock().unwrap().next_u32(), 572990626);
   }
 }
