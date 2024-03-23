@@ -11,3 +11,4 @@ target/
 
 docs/book
 docs/src/rustdoc
+.DS_Store
