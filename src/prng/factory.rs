@@ -15,7 +15,7 @@ impl Factory {
   }
 
   /// Creates a seedable pseudorandom number generator based on the hash of the type name.
-  pub fn create_seedable_rng_from_type<T: 'static>(&self, seed: u64) -> Box<dyn RngCore> {
+  pub fn create_seedable_rng_from_type<T: 'static>(&self, seed: u64) -> Box<dyn RngCore + Send + Sync> {
     let type_name = type_name::<T>();
     let mut hasher = DefaultHasher::new();
     type_name.hash(&mut hasher);
@@ -26,13 +26,13 @@ impl Factory {
 
   /// Creates a "seedable" pseudorandom number generator, which generates the same
   /// sequence of numbers given the same seed.
-  pub fn create_seedable_rng(&self, seed: u64) -> Box<dyn RngCore> {
+  pub fn create_seedable_rng(&self, seed: u64) -> Box<dyn RngCore + Send + Sync> {
     Box::new(StdRng::seed_from_u64(seed))
   }
 
   /// Creates a pseudorandom number generator that generates a sequence of numbers
   /// starting from `start` and incrementing by `step`.
-  pub fn create_step_rng(&self, start: u64, step: u64) -> Box<dyn RngCore> {
+  pub fn create_step_rng(&self, start: u64, step: u64) -> Box<dyn RngCore + Send + Sync> {
     Box::new(StepRng::new(start, step))
   }
 }
