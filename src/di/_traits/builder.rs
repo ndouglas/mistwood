@@ -101,6 +101,6 @@ mod tests {
     }
     let build_string = Arc::new(Mutex::new(String::build(()).unwrap()));
     let built_struct = MyStruct::build((build_string,)).unwrap();
-    let _inner_string = built_struct.0.lock().unwrap();
+    assert!(built_struct.0.lock().is_ok());
   }
 }
