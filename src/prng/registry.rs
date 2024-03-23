@@ -1,42 +1,60 @@
 use crate::prng::_types::SafePrng;
+use crate::prng::factory::Factory;
 use rand::RngCore;
-use std::any::{Any, TypeId};
 use std::collections::HashMap;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 use std::sync::{Arc, Mutex};
 
 /// A registry of pseudorandom number generators.
 ///
-/// This is a simple wrapper around `TypeMap` that allows for type-safe
-/// dependency injection by storing and retrieving prngs by the type
-/// that is calling for them.
-///
-/// This allows for the creation of multiple prngs with different seeds
-/// and types, and for the retrieval of the same prng by the same type
-/// that created it.
+/// This is a simple wrapper around `HashMap` that allows us to store and
+/// retrieve pseudorandom number generators by a string key.
 #[derive(Default)]
-pub struct Registry(HashMap<TypeId, SafePrng>);
+pub struct Registry {
+  prngs: HashMap<String, SafePrng>,
+  /// A factory for creating pseudorandom number generators.
+  pub factory: Factory,
+}
 
 impl Registry {
   /// Create a new, empty `Registry`.
-  pub fn new() -> Self {
-    Self(HashMap::new())
+  pub fn new(factory: Factory) -> Self {
+    let prngs = HashMap::new();
+    Self { prngs, factory }
   }
 
-  /// Set a prng for a type `T`.
-  pub fn set<T: Any + 'static>(&mut self, rng: Box<dyn RngCore + Send + Sync>) {
+  /// Set a prng for a key.
+  pub fn set(&mut self, key: &str, rng: Box<dyn RngCore + Send + Sync>) {
     let prng = Arc::new(Mutex::new(rng));
-    self.0.insert(TypeId::of::<T>(), prng);
+    self.prngs.insert(key.to_string(), prng);
   }
 
-  /// Check if a prng for a type `T` is present.
-  pub fn has<T: Any + 'static>(&self) -> bool {
-    self.0.contains_key(&TypeId::of::<T>())
+  /// Check if a prng exists for a key.
+  pub fn has(&self, key: &str) -> bool {
+    self.prngs.contains_key(key)
   }
 
   /// Get a mutable reference to a prng for a type `T`.
-  pub fn get_mut<T: Any + 'static>(&mut self) -> Option<SafePrng> {
-    self.0.get_mut(&TypeId::of::<T>()).cloned()
+  pub fn get_mut(&mut self, key: &str) -> Option<SafePrng> {
+    self.prngs.get_mut(key).cloned()
+  }
+
+  /// Register a seedable prng for a key.
+  pub fn register_seedable_rng(&mut self, key: &str, seed: u64) {
+    let rng = self.factory.create_seedable_rng(seed);
+    self.set(key, rng);
+  }
+
+  /// Register a step prng for a key.
+  pub fn register_step_rng(&mut self, key: &str, start: u64, step: u64) {
+    let rng = self.factory.create_step_rng(start, step);
+    self.set(key, rng);
+  }
+
+  /// Register a seedable prng for a key based on the type `T`.
+  pub fn register_seedable_rng_from_type<T: 'static>(&mut self, key: &str, seed: u64) {
+    let rng = self.factory.create_seedable_rng_from_type::<T>(seed);
+    self.set(key, rng);
   }
 }
 
@@ -59,9 +77,9 @@ mod tests {
     let mut registry = Registry::default();
     let rng = StepRng::new(42, 13);
     let prng = Box::new(rng);
-    registry.set::<u32>(prng);
-    assert!(registry.has::<u32>());
-    let prng = registry.get_mut::<u32>().unwrap();
+    registry.set("u32", prng);
+    assert!(registry.has("u32"));
+    let prng = registry.get_mut("u32").unwrap();
     assert_eq!(prng.lock().unwrap().next_u32(), 42);
   }
 }
