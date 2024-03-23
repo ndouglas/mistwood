@@ -18,6 +18,10 @@ path = "src/lib.rs"
 name = "mistdemo"
 path = "examples/mistdemo.rs"
 
+[[example]]
+name = "mork"
+path = "examples/mork/main.rs"
+
 [dependencies]
 actix = "0.13.3"
 all_asserts = "2.3.1"
