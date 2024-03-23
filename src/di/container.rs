@@ -4,6 +4,7 @@ use crate::di::_traits::get_input::GetInput;
 use crate::di::_traits::input_provider::InputProvider;
 use crate::di::_types::Object;
 use crate::prelude::TypeMap;
+use std::any::type_name;
 use std::sync::{Arc, Mutex};
 
 /// A container for dependency injection.
@@ -56,11 +57,11 @@ impl Container {
 
   /// Get a reference to a value of type `T`.
   pub fn get<T: 'static>(&self) -> Result<Object<T>, DiError> {
-    if let Some(object) = self.0.get::<Object<T>>() {
-      Ok(object.clone())
-    } else {
-      Err(DiError::NotFound(format!("{} not found", std::any::type_name::<T>())))
-    }
+    self
+      .0
+      .get::<Object<T>>()
+      .cloned()
+      .ok_or_else(|| DiError::NotFound(format!("{} not found", type_name::<T>())))
   }
 }
 
