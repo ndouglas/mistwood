@@ -1,4 +1,5 @@
-template_list!(GameThanks, [
+template_list!(ThanksForPlaying, [
+  "Thanks for playing!",
   "Thank you for playing {{ game }}!",
   "We hope you enjoyed your adventure in {{ game }}. Thank you for playing!",
   "Your journey in {{ game }} is just beginning. Thanks for playing!",

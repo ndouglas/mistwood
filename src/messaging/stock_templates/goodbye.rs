@@ -1,0 +1,33 @@
+// Many messages below are translated by AI, so they may not be accurate.
+template_list!(
+  Goodbye,
+  [
+    "Goodbye!",
+    "Farewell!",
+    "See you later!",
+    "Until next time!",
+    "Take care!",
+    "Goodbye for now!",
+    "Goodbye, friend!",
+    "Auf Wiedersehen!",
+    "Adios!",
+    "Au revoir!",
+    "Guðs góðan dag!",
+    "Arrivederci!",
+    "さようなら!",
+    "再见!",
+    "안녕!",
+    "さよなら!",
+    "До свидания!",
+    "Αντίο!",
+    "Tot ziens!",
+    "Tschüss!",
+    "Adieu!",
+    "Hejdå!",
+    "Ha det bra!",
+    "Adjö!",
+    "Hei hei!",
+    "Hade!",
+    "Hälsningar!",
+  ]
+);
