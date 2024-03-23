@@ -2,8 +2,9 @@ use crate::di::prelude::Builder;
 use crate::di::prelude::DiError;
 use crate::di::prelude::Object;
 use crate::prng::_traits::factory::Factory as FactoryTrait;
+use crate::prng::_traits::registry::Registry as RegistryTrait;
+use crate::prng::_types::BoxedPrng;
 use crate::prng::_types::SafePrng;
-use rand::RngCore;
 use std::collections::HashMap;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 use std::sync::{Arc, Mutex};
@@ -25,31 +26,33 @@ impl Registry {
     let factory = factory.clone();
     Self { prngs, factory }
   }
+}
 
+impl RegistryTrait for Registry {
   /// Set a prng for a key.
-  pub fn set(&mut self, key: &str, rng: Box<dyn RngCore + Send + Sync>) {
+  fn set(&mut self, key: &str, rng: BoxedPrng) {
     let prng = Arc::new(Mutex::new(rng));
     self.prngs.insert(key.to_string(), prng);
   }
 
   /// Check if a prng exists for a key.
-  pub fn has(&self, key: &str) -> bool {
+  fn has(&self, key: &str) -> bool {
     self.prngs.contains_key(key)
   }
 
   /// Get a mutable reference to a prng for a type `T`.
-  pub fn get_mut(&mut self, key: &str) -> Option<SafePrng> {
+  fn get_mut(&mut self, key: &str) -> Option<SafePrng> {
     self.prngs.get_mut(key).cloned()
   }
 
   /// Register a seedable prng for a key.
-  pub fn register_seedable_rng(&mut self, key: &str, seed: u64) {
+  fn register_seedable_rng(&mut self, key: &str, seed: u64) {
     let rng = self.factory.lock().unwrap().create_seedable_rng(seed);
     self.set(key, rng);
   }
 
   /// Register a step prng for a key.
-  pub fn register_step_rng(&mut self, key: &str, start: u64, step: u64) {
+  fn register_step_rng(&mut self, key: &str, start: u64, step: u64) {
     let rng = self.factory.lock().unwrap().create_step_rng(start, step);
     self.set(key, rng);
   }
@@ -58,10 +61,10 @@ impl Registry {
 /// A builder for the `Registry`.
 impl Builder for Registry {
   type Input = (Object<Box<dyn FactoryTrait>>,);
-  type Output = Registry;
+  type Output = Box<dyn RegistryTrait>;
 
   fn build((factory,): Self::Input) -> Result<Self::Output, DiError> {
-    Ok(Registry::new(&factory))
+    Ok(Box::new(Registry::new(&factory)))
   }
 }
 
@@ -131,11 +134,15 @@ mod tests {
   fn test_registry_builder() {
     test_init();
     let mut container = Container::new();
-    let _factory = container.build::<Factory>().unwrap();
-    // BROKEN: See #66, #67.
-    // let registry = container.build::<Registry>().unwrap();
-    // let registry2 = container.get::<Registry>().unwrap();
-    // assert_eq!(format!("{:?}", registry), "Registry { ... }");
-    // assert_eq!(format!("{:?}", registry2), "Registry { ... }");
+    let factory: Object<Box<dyn FactoryTrait>> = container.build::<Factory>().unwrap();
+    let registry: Object<Box<dyn RegistryTrait>> = container.build::<Registry>().unwrap();
+    let registry2 = container.get::<Registry>().unwrap();
+    assert_eq!(factory.lock().unwrap().create_seedable_rng(42).next_u32(), 572990626);
+    registry.lock().unwrap().register_seedable_rng("foo", 42);
+    let foo = registry.lock().unwrap().get_mut("foo").unwrap();
+    registry2.lock().unwrap().register_seedable_rng("bar", 42);
+    let bar = registry2.lock().unwrap().get_mut("bar").unwrap();
+    assert_eq!(foo.lock().unwrap().next_u32(), 572990626);
+    assert_eq!(bar.lock().unwrap().next_u32(), 572990626);
   }
 }

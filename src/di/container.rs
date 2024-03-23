@@ -56,10 +56,10 @@ impl Container {
   }
 
   /// Get a reference to a value of type `T`.
-  pub fn get<T: 'static>(&self) -> Result<Object<T>, DiError> {
+  pub fn get<T: Builder + 'static>(&self) -> Result<Object<T::Output>, DiError> {
     self
       .0
-      .get::<Object<T>>()
+      .get::<Object<T::Output>>()
       .cloned()
       .ok_or_else(|| DiError::NotFound(format!("{} not found", type_name::<T>())))
   }
@@ -68,7 +68,11 @@ impl Container {
 impl InputProvider for Container {
   /// Provide the requested input from the container.
   fn provide<T: 'static>(&self) -> Result<Object<T>, DiError> {
-    self.get::<T>()
+    self
+      .0
+      .get::<Object<T>>()
+      .cloned()
+      .ok_or_else(|| DiError::NotFound(format!("{} not found", type_name::<T>())))
   }
 }
 
