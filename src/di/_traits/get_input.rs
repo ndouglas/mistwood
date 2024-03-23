@@ -1,21 +1,22 @@
+use crate::di::_error::DiError;
 use crate::di::_traits::input_provider::InputProvider;
 use crate::di::_types::Object;
 
 /// A trait for retrieving inputs for dependency injection objects.
 pub trait GetInput: Sized {
   /// Get the input for a type `T` from the given `InputProvider`.
-  fn get_input<P: InputProvider>(provider: &P) -> Option<Self>;
+  fn get_input<P: InputProvider>(provider: &P) -> Result<Self, DiError>;
 }
 
 impl<T: 'static> GetInput for Object<T> {
-  fn get_input<P: InputProvider>(provider: &P) -> Option<Self> {
+  fn get_input<P: InputProvider>(provider: &P) -> Result<Self, DiError> {
     provider.provide::<T>()
   }
 }
 
 impl GetInput for () {
-  fn get_input<P: InputProvider>(_provider: &P) -> Option<Self> {
-    Some(())
+  fn get_input<P: InputProvider>(_provider: &P) -> Result<Self, DiError> {
+    Ok(())
   }
 }
 
@@ -24,8 +25,8 @@ macro_rules! impl_get_input_for_tuple {
     /// Implement `GetInput` for a tuple of types.
     impl<$($name: GetInput),*> GetInput for ($($name,)*) {
       /// Get the input for a type `T` from the given `InputProvider`.
-      fn get_input<IP: InputProvider>(provider: &IP) -> Option<Self> {
-        Some(($($name::get_input(provider)?,)*))
+      fn get_input<IP: InputProvider>(provider: &IP) -> Result<Self, DiError> {
+        Ok(($($name::get_input(provider)?,)*))
       }
     }
   };

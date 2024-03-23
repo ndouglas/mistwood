@@ -1,3 +1,4 @@
+use crate::di::_error::DiError;
 use crate::di::_traits::get_input::GetInput;
 
 /// A trait for a builder; this represents a constructor within our DI system.
@@ -8,6 +9,7 @@ use crate::di::_traits::get_input::GetInput;
 ///
 /// ```rust
 /// use mistwood::di::prelude::Builder;
+/// use mistwood::di::prelude::DiError;
 ///
 /// struct MyBuilder;
 ///
@@ -15,8 +17,8 @@ use crate::di::_traits::get_input::GetInput;
 ///   type Input = ();
 ///   type Output = String;
 ///
-///   fn build(_: Self::Input) -> Self::Output {
-///     "Hello, world!".to_string()
+///   fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+///     Ok("Hello, world!".to_string())
 ///   }
 /// }
 /// ```
@@ -29,7 +31,7 @@ pub trait Builder {
   /// built.
   type Output: 'static;
   /// Build the service.
-  fn build(input: Self::Input) -> Self::Output;
+  fn build(input: Self::Input) -> Result<Self::Output, DiError>;
 }
 
 #[cfg(test)]
@@ -44,11 +46,11 @@ mod tests {
       type Input = ();
       type Output = String;
 
-      fn build(_: Self::Input) -> Self::Output {
-        "Hello, world!".to_string()
+      fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+        Ok("Hello, world!".to_string())
       }
     }
 
-    assert_eq!(MyBuilder::build(()), "Hello, world!".to_string());
+    assert_eq!(MyBuilder::build(()).unwrap(), "Hello, world!".to_string());
   }
 }

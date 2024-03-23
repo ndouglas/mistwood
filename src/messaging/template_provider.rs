@@ -1,4 +1,5 @@
 use crate::di::prelude::Builder;
+use crate::di::prelude::DiError;
 use crate::messaging::prelude::MessagingError;
 use crate::messaging::prelude::TemplateList;
 use rand::prelude::*;
@@ -41,8 +42,8 @@ impl Builder for TemplateProvider {
   type Input = ();
   type Output = TemplateProvider;
 
-  fn build(_: Self::Input) -> Self::Output {
-    TemplateProvider::new()
+  fn build(_: Self::Input) -> Result<Self::Output, DiError> {
+    Ok(TemplateProvider::new())
   }
 }
 
@@ -87,7 +88,7 @@ mod tests {
   fn test_template_provider_registry_builder() {
     test_init();
     let mut container = crate::di::prelude::Container::new();
-    container.build::<TemplateProvider>();
+    container.build::<TemplateProvider>().unwrap();
     let binding = container.get::<TemplateProvider>().unwrap();
     let mut registry = binding.lock().unwrap();
     registry.rng = Box::new(StepRng::new(2, 1));

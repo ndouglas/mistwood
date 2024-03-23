@@ -1,5 +1,6 @@
-use crate::di::_types::Object;
 use crate::di::prelude::Builder;
+use crate::di::prelude::DiError;
+use crate::di::prelude::Object;
 use crate::prng::_traits::factory::Factory as FactoryTrait;
 use crate::prng::_types::SafePrng;
 use rand::RngCore;
@@ -59,8 +60,8 @@ impl Builder for Registry {
   type Input = (Object<Box<dyn FactoryTrait>>,);
   type Output = Registry;
 
-  fn build((factory,): Self::Input) -> Self::Output {
-    Registry::new(&factory)
+  fn build((factory,): Self::Input) -> Result<Self::Output, DiError> {
+    Ok(Registry::new(&factory))
   }
 }
 
