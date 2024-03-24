@@ -5,8 +5,9 @@
 "SUBTITLE THE WHITE HOUSE"
 
 // The infamous white house.
-// If you've managed to get all of the trophies into the trophy cae, then
+// If you've managed to get all of the trophies into the trophy case, then
 // there is a secret path leading southwest into the forest.
+
 <ROUTINE WEST-HOUSE (RARG)
 	 <COND (<EQUAL? .RARG ,M-LOOK>
 		<TELL
