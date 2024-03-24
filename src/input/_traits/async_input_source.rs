@@ -7,5 +7,5 @@ use crate::input::_errors::input::InputError;
 /// commands.
 pub trait AsyncInputSource {
   /// Fetch the input from the source.
-  async fn fetch_input(&self) -> Result<String, InputError>;
+  async fn fetch_input(&mut self) -> Result<String, InputError>;
 }
