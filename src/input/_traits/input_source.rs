@@ -7,5 +7,12 @@ use crate::input::_errors::input::InputError;
 /// commands.
 pub trait InputSource {
   /// Fetch the input from the source.
-  fn fetch_input(&self) -> Result<String, InputError>;
+  ///
+  /// This method fetches input from the source, returning it as a String; it
+  /// blocks until input is available or returns an error if the input cannot
+  /// be fetched.
+  ///
+  /// The implementation of this method will vary depending on the input source
+  /// (e.g., reading from stdin, a network socket, or a test script).
+  fn fetch_input(&mut self) -> Result<String, InputError>;
 }
