@@ -1,2 +1,4 @@
-/// Standard input source.
-pub mod stdin;
+/// Generic input source.
+pub mod generic;
+/// String input source.
+pub mod string;

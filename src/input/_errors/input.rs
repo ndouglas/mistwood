@@ -16,4 +16,8 @@ pub enum InputError {
   /// mechanism.
   #[error("An I/O error occurred: {0}")]
   IoError(#[from] IoError),
+  /// No input is available. This error occurs when the input source has been
+  /// exhausted and no more input is available.
+  #[error("No input available")]
+  NoInput,
 }

@@ -10,4 +10,8 @@ pub mod prelude {
   pub use super::_errors::input::InputError;
   pub use super::_errors::parse::ParseError;
   pub use super::_traits::input_source::InputSource;
+  pub use super::sources::generic::FileSource;
+  pub use super::sources::generic::GenericSource;
+  pub use super::sources::generic::StdinSource;
+  pub use super::sources::string::StringSource;
 }
