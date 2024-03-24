@@ -12,7 +12,7 @@ impl GameState {
   }
 
   /// Process the player's input.
-  pub fn process_input(&mut self, input: &str) -> Result<String, &'static str> {
+  pub fn process_input(&mut self, _input: &str) -> Result<String, &'static str> {
     Ok("You move forward.".to_string())
   }
 }

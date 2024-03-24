@@ -4,6 +4,9 @@
 
 "SUBTITLE THE WHITE HOUSE"
 
+// The infamous white house.
+// If you've managed to get all of the trophies into the trophy cae, then
+// there is a secret path leading southwest into the forest.
 <ROUTINE WEST-HOUSE (RARG)
 	 <COND (<EQUAL? .RARG ,M-LOOK>
 		<TELL
@@ -443,7 +446,7 @@ ZORK: The Great Underground Empire.|" CR>)>
     <COND (<AND <VERB? TAKE> <EQUAL? ,PRSO ,TROPHY-CASE>>
 	   <TELL
 "The trophy case is securely fastened to the wall." CR>)>>
-	
+
 <GLOBAL RUG-MOVED <>>
 
 <ROUTINE LIVING-ROOM-FCN (RARG "AUX" RUG? TC)
@@ -811,7 +814,7 @@ his guttural tongue." CR>)
 	       <TELL
 "Underneath the pile of leaves is a grating. As you release the leaves,
 the grating is once again concealed from view." CR>)>>
- 
+
 <ROUTINE CLEARING-FCN (RARG)
   	 <COND (<EQUAL? .RARG ,M-ENTER>
 		<COND (<NOT ,GRATE-REVEALED>
@@ -1677,7 +1680,7 @@ of the walls, making it difficult even to think.">)>
 come from all around you. There is a pounding in your head which won't
 stop. With a tremendous effort, you scramble out of the room." CR CR>
 		<GOTO <PICK-ONE ,LOUD-RUNS>>
-		<RFALSE>)		
+		<RFALSE>)
 	       (<EQUAL? .RARG ,M-ENTER>
 		<COND (<OR ,LOUD-FLAG
 			   <AND <NOT ,GATES-OPEN> ,LOW-TIDE>>
@@ -2223,7 +2226,7 @@ artist's masterpieces, you have destroyed one." CR>)>>
 	       "The lamp appears a bit dimmer."
 	       70
 	       "The lamp is definitely dimmer now."
-	       15   
+	       15
 	       "The lamp is nearly out."
 	       0>>
 
@@ -2464,7 +2467,7 @@ reeks of gas. Fortunately, there is justice in the world." CR>)
 "Oh dear. It appears that the smell coming from this room was coal gas.
 I would have thought twice about carrying flaming objects in here." CR>)>
 		       <JIGS-UP "|
-      ** BOOOOOOOOOOOM **">)>)>> 
+      ** BOOOOOOOOOOOM **">)>)>>
 
 <ROUTINE BAT-D ("OPTIONAL" FOO)
 	 <COND (<EQUAL? <LOC ,GARLIC> ,WINNER ,HERE>
@@ -2720,7 +2723,7 @@ the rocks and boulders one meets at the bottom of waterfalls.
 Including this one.">)>>
 
 <ROUTINE RBOAT-FUNCTION ("OPTIONAL" (RARG <>) "AUX" TMP)
-    <COND (<EQUAL? .RARG ,M-ENTER ,M-END ,M-LOOK> <>)	
+    <COND (<EQUAL? .RARG ,M-ENTER ,M-END ,M-LOOK> <>)
 	  (<EQUAL? .RARG ,M-BEG>
 	   <COND (<VERB? WALK>
 		  <COND (<EQUAL? ,PRSO ,P?LAND ,P?EAST ,P?WEST>
@@ -4170,7 +4173,7 @@ here is too friendly anyhow. Gulp!" CR>)>>
 	       (<VERB? RAISE LOWER>
 		<TELL "Perhaps you should do that to the basket." CR>)
 	       (<VERB? EXAMINE>
-		<TELL "The chain secures a basket within the shaft." CR>)>> 
+		<TELL "The chain secures a basket within the shaft." CR>)>>
 
 <ROUTINE TROLL-ROOM-F (RARG)
 	 <COND (<AND <EQUAL? .RARG ,M-ENTER>
