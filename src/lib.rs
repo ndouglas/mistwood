@@ -16,6 +16,8 @@
 //!   by text commands, and parsing it into commands.
 //! - **Commands**: A system for managing game commands, which are any actions
 //!   that the player can take, in or out of character.
+//! - **Game Loop**: A flexible, extensible game loop for managing world game
+//!   state on the server side.
 
 // Linting.
 #![deny(rustdoc::bare_urls)]
@@ -87,6 +89,8 @@ pub mod _types;
 pub mod commands;
 /// Dependency Injection.
 pub mod di;
+/// The game loop.
+pub mod game_loop;
 /// Input processing.
 pub mod input;
 /// Message processing.
