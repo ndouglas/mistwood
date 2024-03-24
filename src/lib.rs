@@ -18,6 +18,8 @@
 //!   that the player can take, in or out of character.
 //! - **Game Loop**: A flexible, extensible game loop for managing world game
 //!   state on the server side.
+//! - **Game State**: A system for managing the game state, including the world
+//!   state and the player state, using an entity-component-system (ECS).
 
 // Linting.
 #![deny(rustdoc::bare_urls)]
