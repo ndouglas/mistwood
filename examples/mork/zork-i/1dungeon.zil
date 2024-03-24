@@ -45,7 +45,7 @@
 	(FLAGS NDESCBIT)
 	(ACTION SONGBIRD-F)>
 
-<OBJECT WHITE-HOUSE	
+<OBJECT WHITE-HOUSE
 	(IN LOCAL-GLOBALS)
 	(SYNONYM HOUSE)
 	(ADJECTIVE WHITE BEAUTI COLONI)
@@ -424,7 +424,7 @@ sceptre is ornamented with colored enamel, and tapers to a sharp point.")
 	(FLAGS DOORBIT NDESCBIT)
 	(ACTION FRONT-DOOR-FCN)>
 
-<OBJECT BARROW-DOOR	
+<OBJECT BARROW-DOOR
 	(IN STONE-BARROW)
 	(SYNONYM DOOR)
 	(ADJECTIVE HUGE STONE)
@@ -884,7 +884,7 @@ Zorkers were obscure." )>
 	(ADJECTIVE LARGE THIEFS)
 	(DESC "large bag")
 	(ACTION LARGE-BAG-F)
-	(FLAGS TRYTAKEBIT NDESCBIT)>  
+	(FLAGS TRYTAKEBIT NDESCBIT)>
 
 <OBJECT STILETTO
 	(IN THIEF)
@@ -2409,7 +2409,7 @@ the canyon from here.")
 		     <NOT ,PRSO>>
 		<JIGS-UP "Nice view, lousy place to jump.">
 		<RTRUE>)>>
-	       
+
 
 \
 
@@ -2633,6 +2633,10 @@ a small opening.")
 	  CANYON-VIEW>>
 
 ;"The GO routine must live here."
+
+// This is the Zork equivalent of the main() function, I believe.
+//
+// It's responsible for setting up the starting situation in the game.
 
 <ROUTINE GO ()
 	<ENABLE <QUEUE I-FIGHT -1>>

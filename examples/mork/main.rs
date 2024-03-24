@@ -12,7 +12,7 @@
 //! necessary functionality in the Mistwood library as we go.
 #[macro_use]
 extern crate mistwood;
-use crate::mistwood::input::prelude::InputSource;
+use crate::mistwood::input::prelude::SyncSource;
 use mistwood::input::sources::generic::StdinSource;
 use mistwood::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use mistwood::messaging::prelude::TemplateProcessor;
