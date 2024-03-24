@@ -14,6 +14,8 @@
 //!   number generators, including a registry for sharing them across the game.
 //! - **Input**: A system for managing player input, whether by keypresses or
 //!   by text commands, and parsing it into commands.
+//! - **Commands**: A system for managing game commands, which are any actions
+//!   that the player can take, in or out of character.
 
 // Linting.
 #![deny(rustdoc::bare_urls)]
@@ -81,6 +83,8 @@ extern crate thiserror;
 
 /// Library-wide type definitions.
 pub mod _types;
+/// Commands.
+pub mod commands;
 /// Dependency Injection.
 pub mod di;
 /// Input processing.
