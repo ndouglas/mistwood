@@ -30,6 +30,13 @@
 	 <COND (<FIRST? ,WINNER> <PRINT-CONT ,WINNER>)
 	       (T <TELL "You are empty-handed." CR>)>>
 
+// When the game ends, we:
+// - show the score
+// - repeat:
+//   - prompt the user to restart, restore, or quit
+//
+//
+
 <ROUTINE FINISH ("AUX" WRD)
 	 <V-SCORE>
 	 <REPEAT ()

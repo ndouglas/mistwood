@@ -12,6 +12,8 @@
 //!   be displayed to the player, based on template processing.
 //! - **Pseudorandom Number Generation**: A system for managing pseudorandom
 //!   number generators, including a registry for sharing them across the game.
+//! - **Input**: A system for managing player input, whether by keypresses or
+//!   by text commands, and parsing it into commands.
 
 // Linting.
 #![deny(rustdoc::bare_urls)]
@@ -43,6 +45,7 @@
 #![deny(unused_qualifications)]
 #![deny(variant_size_differences)]
 #![allow(unused_macros)]
+#![allow(async_fn_in_trait)]
 
 // Crate-wide configuration.
 #[allow(unused_imports)]
@@ -80,6 +83,8 @@ extern crate thiserror;
 pub mod _types;
 /// Dependency Injection.
 pub mod di;
+/// Input processing.
+pub mod input;
 /// Message processing.
 pub mod messaging;
 /// Pseudorandom number generation and related utilities.

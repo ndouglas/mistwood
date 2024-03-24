@@ -62,7 +62,7 @@ fn main() {
           // See #76. This ties in with #75 as well. And how do we handle
           // prompting for player confirmation in an asynchronous game?
           let quit_confirmation = info_message!(provider, QuitConfirmation);
-          println!("{}", processor.process_message(&first_lines).unwrap());
+          println!("{}", processor.process_message(&quit_confirmation).unwrap());
           let mut response = String::new();
           io::stdin().read_line(&mut response).unwrap();
           if response.trim().eq_ignore_ascii_case("y") {
