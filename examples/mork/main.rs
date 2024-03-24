@@ -12,6 +12,8 @@
 //! necessary functionality in the Mistwood library as we go.
 #[macro_use]
 extern crate mistwood;
+use crate::mistwood::input::prelude::InputSource;
+use mistwood::input::sources::generic::StdinSource;
 use mistwood::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use mistwood::messaging::prelude::TemplateProcessor;
 use mistwood::messaging::prelude::TemplateProvider;
@@ -48,12 +50,11 @@ fn main() {
     print!("> ");
     // Ensure the prompt is displayed immediately.
     io::stdout().flush().unwrap();
-    let mut input = String::new();
+    let mut stdin_source = StdinSource::new(io::stdin().lock());
     // As a player, I want to be able to provide input to the game.
     // See #81.
-    match io::stdin().read_line(&mut input) {
-      Ok(_) => {
-        input = input.trim().to_string();
+    match stdin_source.fetch_input() {
+      Ok(input) => {
         // As a player, I want to be able to quit the game.
         // See #75.
         if input.eq_ignore_ascii_case("quit") {
@@ -63,9 +64,8 @@ fn main() {
           // prompting for player confirmation in an asynchronous game?
           let quit_confirmation = info_message!(provider, QuitConfirmation);
           println!("{}", processor.process_message(&quit_confirmation).unwrap());
-          let mut response = String::new();
-          io::stdin().read_line(&mut response).unwrap();
-          if response.trim().eq_ignore_ascii_case("y") {
+          let response = stdin_source.fetch_input().unwrap();
+          if response.eq_ignore_ascii_case("y") {
             break;
           } else {
             println!("Ok.");
