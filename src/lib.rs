@@ -91,6 +91,8 @@ pub mod commands;
 pub mod di;
 /// The game loop.
 pub mod game_loop;
+/// The game state, managed by the game loop.
+pub mod game_state;
 /// Input processing.
 pub mod input;
 /// Message processing.
