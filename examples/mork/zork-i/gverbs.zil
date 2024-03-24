@@ -34,8 +34,6 @@
 // - show the score
 // - repeat:
 //   - prompt the user to restart, restore, or quit
-//
-//
 
 <ROUTINE FINISH ("AUX" WRD)
 	 <V-SCORE>
