@@ -14,4 +14,6 @@ pub mod prelude {
   pub use super::_traits::async_sink::AsyncSink;
   pub use super::_traits::handler::Handler as OutputHandler;
   pub use super::_traits::sync_sink::SyncSink;
+  pub use super::sinks::generic::GenericSink;
+  pub use super::sinks::string::StringSink;
 }
