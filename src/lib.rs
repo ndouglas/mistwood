@@ -14,6 +14,7 @@
 //!   number generators, including a registry for sharing them across the game.
 //! - **Input**: A system for managing player input, whether by keypresses or
 //!   by text commands, and parsing it into commands.
+//! - **Output**: A system for sending output messages to the player.
 //! - **Commands**: A system for managing game commands, which are any actions
 //!   that the player can take, in or out of character.
 //! - **Game Loop**: A flexible, extensible game loop for managing world game
@@ -99,6 +100,8 @@ pub mod game_state;
 pub mod input;
 /// Message processing.
 pub mod messaging;
+/// Output processing.
+pub mod output;
 /// Pseudorandom number generation and related utilities.
 pub mod prng;
 
