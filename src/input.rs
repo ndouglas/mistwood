@@ -13,7 +13,7 @@ pub mod prelude {
   pub use super::_errors::input::InputError;
   pub use super::_errors::parse::ParseError;
   pub use super::_traits::async_source::AsyncSource;
-  pub use super::_traits::handler::Handler;
+  pub use super::_traits::handler::Handler as InputHandler;
   pub use super::_traits::sync_source::SyncSource;
   pub use super::input::Input;
   pub use super::sources::generic::FileSource;
