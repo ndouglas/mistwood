@@ -1,10 +1,10 @@
 #[macro_use]
 extern crate mistwood;
-use mistwood::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use mistwood::messaging::prelude::TemplateProcessor;
 use mistwood::messaging::prelude::TemplateProvider;
 use mistwood::messaging::stock_templates::goodbye::Goodbye;
 use mistwood::messaging::stock_templates::thanks_for_playing::ThanksForPlaying;
+use mistwood::messaging::traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 
 fn main() {
   let mut processor = TemplateProcessor::new();

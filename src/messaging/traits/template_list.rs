@@ -1,4 +1,4 @@
-use crate::messaging::_error::MessagingError;
+use crate::messaging::error::MessagingError;
 
 /// This trait describes a struct that contains message templates. It simply
 /// takes an integer and returns a message template from its list; normally,

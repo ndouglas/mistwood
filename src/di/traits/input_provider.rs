@@ -1,5 +1,5 @@
-use crate::di::_error::DiError;
-use crate::di::_types::Object;
+use crate::di::error::DiError;
+use crate::di::types::Object;
 
 /// Trait for providing inputs (dependencies) to a builder.
 pub trait InputProvider {

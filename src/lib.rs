@@ -86,8 +86,6 @@ extern crate strum;
 #[macro_use]
 extern crate thiserror;
 
-/// Library-wide type definitions.
-pub mod _types;
 /// Commands.
 pub mod commands;
 /// Dependency Injection.
@@ -104,10 +102,12 @@ pub mod messaging;
 pub mod output;
 /// Pseudorandom number generation and related utilities.
 pub mod prng;
+/// Library-wide type definitions.
+pub mod types;
 
 /// Prelude for the library.
 pub mod prelude {
-  pub use crate::_types::prelude::TypeMap;
+  pub use crate::types::prelude::TypeMap;
 }
 
 #[cfg(test)]

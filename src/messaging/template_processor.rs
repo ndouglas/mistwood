@@ -1,8 +1,8 @@
 use crate::di::prelude::Builder;
 use crate::di::prelude::DiError;
-use crate::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use crate::messaging::prelude::Message;
 use crate::messaging::prelude::MessagingError;
+use crate::messaging::traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 
 /// We use Handlebars to process templates.
 pub use handlebars::Handlebars as TemplateProcessor;

@@ -1,10 +1,8 @@
 /// Error types for Messaging.
-pub mod _error;
+pub mod error;
 /// Macros for Messaging.
 #[macro_use]
-pub mod _macros;
-/// Includes Messaging-specific traits.
-pub mod _traits;
+pub mod macros;
 /// The Gravity of the message indicates the general seriousness or severity
 /// of the situation. It is somewhat akin to a loglevel.
 pub mod gravity;
@@ -16,16 +14,18 @@ pub mod stock_templates;
 pub mod template_processor;
 /// The Template Provider proxies requests to Template Lists.
 pub mod template_provider;
+/// Includes Messaging-specific traits.
+pub mod traits;
 
 /// Prelude.
 pub mod prelude {
-  pub use super::_error::MessagingError;
-  pub use super::_macros::*;
-  pub use super::_traits::template_list::TemplateList;
-  pub use super::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
+  pub use super::error::MessagingError;
   pub use super::gravity::Gravity;
+  pub use super::macros::*;
   pub use super::message::Message;
   pub use super::stock_templates::thanks_for_playing::ThanksForPlaying;
   pub use super::template_processor::TemplateProcessor;
   pub use super::template_provider::TemplateProvider;
+  pub use super::traits::template_list::TemplateList;
+  pub use super::traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 }
