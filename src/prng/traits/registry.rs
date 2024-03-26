@@ -1,5 +1,5 @@
-use crate::prng::_types::BoxedPrng;
-use crate::prng::_types::SafePrng;
+use crate::prng::types::BoxedPrng;
+use crate::prng::types::SafePrng;
 
 /// A registry of pseudorandom number generators.
 pub trait Registry {

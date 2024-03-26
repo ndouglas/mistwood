@@ -1,4 +1,4 @@
-use crate::game_state::_traits::game_state::GameState;
+use crate::game_state::traits::game_state::GameState;
 
 /// A trait defining a game loop.
 ///

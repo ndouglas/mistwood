@@ -27,7 +27,7 @@ macro_rules! template_list {
 
       /// Implement the SimpleTemplate trait for the struct.
       #[allow(unused_qualifications)]
-      impl $crate::messaging::_traits::data_template::DataTemplate for $struct_name {
+      impl $crate::messaging::traits::data_template::DataTemplate for $struct_name {
         type DataType = [<$struct_name DataType>];
       }
     }
@@ -49,7 +49,7 @@ macro_rules! template_list {
 
     /// Implement the SimpleTemplate trait for the struct.
     #[allow(unused_qualifications)]
-    impl $crate::messaging::_traits::simple_template::SimpleTemplate for $struct_name {}
+    impl $crate::messaging::traits::simple_template::SimpleTemplate for $struct_name {}
   };
 }
 
@@ -57,7 +57,7 @@ macro_rules! template_list {
 mod test {
   #[allow(unused_imports)]
   use super::*;
-  use crate::messaging::_traits::template_list::TemplateList;
+  use crate::messaging::traits::template_list::TemplateList;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;
 

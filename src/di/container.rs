@@ -1,8 +1,8 @@
-use crate::di::_error::DiError;
-use crate::di::_traits::builder::Builder;
-use crate::di::_traits::get_input::GetInput;
-use crate::di::_traits::input_provider::InputProvider;
-use crate::di::_types::Object;
+use crate::di::error::DiError;
+use crate::di::traits::builder::Builder;
+use crate::di::traits::get_input::GetInput;
+use crate::di::traits::input_provider::InputProvider;
+use crate::di::types::Object;
 use crate::prelude::TypeMap;
 use std::any::type_name;
 use std::sync::{Arc, Mutex};
@@ -79,7 +79,7 @@ impl InputProvider for Container {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::di::_error::DiError;
+  use crate::di::error::DiError;
 
   #[derive(Debug, PartialEq)]
   struct NewString(String);

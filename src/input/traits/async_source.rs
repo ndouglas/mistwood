@@ -1,4 +1,4 @@
-use crate::input::_errors::input::InputError;
+use crate::input::errors::input::InputError;
 
 /// An asynchronous trait for input sources, such as standard input or a file.
 ///

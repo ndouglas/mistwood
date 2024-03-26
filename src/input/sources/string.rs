@@ -1,5 +1,5 @@
-use crate::input::_errors::input::InputError;
-use crate::input::_traits::sync_source::SyncSource;
+use crate::input::errors::input::InputError;
+use crate::input::traits::sync_source::SyncSource;
 
 /// An input source that reads from a list of strings.
 #[derive(Debug)]
