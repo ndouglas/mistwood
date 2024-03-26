@@ -1,4 +1,4 @@
-use crate::output::_error::OutputError;
+use crate::output::error::OutputError;
 
 /// A trait for synchronous output sinks, such as standard output or a file.
 pub trait SyncSink<T> {

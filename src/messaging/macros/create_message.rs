@@ -6,7 +6,7 @@ macro_rules! create_message {
     paste::paste! {
       // Create a struct to hold the data for the template.
       // Missing fields will cause a compile error.
-      type TemplateDataType = <$template_struct as $crate::messaging::_traits::data_template::DataTemplate>::DataType;
+      type TemplateDataType = <$template_struct as $crate::messaging::traits::data_template::DataTemplate>::DataType;
       let data = TemplateDataType {
         $($data_key: $data_value),*
       };
@@ -28,7 +28,7 @@ macro_rules! create_message {
     paste::paste! {
       // Force a compile error if the template struct does not implement the
       // SimpleTemplate trait. This means that the template requires data.
-      let _: &dyn $crate::messaging::_traits::simple_template::SimpleTemplate = &$template_struct;
+      let _: &dyn $crate::messaging::traits::simple_template::SimpleTemplate = &$template_struct;
       let data_json = serde_json::Value::Null;
       let message_gravity = $gravity;
       let template_string = $template_provider.get_template::<$template_struct>()
@@ -125,9 +125,9 @@ macro_rules! fatal_message {
 mod test {
   #[allow(unused_imports)]
   use super::*;
-  use crate::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
   use crate::messaging::prelude::*;
   use crate::messaging::template_provider::TemplateProvider;
+  use crate::messaging::traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
   use crate::template_list;
   use crate::test::init as test_init;
   use pretty_assertions::assert_eq;

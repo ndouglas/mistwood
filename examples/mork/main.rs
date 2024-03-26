@@ -14,9 +14,9 @@
 extern crate mistwood;
 use crate::mistwood::input::prelude::SyncSource;
 use mistwood::input::sources::generic::StdinSource;
-use mistwood::messaging::_traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use mistwood::messaging::prelude::TemplateProcessor;
 use mistwood::messaging::prelude::TemplateProvider;
+use mistwood::messaging::traits::template_processor::TemplateProcessor as TemplateProcessorTrait;
 use std::io::{self, Write};
 
 pub mod game_state;

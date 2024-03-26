@@ -1,7 +1,7 @@
 /// Traits for command processing.
-pub mod _traits;
+pub mod traits;
 
 /// The prelude.
 pub mod prelude {
-  pub use super::_traits::command::Command;
+  pub use super::traits::command::Command;
 }

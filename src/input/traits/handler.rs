@@ -1,5 +1,5 @@
 use crate::commands::prelude::Command;
-use crate::input::_errors::input::InputError;
+use crate::input::errors::input::InputError;
 use crate::input::input::Input;
 
 /// A trait for input handlers.

@@ -1,4 +1,4 @@
-use crate::output::_error::OutputError;
+use crate::output::error::OutputError;
 
 /// An asynchronous trait for output sinks, such as network connections.
 ///

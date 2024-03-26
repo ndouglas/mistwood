@@ -1,6 +1,6 @@
 use crate::di::prelude::Builder;
 use crate::di::prelude::DiError;
-use crate::prng::_traits::factory::Factory as FactoryTrait;
+use crate::prng::traits::factory::Factory as FactoryTrait;
 use rand::prelude::*;
 use rand::rngs::mock::StepRng;
 

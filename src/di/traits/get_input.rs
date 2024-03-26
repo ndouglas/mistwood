@@ -1,6 +1,6 @@
-use crate::di::_error::DiError;
-use crate::di::_traits::input_provider::InputProvider;
-use crate::di::_types::Object;
+use crate::di::error::DiError;
+use crate::di::traits::input_provider::InputProvider;
+use crate::di::types::Object;
 
 /// A trait for retrieving inputs for dependency injection objects.
 pub trait GetInput: Sized {

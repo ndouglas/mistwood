@@ -1,4 +1,4 @@
-use crate::output::_error::OutputError;
+use crate::output::error::OutputError;
 use crate::output::output::Output;
 
 /// A trait for output handlers.

@@ -26,11 +26,11 @@ I view everything in alphabetical order, so I've found that it's useful to prefi
 
 - `_constants`: I use constants mostly for conversion factors and things like that. I prefer to keep them together and in a separate context from the code that references them, even if they are only referenced in a single location. Some constants are used in multiple places, and are IMHO best situated in a single location independent of any individual use, and so I err on the side of conformity across constants.
 - `_data`: Sometimes functionality may utilize data that is imported into the binary during the compilation process. This is distinct from data that might be used at runtime, and is generally pretty uncommon. This tends to be a directory rather than a file.
-- `_error`: I've recently been mostly using `anyhow::Error` for error handling, especially because of the development and maintenance cost of allowing conversion between different error kinds at module boundaries (even with an excellent crate like `thiserror`). That said, I expect to use this occasionally.
-- `_macros`: Rust macros, since they need to be declared in a particular way (`#[export_macro]`) and imported in a specific order to be useful.
+- `error`: I've recently been mostly using `anyhow::Error` for error handling, especially because of the development and maintenance cost of allowing conversion between different error kinds at module boundaries (even with an excellent crate like `thiserror`). That said, I expect to use this occasionally.
+- `macros`: Rust macros, since they need to be declared in a particular way (`#[export_macro]`) and imported in a specific order to be useful.
 - `_test_data`: Tests may read or write raw data, which I try to keep local to the files containing the tests. This tends to be a `.gitignore`d directory rather than a file.
-- `_traits`: I keep traits with the constructs that target them, rather than the constructs that implement them. I think this makes interface design and segregation cleaner and easier. These will generally be separate files in a directory.
-- `_types`: This is for type aliases, newtypes, unit structs, etc. Especially in scientific concepts, where I might use 138,000 of something, I tend to use newtypes so that I get some degree of compile-time checking to ensure that my units are being handled and converted correctly.
+- `traits`: I keep traits with the constructs that target them, rather than the constructs that implement them. I think this makes interface design and segregation cleaner and easier. These will generally be separate files in a directory.
+- `types`: This is for type aliases, newtypes, unit structs, etc. Especially in scientific concepts, where I might use 138,000 of something, I tend to use newtypes so that I get some degree of compile-time checking to ensure that my units are being handled and converted correctly.
 
 One of the things that these have in common is that they don't end up having unit tests (although in some cases I might write unit tests for a trait's default implementation of some function).
 
@@ -40,13 +40,13 @@ Here's an example directory. Note that I'm no longer using the `mod.rs` file con
 
 ```yaml
 widget: Some directory.
-  _traits/: Trait definitions.
+  traits/: Trait definitions.
     flappable.rs: The "Flappable" trait.
     slappable.rs: The "Slappable" trait.
   _constants.rs: Constant definitions.
-  _macros.rs: Macro definitions.
-  _traits.rs: Import traits.
-  _types.rs: Type definitions.
+  macros.rs: Macro definitions.
+  traits.rs: Import traits.
+  types.rs: Type definitions.
   bar.rs: Definition of the Bar enum which uses some or all of the above resources.
   baz.rs: Definition of the `baz::write()`, `baz::format()`, and `baz::read()` functions.
   foo.rs: Definition of the Foo struct.

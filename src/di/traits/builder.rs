@@ -1,5 +1,5 @@
-use crate::di::_error::DiError;
-use crate::di::_traits::get_input::GetInput;
+use crate::di::error::DiError;
+use crate::di::traits::get_input::GetInput;
 
 /// A trait for a builder; this represents a constructor within our DI system.
 ///

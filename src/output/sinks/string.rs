@@ -1,5 +1,5 @@
-use crate::output::_error::OutputError;
-use crate::output::_traits::sync_sink::SyncSink;
+use crate::output::error::OutputError;
+use crate::output::traits::sync_sink::SyncSink;
 
 /// An output sink that writes to a list of strings.
 #[derive(Debug, Default)]

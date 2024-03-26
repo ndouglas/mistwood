@@ -1,10 +1,10 @@
 use crate::di::prelude::Builder;
 use crate::di::prelude::DiError;
 use crate::di::prelude::Object;
-use crate::prng::_traits::factory::Factory as FactoryTrait;
-use crate::prng::_traits::registry::Registry as RegistryTrait;
-use crate::prng::_types::BoxedPrng;
-use crate::prng::_types::SafePrng;
+use crate::prng::traits::factory::Factory as FactoryTrait;
+use crate::prng::traits::registry::Registry as RegistryTrait;
+use crate::prng::types::BoxedPrng;
+use crate::prng::types::SafePrng;
 use std::collections::HashMap;
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 use std::sync::{Arc, Mutex};

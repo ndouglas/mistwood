@@ -1,5 +1,5 @@
-use crate::input::_errors::input::InputError;
-use crate::input::_traits::sync_source::SyncSource;
+use crate::input::errors::input::InputError;
+use crate::input::traits::sync_source::SyncSource;
 use std::fs::File;
 use std::io::{BufRead, BufReader, StdinLock};
 
