@@ -55,7 +55,7 @@ strum = { version = "0.26.2", features = ["derive"] }
 tempfile = "3.10.1"
 thiserror = "1.0.58"
 typetag = "0.2.16"
-uuid = { version = "1.7.0", features = ["v4", "fast-rng"] }
+uuid = { version = "1.8.0", features = ["v4", "fast-rng"] }
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
