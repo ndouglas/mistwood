@@ -33,7 +33,7 @@ futures = "0.3.30"
 handlebars = "5.1.2"
 hecs = { version = "0.10.4", features = ["hecs-macros", "serde"] }
 log = "0.4.21"
-mlua = { version = "0.9.6", features = [
+mlua = { version = "0.9.7", features = [
   "async",
   "lua54",
   "serialize",
